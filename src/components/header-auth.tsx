@@ -1,0 +1,50 @@
+import { signOutAction } from "@/app/actions";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
+export default async function AuthButton() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return user ? (
+    <div className="flex items-center gap-4">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost">{user.email}</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <Link href="/dashboard">
+              <DropdownMenuItem>
+                Dashboard
+              </DropdownMenuItem>
+            </Link>
+            <form action={signOutAction}>
+              <button type="submit" className="w-full">
+                <DropdownMenuItem>
+                  Sign out
+                </DropdownMenuItem>
+              </button>
+            </form>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  ) : (
+    <div className="flex gap-2">
+      <Button asChild size="sm" variant={"outline"}>
+        <Link href="/auth/sign-in">Sign in</Link>
+      </Button>
+      <Button asChild size="sm" variant={"default"}>
+        <Link href="/auth/sign-up">Sign up</Link>
+      </Button>
+    </div>
+  );
+}
