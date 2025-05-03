@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({
           <main className="h-screen w-screen flex flex-col items-center justify-center">
             {children}
           </main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

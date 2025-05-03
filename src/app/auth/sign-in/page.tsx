@@ -1,4 +1,4 @@
-import { signInAction } from "@/app/actions";
+import { signInAction } from "@/lib/actions/auth-actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
@@ -13,31 +13,19 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default async function Login(props: { searchParams: Promise<Message> }) {
+export default async function SignIn(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
   return (
     <form className="w-fit">
       <Card>
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
-          <CardDescription>
-            Don't have an account?{" "}
-            <Link className="text-foreground font-medium underline" href="/sign-up">
-              Sign up
-            </Link>
-          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2 [&>input]:mb-3">
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="you@example.com" required />
           <div className="flex justify-between items-center">
             <Label htmlFor="password">Password</Label>
-            <Link
-              className="text-xs text-foreground underline"
-              href="/forgot-password"
-            >
-              Forgot Password?
-            </Link>
           </div>
           <Input
             type="password"

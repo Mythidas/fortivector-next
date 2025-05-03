@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { ChartArea, ShieldUser } from "lucide-react"
 import {
@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { usePathname } from 'next/navigation';
 
 // Menu items.
 const items = [
@@ -28,6 +29,8 @@ const items = [
 ]
 
 export default function AppSidebar() {
+  const pathname = usePathname(); // always safe
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -40,7 +43,10 @@ export default function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={window.location.pathname.includes(item.url)}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.includes(item.url)}
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -53,5 +59,5 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

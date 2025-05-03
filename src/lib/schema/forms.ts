@@ -1,0 +1,19 @@
+import { z } from "zod";
+
+export const userFormSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  first_name: z.string().min(1, { message: "First name is required" }),
+  last_name: z.string().min(1, { message: "Last name is required" }),
+  role_id: z.string(),
+  send_email: z.boolean(),
+  tenant_id: z.string()
+});
+
+export type UserFormValues = z.infer<typeof userFormSchema>;
+
+export const inviteFormShema = z.object({
+  password: z.string().min(12, { message: "Minimum of 12 characters " }),
+  invite_id: z.string(),
+});
+
+export type InviteFormValues = z.infer<typeof inviteFormShema>;

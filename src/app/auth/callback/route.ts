@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
+
   if (redirectTo) {
     return NextResponse.redirect(`${origin}${redirectTo}`);
   }
