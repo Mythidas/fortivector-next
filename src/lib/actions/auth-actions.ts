@@ -69,6 +69,10 @@ export const signInAction = async (_prevState: any, params: FormData) => {
     return encodedRedirect("error", "/auth/sign-in", error.message);
   }
 
+  await supabase.from("users").update({
+    last_sign_in: new Date().toISOString()
+  }).eq("id", user?.id);
+
   return redirect("/dashboard");
 };
 

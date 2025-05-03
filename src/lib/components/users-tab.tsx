@@ -102,7 +102,7 @@ export default function UsersTab({ users, roles, currentUser }: { users: Users[]
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    {user.last_sign_in?.toISOString() || ""}
+                    {new Date(user.last_sign_in || "").toDateString() || ""}
                   </TableCell>
                   <TableCell>
                     {roles.find((role) => role.id === user.role_id)?.name}
