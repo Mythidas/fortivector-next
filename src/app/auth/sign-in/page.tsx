@@ -1,8 +1,8 @@
 import { signInAction } from "@/lib/actions/auth-actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormMessage, Message } from "@/lib/components/form-message";
+import { SubmitButton } from "@/lib/components/submit-button";
+import { Input } from "@/lib/components/ui/input";
+import { Label } from "@/lib/components/ui/label";
 import {
   Card,
   CardContent,
@@ -10,9 +10,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import SignInForm from "@/components/forms/sign-in-form";
-import { Separator } from "@/components/ui/separator";
+} from "@/lib/components/ui/card";
+import SignInForm from "@/lib/components/forms/sign-in-form";
+import { Separator } from "@/lib/components/ui/separator";
 
 export default async function SignIn(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;

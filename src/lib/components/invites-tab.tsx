@@ -1,13 +1,13 @@
 'use client';
 
-import { TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
+import { TabsContent } from "@/lib/components/ui/tabs";
+import { Input } from "@/lib/components/ui/input";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lib/components/ui/button";
 import {
   Card,
   CardContent,
-} from "@/components/ui/card";
+} from "@/lib/components/ui/card";
 import {
   Table,
   TableBody,
@@ -16,18 +16,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+} from "@/lib/components/ui/table";
+import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/lib/components/ui/dropdown-menu";
 import { Roles, UserInvites } from "@/lib/schema/database";
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/lib/components/ui/badge";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 

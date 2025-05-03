@@ -1,7 +1,6 @@
 'use server'
 
 import type { Roles, Tenants, UserInvites, Users } from "@/lib/schema/database";
-import { createAdminClient, createClient } from "@/utils/supabase/server";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getTenant(supabase: SupabaseClient) {
@@ -100,4 +99,19 @@ export async function getRoles(supabase: SupabaseClient) {
   }
 
   return roles as Roles[];
+}
+
+export async function getRole(supabase: SupabaseClient, id: string) {
+  const { data: roles, error } = await supabase
+    .from("roles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return roles as Roles;
 }

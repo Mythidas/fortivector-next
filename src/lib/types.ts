@@ -1,0 +1,1 @@
+export type AccessLevel = "none" | "read" | "edit" | "full";

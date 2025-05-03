@@ -1,9 +1,9 @@
 import { getRoles, getUserInvites, getUsers } from "@/lib/client/db";
 import { createClient } from "@/utils/supabase/server";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UsersTab from "@/components/users-tab";
-import RolesTab from "@/components/roles-tab";
-import InvitesTab from "@/components/invites-tab";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
+import UsersTab from "@/lib/components/users-tab";
+import RolesTab from "@/lib/components/roles-tab";
+import InvitesTab from "@/lib/components/invites-tab";
 
 export default async function UsersPage(props: { searchParams: Promise<{ tab: string }> }) {
   const supabase = await createClient();

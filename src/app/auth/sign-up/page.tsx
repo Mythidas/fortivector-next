@@ -1,14 +1,14 @@
 import { registerAction } from "@/lib/actions/auth-actions";
-import { FormMessage } from "@/components/form-message";
+import { FormMessage } from "@/lib/components/form-message";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
 import { getUserInvite } from "@/lib/client/db";
-import InviteForm from "@/components/forms/invite-form";
+import InviteForm from "@/lib/components/forms/invite-form";
 
 
 export default async function Login(props: {

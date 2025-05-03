@@ -1,11 +1,17 @@
 // Auto-generated interfaces from Supabase Schema
 
+import { AccessLevel } from "../types";
+
 export interface Roles {
   id: string;
   tenant_id?: string;
   name: string;
   description: string;
-  access_rights?: any;
+  access_rights?: {
+    users: AccessLevel;
+    roles: AccessLevel;
+    dashboard: AccessLevel;
+  };
 }
 
 export interface Systems {

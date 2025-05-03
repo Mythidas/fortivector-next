@@ -1,29 +1,32 @@
 'use client';
 
-import { TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { TabsContent } from "@/lib/components/ui/tabs";
+import { Input } from "@/lib/components/ui/input";
+import { Button } from "@/lib/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/lib/components/ui/card";
 import { MoreHorizontal, ShieldCheck } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import RouteButton from "@/components/route-button";
-import { Badge } from "@/components/ui/badge";
+} from "@/lib/components/ui/dropdown-menu";
+import RouteButton from "@/lib/components/route-button";
+import { Badge } from "@/lib/components/ui/badge";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function RolesTab({ users, roles }: { users: Users[], roles: Roles[] }) {
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   function filterRoles(role: Roles) {
     const lowerSearch = search.toLowerCase();
@@ -31,6 +34,24 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
     const lowerRoleDesc = role.description.toLowerCase();
     return lowerRoleName.includes(lowerSearch) || lowerRoleDesc.includes(lowerSearch);
   }
+
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("Are you sure you want to delete this role?");
+    if (!confirm) return;
+
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("roles")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Delete failed:", error.message);
+      alert("Failed to delete role.");
+    } else {
+      router.push("/users?tab=roles");
+    }
+  };
 
   return (
     <TabsContent value="roles">
@@ -62,10 +83,10 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem disabled={!role.tenant_id}>
+                    <DropdownMenuItem disabled={!role.tenant_id} onClick={() => router.push(`/users/edit-role/${role.id}`)}>
                       Edit Role
                     </DropdownMenuItem>
-                    <DropdownMenuItem disabled={!role.tenant_id} className="text-red-600">
+                    <DropdownMenuItem disabled={!role.tenant_id} className="text-red-600" onClick={() => handleDelete(role.id)}>
                       Delete Role
                     </DropdownMenuItem>
                   </DropdownMenuContent>

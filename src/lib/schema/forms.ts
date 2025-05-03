@@ -33,3 +33,25 @@ export const signInFormSchema = z.object({
 });
 
 export type SignInFormValues = z.infer<typeof signInFormSchema>;
+
+export const createRoleFormSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  user_access: z.string(),
+  role_access: z.string(),
+  dashboard_access: z.string(),
+  tenant_id: z.string()
+});
+
+export type CreateRoleFormValues = z.infer<typeof createRoleFormSchema>;
+
+export const editRoleFormSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  user_access: z.string(),
+  role_access: z.string(),
+  dashboard_access: z.string(),
+  role_id: z.string()
+});
+
+export type EditRoleFormValues = z.infer<typeof editRoleFormSchema>;

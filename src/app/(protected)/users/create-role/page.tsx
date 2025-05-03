@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/lib/components/ui/card";
@@ -10,22 +11,18 @@ import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
 import RouteButton from "@/lib/components/route-button";
 import { FormMessage, Message } from "@/lib/components/form-message";
-import { editUserAction } from "@/lib/actions/user-actions";
-import EditUserForm from "@/lib/components/forms/edit-user-form";
+import { createInviteAction, createRoleAction } from "@/lib/actions/user-actions";
+import CreateRoleForm from "@/lib/components/forms/create-role-form";
 
-type Params = Promise<{ id: string }>
-
-export default async function EditUser(props: { params: Params; searchParams: Promise<Message> }) {
+export default async function CreateRole(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
-  const params = await props.params;
   const supabase = await createClient();
-  const roles = await db.getRoles(supabase);
-  const user = await db.getUser(supabase, params.id);
-  if (!user) {
+  const tenant = await db.getTenant(supabase);
+  if (!tenant) {
     return (
       <Card>
         <CardHeader>
-          Failed to find user. Contact support.
+          Failed to find tenant. Contact support.
         </CardHeader>
       </Card>
     )
@@ -38,24 +35,24 @@ export default async function EditUser(props: { params: Params; searchParams: Pr
           variant="ghost"
           size="sm"
           className="mr-2"
-          route="/users"
+          route="/users?tab=roles"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back
         </RouteButton>
-        <h1 className="text-2xl font-bold tracking-tight">Edit User</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Create New Role</h1>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>User Information</CardTitle>
+          <CardTitle>Role Information</CardTitle>
           <CardDescription>
-            Enter the details for the user account.
+            Enter the details for the new role.
           </CardDescription>
           <FormMessage message={searchParams} />
         </CardHeader>
         <CardContent>
-          <EditUserForm user={user} roles={roles} action={editUserAction} />
+          <CreateRoleForm tenantId={tenant.id} action={createRoleAction} />
         </CardContent>
       </Card>
     </div>

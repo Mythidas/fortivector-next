@@ -5,14 +5,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/lib/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
-import RouteButton from "@/components/route-button";
-import { FormMessage, Message } from "@/components/form-message";
+import RouteButton from "@/lib/components/route-button";
+import { FormMessage, Message } from "@/lib/components/form-message";
 import { createInviteAction } from "@/lib/actions/user-actions";
-import CreateUserForm from "@/components/forms/create-user-form";
+import CreateUserForm from "@/lib/components/forms/create-user-form";
 
 export default async function CreateUser(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;

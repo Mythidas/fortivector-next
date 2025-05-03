@@ -3,9 +3,9 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu"
+} from "@/lib/components/ui/navigation-menu"
 import Link from "next/link";
-import HeaderAuth from "@/components/header-auth";
+import HeaderAuth from "@/lib/components/header-auth";
 
 
 export default function Layout({

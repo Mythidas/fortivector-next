@@ -1,12 +1,12 @@
 'use client';
 
-import { TabsContent } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { TabsContent } from "@/lib/components/ui/tabs";
+import { Input } from "@/lib/components/ui/input";
+import { Button } from "@/lib/components/ui/button";
 import {
   Card,
   CardContent,
-} from "@/components/ui/card";
+} from "@/lib/components/ui/card";
 import {
   Table,
   TableBody,
@@ -15,16 +15,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+} from "@/lib/components/ui/table";
+import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { MoreHorizontal, UserPlus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import RouteButton from "@/components/route-button";
+} from "@/lib/components/ui/dropdown-menu";
+import RouteButton from "@/lib/components/route-button";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

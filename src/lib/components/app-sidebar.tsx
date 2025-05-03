@@ -11,7 +11,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/lib/components/ui/sidebar"
 import { usePathname } from 'next/navigation';
 
 // Menu items.
