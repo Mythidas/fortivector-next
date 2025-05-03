@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from "@/utils/supabase/server";
+import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
 import { createRoleFormSchema, editRoleFormSchema, editUserFormSchema, userFormSchema } from "@/lib/schema/forms";
@@ -57,6 +57,13 @@ export const editUserAction = async (_prevState: any, params: FormData) => {
     last_name: validation.data.last_name,
     role_id: validation.data.role_id,
   }).eq("id", validation.data.user_id);
+
+  const supabaseAdmin = await createAdminClient();
+  await supabaseAdmin.auth.admin.updateUserById(validation.data.user_id, {
+    app_metadata: {
+      "role_id": validation.data.role_id
+    }
+  })
 
   if (error) {
     return encodedRedirect("error", "/users/edit-user", error.message);

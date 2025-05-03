@@ -40,7 +40,8 @@ export const registerAction = async (_prevState: any, params: FormData) => {
       const { data: user, error } = await supabaseAdmin.from("users").select().eq("id", data.user.id).single();
       await supabaseAdmin.auth.admin.updateUserById(user.id, {
         app_metadata: {
-          "tenant_id": user.tenant_id
+          "tenant_id": user.tenant_id,
+          "role_id": user.role_id
         }
       })
     }

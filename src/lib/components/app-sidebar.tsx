@@ -1,6 +1,6 @@
 'use client';
 
-import { ChartArea, ShieldUser } from "lucide-react"
+import { ChartArea, FolderCog, ShieldUser } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +20,11 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: ChartArea,
+  },
+  {
+    title: "Systems",
+    url: "/systems",
+    icon: FolderCog
   },
   {
     title: "Users",
