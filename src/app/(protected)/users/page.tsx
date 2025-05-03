@@ -1,4 +1,4 @@
-import { getRoles, getUserInvites, getUsers } from "@/lib/server/db";
+import { getRoles, getUserInvites, getUsers } from "@/lib/client/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UsersTab from "@/components/users-tab";
@@ -10,6 +10,7 @@ export default async function UsersPage(props: { searchParams: Promise<{ tab: st
   const users = await getUsers(supabase);
   const roles = await getRoles(supabase);
   const invites = await getUserInvites(supabase);
+  const { data: currentUser } = await supabase.auth.getUser();
   const searchParams = await props.searchParams;
 
   return (
@@ -24,7 +25,7 @@ export default async function UsersPage(props: { searchParams: Promise<{ tab: st
           <TabsTrigger value="roles">Roles</TabsTrigger>
           <TabsTrigger value="invites">Invites</TabsTrigger>
         </TabsList>
-        <UsersTab users={users} roles={roles} />
+        <UsersTab users={users} roles={roles} currentUser={currentUser.user?.id || ""} />
         <RolesTab users={users} roles={roles} />
         <InvitesTab invites={invites} roles={roles} />
       </Tabs>

@@ -11,36 +11,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+import SignInForm from "@/components/forms/sign-in-form";
+import { Separator } from "@/components/ui/separator";
 
 export default async function SignIn(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
   return (
-    <form className="w-fit">
-      <Card>
-        <CardHeader>
-          <CardTitle>Sign in</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2 [&>input]:mb-3">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
-          <div className="flex justify-between items-center">
-            <Label htmlFor="password">Password</Label>
-          </div>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Your password"
-            required
-          />
-        </CardContent>
-        <CardFooter>
-          <SubmitButton pendingText="Signing In..." formAction={signInAction} className="w-full">
-            Sign in
-          </SubmitButton>
-          <FormMessage message={searchParams} />
-        </CardFooter>
-      </Card>
-    </form>
+    <Card>
+      <CardHeader>
+        <CardTitle>Sign in</CardTitle>
+        <CardDescription>
+          Welcome back to Fortivector!
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="flex flex-col gap-2 [&>input]:mb-3">
+        <SignInForm action={signInAction} />
+        <FormMessage message={searchParams} />
+      </CardContent>
+    </Card>
   );
 }

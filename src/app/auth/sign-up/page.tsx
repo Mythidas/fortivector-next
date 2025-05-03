@@ -7,8 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getUserInvite } from "@/lib/server/db";
-import InviteForm from "@/components/invite-form";
+import { getUserInvite } from "@/lib/client/db";
+import InviteForm from "@/components/forms/invite-form";
 
 
 export default async function Login(props: {

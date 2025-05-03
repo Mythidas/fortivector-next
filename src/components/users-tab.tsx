@@ -27,9 +27,12 @@ import {
 import RouteButton from "@/components/route-button";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { deleteUser } from "@/lib/server/db";
 
-export default function UsersTab({ users, roles }: { users: Users[]; roles: Roles[]; }) {
+export default function UsersTab({ users, roles, currentUser }: { users: Users[]; roles: Roles[]; currentUser: string }) {
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   function filterUsers(user: Users) {
     const lowerSearch = search.toLowerCase();
@@ -38,6 +41,19 @@ export default function UsersTab({ users, roles }: { users: Users[]; roles: Role
     const lowerEmail = user.email.toLowerCase();
     return lowerEmail.includes(lowerSearch) || lowerFirstName.includes(lowerSearch) || lowerLastName.includes(lowerSearch);
   }
+
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("Are you sure you want to delete this user?");
+    if (!confirm) return;
+
+    const result = await deleteUser(id);
+
+    if (!result) {
+      alert("Failed to delete user.");
+    } else {
+      router.push("/users?tab=users");
+    }
+  };
 
   return (
     <TabsContent value="users">
@@ -99,8 +115,12 @@ export default function UsersTab({ users, roles }: { users: Users[]; roles: Role
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push(`/users/edit-user/${user.id}`)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(user.id)} disabled={currentUser === user.id}>
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

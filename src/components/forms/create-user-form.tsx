@@ -24,9 +24,9 @@ import { Separator } from "@/components/ui/separator";
 import { Roles } from "@/lib/schema/database";
 import { userFormSchema, UserFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import RouteButton from "./route-button";
-import { SubmitButton } from "./submit-button";
-import { useActionState } from "react";
+import RouteButton from "@/components/route-button";
+import { SubmitButton } from "@/components/submit-button";
+import { startTransition, useActionState, useState } from "react";
 
 type Props = {
   tenantId: string;
@@ -39,20 +39,36 @@ type Props = {
 
 export default function CreateUserForm({ tenantId, roles, action }: Props) {
   const [state, formAction] = useActionState(action, { errors: [] });
-
-  // Default form values
-  const defaultValues: Partial<UserFormValues> = {
-    send_email: true,
-  };
+  const [pending, setPending] = useState(false);
 
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
-    defaultValues
+    defaultValues: {
+      email: "",
+      first_name: "",
+      last_name: "",
+      role_id: "",
+      tenant_id: tenantId,
+      send_email: false
+    }
   });
 
   return (
     <Form {...form}>
-      <form className="space-y-6" action={formAction}>
+      <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
+        setPending(true);
+        const formData = new FormData();
+        formData.append('email', data.email);
+        formData.append('first_name', data.first_name);
+        formData.append('last_name', data.last_name);
+        formData.append('role_id', data.role_id);
+        formData.append('tenant_id', data.tenant_id);
+        formData.append('send_email', String(data.send_email));
+
+        startTransition(() => {
+          formAction(formData);
+        })
+      })}>
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">
           <FormField
             control={form.control}
@@ -160,7 +176,7 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
           <RouteButton variant="outline" route="/users">
             Cancel
           </RouteButton>
-          <SubmitButton variant="default" pendingText="Creating User...">
+          <SubmitButton variant="default" pendingText="Creating User..." pending={pending}>
             Create User
           </SubmitButton>
         </div>

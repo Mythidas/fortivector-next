@@ -1,0 +1,86 @@
+'use client';
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { signInFormSchema, SignInFormValues } from "@/lib/schema/forms";
+import { ZodIssue } from "zod";
+import { SubmitButton } from "../submit-button";
+import { useActionState, useState } from "react";
+import { startTransition } from 'react';
+
+type Props = {
+  action: (
+    _prevState: any,
+    params: FormData
+  ) => Promise<{ errors: ZodIssue[] }>;
+};
+
+export default function SignInForm({ action }: Props) {
+  const [state, formAction] = useActionState(action, { errors: [] });
+  const [pending, setPending] = useState(false);
+
+  const form = useForm<SignInFormValues>({
+    resolver: zodResolver(signInFormSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
+  return (
+    <Form {...form}>
+      <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
+        setPending(true);
+        const formData = new FormData();
+        formData.append('password', data.password);
+        formData.append('email', data.email);
+
+        startTransition(() => {
+          formAction(formData);
+        })
+      })}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="example@email.com" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder="*********" type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex justify-end gap-3">
+          <SubmitButton variant="default" pendingText="Signing In..." pending={pending}>
+            Sign In
+          </SubmitButton>
+        </div>
+      </form>
+    </Form>
+  );
+}

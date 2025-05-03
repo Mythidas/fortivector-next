@@ -11,11 +11,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Roles } from "@/lib/schema/database";
 import { inviteFormShema, InviteFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import { SubmitButton } from "./submit-button";
-import { useActionState } from "react";
+import { SubmitButton } from "../submit-button";
+import { useActionState, useState } from "react";
 import { startTransition } from 'react';
 
 type Props = {
@@ -28,14 +27,20 @@ type Props = {
 
 export default function InviteForm({ inviteId, action }: Props) {
   const [state, formAction] = useActionState(action, { errors: [] });
+  const [pending, setPending] = useState(false);
 
   const form = useForm<InviteFormValues>({
-    resolver: zodResolver(inviteFormShema)
+    resolver: zodResolver(inviteFormShema),
+    defaultValues: {
+      password: "",
+      invite_id: ""
+    }
   });
 
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
+        setPending(true);
         const formData = new FormData();
         formData.append('password', data.password);
         formData.append('invite_id', inviteId);
@@ -67,7 +72,7 @@ export default function InviteForm({ inviteId, action }: Props) {
           )}
         />
         <div className="flex justify-end gap-3">
-          <SubmitButton variant="default" pendingText="Registering...">
+          <SubmitButton variant="default" pendingText="Registering..." pending={pending}>
             Register
           </SubmitButton>
         </div>

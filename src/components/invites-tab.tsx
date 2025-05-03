@@ -28,9 +28,12 @@ import {
 import { Roles, UserInvites } from "@/lib/schema/database";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites: UserInvites[] }) {
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   function filterInvites(user: UserInvites) {
     const lowerSearch = search.toLowerCase();
@@ -39,6 +42,24 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
     const lowerEmail = user.email.toLowerCase();
     return lowerEmail.includes(lowerSearch) || lowerFirstName.includes(lowerSearch) || lowerLastName.includes(lowerSearch);
   }
+
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("Are you sure you want to delete this invite?");
+    if (!confirm) return;
+
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("user_invites")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Delete failed:", error.message);
+      alert("Failed to delete invite.");
+    } else {
+      router.push("/users?tab=invites");
+    }
+  };
 
   return (
     <TabsContent value="invites">
@@ -131,7 +152,9 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
                         }}>
                           Copy Signup Link
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(invite.id)}>
+                          Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

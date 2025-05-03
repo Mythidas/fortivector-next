@@ -11,9 +11,25 @@ export const userFormSchema = z.object({
 
 export type UserFormValues = z.infer<typeof userFormSchema>;
 
+export const editUserFormSchema = z.object({
+  first_name: z.string().min(1, { message: "First name is required" }),
+  last_name: z.string().min(1, { message: "Last name is required" }),
+  role_id: z.string(),
+  user_id: z.string()
+});
+
+export type EditUserFormValues = z.infer<typeof editUserFormSchema>;
+
 export const inviteFormShema = z.object({
-  password: z.string().min(12, { message: "Minimum of 12 characters " }),
+  password: z.string().min(12, { message: "Minimum of 12 characters" }),
   invite_id: z.string(),
 });
 
 export type InviteFormValues = z.infer<typeof inviteFormShema>;
+
+export const signInFormSchema = z.object({
+  password: z.string().min(1, { message: "Enter a password" }),
+  email: z.string().email({ message: "Enter a valid email" }),
+});
+
+export type SignInFormValues = z.infer<typeof signInFormSchema>;

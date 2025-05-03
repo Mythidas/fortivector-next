@@ -3,8 +3,8 @@
 import { encodedRedirect } from "@/utils/utils";
 import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getUserInvite } from "../server/db";
-import { inviteFormShema } from "../schema/forms";
+import { getUserInvite } from "@/lib/client/db";
+import { inviteFormShema, signInFormSchema } from "../schema/forms";
 
 export const registerAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
@@ -49,14 +49,20 @@ export const registerAction = async (_prevState: any, params: FormData) => {
   }
 };
 
-export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+export const signInAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
+  const validation = signInFormSchema.safeParse({
+    email: params.get("email"),
+    password: params.get("password")
+  })
+
+  if (validation.error) {
+    return encodedRedirect("error", "/auth/sign-in", validation.error.message);
+  }
 
   const { data: { user }, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+    email: validation.data.email,
+    password: validation.data.password,
   });
 
   if (error) {
