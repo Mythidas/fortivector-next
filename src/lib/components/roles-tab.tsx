@@ -14,7 +14,6 @@ import { MoreHorizontal, ShieldCheck } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
 import RouteButton from "@/lib/components/route-button";
@@ -23,6 +22,7 @@ import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import PrDropDownMenuItem from "@/lib/components/protected/PrDropDownMenuItem";
 
 export default function RolesTab({ users, roles }: { users: Users[], roles: Roles[] }) {
   const [search, setSearch] = useState("");
@@ -64,7 +64,7 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <RouteButton route="/users/create-role">
+        <RouteButton route="/users/create-role" module="roles" level="edit">
           <ShieldCheck className="h-4 w-4 mr-2" />
           Add Role
         </RouteButton>
@@ -83,12 +83,12 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem disabled={!role.tenant_id} onClick={() => router.push(`/users/edit-role/${role.id}`)}>
+                    <PrDropDownMenuItem disabled={!role.tenant_id} onClick={() => router.push(`/users/edit-role/${role.id}`)} module="roles" level="edit">
                       Edit Role
-                    </DropdownMenuItem>
-                    <DropdownMenuItem disabled={!role.tenant_id} className="text-red-600" onClick={() => handleDelete(role.id)}>
+                    </PrDropDownMenuItem>
+                    <PrDropDownMenuItem disabled={!role.tenant_id} className="text-red-600" onClick={() => handleDelete(role.id)} module="roles" level="edit">
                       Delete Role
-                    </DropdownMenuItem>
+                    </PrDropDownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

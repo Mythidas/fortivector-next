@@ -30,6 +30,7 @@ import { useState } from "react";
 import { Badge } from "@/lib/components/ui/badge";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import PrDropDownMenuItem from "@/lib/components/protected/PrDropDownMenuItem";
 
 export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites: UserInvites[] }) {
   const [search, setSearch] = useState("");
@@ -152,9 +153,9 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
                         }}>
                           Copy Signup Link
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(invite.id)}>
+                        <PrDropDownMenuItem className="text-red-600" onClick={() => handleDelete(invite.id)} module="users" level="edit">
                           Delete
-                        </DropdownMenuItem>
+                        </PrDropDownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
