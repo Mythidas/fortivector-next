@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import RouteButton from "@/lib/components/route-button";
+import RouteButton from "@/lib/components/protected/route-button";
 import { useState } from "react";
 import { Systems } from "@/lib/schema/database";
 import { useRouter } from "next/navigation";
@@ -66,17 +66,14 @@ export default function SystemsTable({ systems }: Props) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem disabled={!system.tenant_id} onClick={() => router.push(`/systems/edit/${system.id}`)}>
-                      Edit Role
+                    <DropdownMenuItem disabled={!system.tenant_id} onClick={() => router.push(`/systems/${system.id}`)}>
+                      Edit System
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
               <CardDescription>{system.description}</CardDescription>
             </CardHeader>
-            <CardContent>
-
-            </CardContent>
           </Card>
         ))}
       </div>

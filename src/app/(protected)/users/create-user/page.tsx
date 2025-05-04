@@ -9,10 +9,11 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
-import RouteButton from "@/lib/components/route-button";
+import RouteButton from "@/lib/components/protected/route-button";
 import { FormMessage, Message } from "@/lib/components/form-message";
 import { createInviteAction } from "@/lib/actions/user-actions";
 import CreateUserForm from "@/lib/components/forms/create-user-form";
+import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 
 export default async function CreateUser(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
@@ -22,18 +23,13 @@ export default async function CreateUser(props: { searchParams: Promise<Message>
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <RouteButton
-          variant="ghost"
-          size="sm"
-          className="mr-2"
-          route="/users"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Back
-        </RouteButton>
-        <h1 className="text-2xl font-bold tracking-tight">Create New User</h1>
-      </div>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbLink href="/users">Users</BreadcrumbLink>
+          <BreadcrumbSeparator />
+          <BreadcrumbPage>Create User</BreadcrumbPage>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <Card>
         <CardHeader>

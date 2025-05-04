@@ -23,7 +23,7 @@ import { Separator } from "@/lib/components/ui/separator";
 import { Roles, Users } from "@/lib/schema/database";
 import { editUserFormSchema, EditUserFormValues, userFormSchema, UserFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/route-button";
+import RouteButton from "@/lib/components/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
 

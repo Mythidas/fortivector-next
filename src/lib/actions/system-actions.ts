@@ -3,42 +3,54 @@
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { createRoleFormSchema, editRoleFormSchema, editUserFormSchema, userFormSchema } from "@/lib/schema/forms";
+import { createControlFormSchema, createRoleFormSchema, createSystemFormSchema, editRoleFormSchema, editUserFormSchema, userFormSchema } from "@/lib/schema/forms";
 
 export const createSystemAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
-}
-
-export const createInviteAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = userFormSchema.safeParse({
-    first_name: params.get("first_name"),
-    last_name: params.get("last_name"),
-    email: params.get("email"),
-    role_id: params.get("role_id"),
-    tenant_id: params.get("tenant_id"),
-    send_email: params.get("send_email") === "on"
+  const validation = createSystemFormSchema.safeParse({
+    name: params.get("name"),
+    description: params.get("description"),
+    tenant_id: params.get("tenant_id")
   });
 
   if (validation.error) {
-    return encodedRedirect("error", "/users/create-user", validation.error.message);
+    return encodedRedirect("error", "/systems/create", validation.error.message);
   }
 
-  const { data, error } = await supabase.from("user_invites").insert({
-    first_name: validation.data.first_name,
-    last_name: validation.data.last_name,
-    email: validation.data.email,
-    role_id: validation.data.role_id,
+  const { data, error } = await supabase.from("systems").insert({
+    name: validation.data.name,
+    description: validation.data.description,
     tenant_id: validation.data.tenant_id
-  });
+  }).select().single();
 
   if (error) {
-    return encodedRedirect("error", "/users/create-user", error.message);
+    return encodedRedirect("error", "/systems/create", error.message);
   }
 
-  if (validation.data.send_email) {
-    // send email with link
+  return redirect(`/systems/${data.id}`);
+};
+
+export const createControlAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = createControlFormSchema.safeParse({
+    name: params.get("name"),
+    description: params.get("description"),
+    system_id: params.get("system_id")
+  });
+
+  if (validation.error) {
+    return encodedRedirect("error", "/systems/create", validation.error.message);
   }
 
-  return redirect("/users?tab=invites");
+  const { data, error } = await supabase.from("systems").insert({
+    name: validation.data.name,
+    description: validation.data.description,
+    system_id: validation.data.system_id
+  }).select().single();
+
+  if (error) {
+    return encodedRedirect("error", "/systems/create", error.message);
+  }
+
+  return redirect(`/systems/${data.id}`);
 };

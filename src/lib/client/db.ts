@@ -128,3 +128,18 @@ export async function getSystems(supabase: SupabaseClient) {
 
   return systems as Systems[];
 }
+
+export async function getSystem(supabase: SupabaseClient, id: string) {
+  const { data: systems, error } = await supabase
+    .from("systems")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return systems as Systems;
+}

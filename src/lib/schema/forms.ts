@@ -63,3 +63,11 @@ export const createSystemFormSchema = z.object({
 });
 
 export type CreateSystemFormValues = z.infer<typeof createSystemFormSchema>;
+
+export const createControlFormSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  description: z.string().min(1, { message: "Description is required" }),
+  system_id: z.string()
+});
+
+export type CreateControlFormValues = z.infer<typeof createControlFormSchema>;
