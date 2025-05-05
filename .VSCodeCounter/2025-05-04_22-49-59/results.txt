@@ -1,0 +1,182 @@
+Date : 2025-05-04 22:49:59
+Directory : /home/bp/Source/fortivector-next
+Total : 105 files,  12537 codes, 60 comments, 1184 blanks, all 13781 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          4 |      5,675 |          0 |          3 |      5,678 |
+| TypeScript JSX     |         72 |      5,391 |         23 |        529 |      5,943 |
+| TypeScript         |         18 |        678 |         37 |        151 |        866 |
+| JSON with Comments |          2 |        564 |          0 |        471 |      1,035 |
+| CSS                |          1 |        185 |          0 |          9 |        194 |
+| Markdown           |          1 |         23 |          0 |         14 |         37 |
+| JavaScript         |          2 |         16 |          0 |          7 |         23 |
+| XML                |          5 |          5 |          0 |          0 |          5 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                      | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                         |        105 |     12,537 |         60 |      1,184 |     13,781 |
+| . (Files)                                                                                 |         11 |      6,292 |          9 |        501 |      6,802 |
+| public                                                                                    |          5 |          5 |          0 |          0 |          5 |
+| src                                                                                       |         89 |      6,240 |         51 |        683 |      6,974 |
+| src/app                                                                                   |         19 |        840 |          4 |         68 |        912 |
+| src/app (Files)                                                                           |          2 |        221 |          0 |         13 |        234 |
+| src/app/(protected)                                                                       |         12 |        467 |          0 |         36 |        503 |
+| src/app/(protected) (Files)                                                               |          1 |         29 |          0 |          3 |         32 |
+| src/app/(protected)/dashboard                                                             |          1 |          9 |          0 |          0 |          9 |
+| src/app/(protected)/systems                                                               |          5 |        191 |          0 |         16 |        207 |
+| src/app/(protected)/systems (Files)                                                       |          1 |         15 |          0 |          3 |         18 |
+| src/app/(protected)/systems/[id]                                                          |          2 |        124 |          0 |         10 |        134 |
+| src/app/(protected)/systems/[id] (Files)                                                  |          1 |         50 |          0 |          5 |         55 |
+| src/app/(protected)/systems/[id]/create-control                                           |          1 |         74 |          0 |          5 |         79 |
+| src/app/(protected)/systems/control                                                       |          1 |          5 |          0 |          0 |          5 |
+| src/app/(protected)/systems/create                                                        |          1 |         47 |          0 |          3 |         50 |
+| src/app/(protected)/users                                                                 |          5 |        238 |          0 |         17 |        255 |
+| src/app/(protected)/users (Files)                                                         |          1 |         31 |          0 |          3 |         34 |
+| src/app/(protected)/users/create-role                                                     |          1 |         53 |          0 |          3 |         56 |
+| src/app/(protected)/users/create-user                                                     |          1 |         45 |          0 |          3 |         48 |
+| src/app/(protected)/users/edit-role                                                       |          1 |         54 |          0 |          4 |         58 |
+| src/app/(protected)/users/edit-role/[id]                                                  |          1 |         54 |          0 |          4 |         58 |
+| src/app/(protected)/users/edit-user                                                       |          1 |         55 |          0 |          4 |         59 |
+| src/app/(protected)/users/edit-user/[id]                                                  |          1 |         55 |          0 |          4 |         59 |
+| src/app/(root)                                                                            |          2 |         50 |          0 |          5 |         55 |
+| src/app/auth                                                                              |          3 |        102 |          4 |         14 |        120 |
+| src/app/auth/callback                                                                     |          1 |         16 |          4 |          5 |         25 |
+| src/app/auth/sign-in                                                                      |          1 |         33 |          0 |          2 |         35 |
+| src/app/auth/sign-up                                                                      |          1 |         53 |          0 |          7 |         60 |
+| src/hooks                                                                                 |          1 |         15 |          0 |          5 |         20 |
+| src/lib                                                                                   |         65 |      5,291 |         28 |        595 |      5,914 |
+| src/lib (Files)                                                                           |          3 |         47 |          7 |          5 |         59 |
+| src/lib/actions                                                                           |          3 |        230 |          1 |         51 |        282 |
+| src/lib/client                                                                            |          1 |        114 |          0 |         31 |        145 |
+| src/lib/components                                                                        |         52 |      4,668 |         16 |        461 |      5,145 |
+| src/lib/components (Files)                                                                |          8 |        315 |          1 |         29 |        345 |
+| src/lib/components/forms                                                                  |          8 |        990 |          0 |         74 |      1,064 |
+| src/lib/components/protected                                                              |          2 |         41 |          0 |          9 |         50 |
+| src/lib/components/tabs                                                                   |          4 |        497 |          3 |         35 |        535 |
+| src/lib/components/ui                                                                     |         30 |      2,825 |         12 |        314 |      3,151 |
+| src/lib/context                                                                           |          1 |         18 |          1 |          7 |         26 |
+| src/lib/providers                                                                         |          1 |         33 |          1 |          5 |         39 |
+| src/lib/schema                                                                            |          3 |        165 |          2 |         30 |        197 |
+| src/lib/server                                                                            |          1 |         16 |          0 |          5 |         21 |
+| src/utils                                                                                 |          4 |         94 |         19 |         15 |        128 |
+| src/utils (Files)                                                                         |          1 |          9 |          7 |          2 |         18 |
+| src/utils/supabase                                                                        |          3 |         85 |         12 |         13 |        110 |
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                  | language           | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/bp/Source/fortivector-next/.prettierrc                                              | JSON               |          1 |          0 |          1 |          2 |
+| /home/bp/Source/fortivector-next/README.md                                                | Markdown           |         23 |          0 |         14 |         37 |
+| /home/bp/Source/fortivector-next/bun.lock                                                 | JSON with Comments |        523 |          0 |        471 |        994 |
+| /home/bp/Source/fortivector-next/components.json                                          | JSON               |         21 |          0 |          0 |         21 |
+| /home/bp/Source/fortivector-next/eslint.config.mjs                                        | JavaScript         |         12 |          0 |          5 |         17 |
+| /home/bp/Source/fortivector-next/middleware.ts                                            | TypeScript         |         10 |          8 |          3 |         21 |
+| /home/bp/Source/fortivector-next/next.config.ts                                           | TypeScript         |          4 |          1 |          3 |          8 |
+| /home/bp/Source/fortivector-next/package-lock.json                                        | JSON               |      5,600 |          0 |          1 |      5,601 |
+| /home/bp/Source/fortivector-next/package.json                                             | JSON               |         53 |          0 |          1 |         54 |
+| /home/bp/Source/fortivector-next/postcss.config.mjs                                       | JavaScript         |          4 |          0 |          2 |          6 |
+| /home/bp/Source/fortivector-next/public/file.svg                                          | XML                |          1 |          0 |          0 |          1 |
+| /home/bp/Source/fortivector-next/public/globe.svg                                         | XML                |          1 |          0 |          0 |          1 |
+| /home/bp/Source/fortivector-next/public/next.svg                                          | XML                |          1 |          0 |          0 |          1 |
+| /home/bp/Source/fortivector-next/public/vercel.svg                                        | XML                |          1 |          0 |          0 |          1 |
+| /home/bp/Source/fortivector-next/public/window.svg                                        | XML                |          1 |          0 |          0 |          1 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/dashboard/page.tsx                   | TypeScript JSX     |          9 |          0 |          0 |          9 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/layout.tsx                           | TypeScript JSX     |         29 |          0 |          3 |         32 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/systems/[id]/create-control/page.tsx | TypeScript JSX     |         74 |          0 |          5 |         79 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/systems/[id]/page.tsx                | TypeScript JSX     |         50 |          0 |          5 |         55 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/systems/control/page.tsx             | TypeScript JSX     |          5 |          0 |          0 |          5 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/systems/create/page.tsx              | TypeScript JSX     |         47 |          0 |          3 |         50 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/systems/page.tsx                     | TypeScript JSX     |         15 |          0 |          3 |         18 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/users/create-role/page.tsx           | TypeScript JSX     |         53 |          0 |          3 |         56 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/users/create-user/page.tsx           | TypeScript JSX     |         45 |          0 |          3 |         48 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/users/edit-role/[id]/page.tsx        | TypeScript JSX     |         54 |          0 |          4 |         58 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/users/edit-user/[id]/page.tsx        | TypeScript JSX     |         55 |          0 |          4 |         59 |
+| /home/bp/Source/fortivector-next/src/app/(protected)/users/page.tsx                       | TypeScript JSX     |         31 |          0 |          3 |         34 |
+| /home/bp/Source/fortivector-next/src/app/(root)/layout.tsx                                | TypeScript JSX     |         42 |          0 |          3 |         45 |
+| /home/bp/Source/fortivector-next/src/app/(root)/page.tsx                                  | TypeScript JSX     |          8 |          0 |          2 |         10 |
+| /home/bp/Source/fortivector-next/src/app/auth/callback/route.ts                           | TypeScript         |         16 |          4 |          5 |         25 |
+| /home/bp/Source/fortivector-next/src/app/auth/sign-in/page.tsx                            | TypeScript JSX     |         33 |          0 |          2 |         35 |
+| /home/bp/Source/fortivector-next/src/app/auth/sign-up/page.tsx                            | TypeScript JSX     |         53 |          0 |          7 |         60 |
+| /home/bp/Source/fortivector-next/src/app/globals.css                                      | CSS                |        185 |          0 |          9 |        194 |
+| /home/bp/Source/fortivector-next/src/app/layout.tsx                                       | TypeScript JSX     |         36 |          0 |          4 |         40 |
+| /home/bp/Source/fortivector-next/src/hooks/use-mobile.ts                                  | TypeScript         |         15 |          0 |          5 |         20 |
+| /home/bp/Source/fortivector-next/src/lib/actions/auth-actions.ts                          | TypeScript         |         69 |          0 |         15 |         84 |
+| /home/bp/Source/fortivector-next/src/lib/actions/system-actions.ts                        | TypeScript         |         45 |          0 |         11 |         56 |
+| /home/bp/Source/fortivector-next/src/lib/actions/user-actions.ts                          | TypeScript         |        116 |          1 |         25 |        142 |
+| /home/bp/Source/fortivector-next/src/lib/client/db.ts                                     | TypeScript         |        114 |          0 |         31 |        145 |
+| /home/bp/Source/fortivector-next/src/lib/components/app-navbar.tsx                        | TypeScript JSX     |         18 |          0 |          2 |         20 |
+| /home/bp/Source/fortivector-next/src/lib/components/app-sidebar.tsx                       | TypeScript JSX     |         63 |          1 |          5 |         69 |
+| /home/bp/Source/fortivector-next/src/lib/components/form-buttons.tsx                      | TypeScript JSX     |         19 |          0 |          1 |         20 |
+| /home/bp/Source/fortivector-next/src/lib/components/form-message.tsx                      | TypeScript JSX     |         35 |          0 |          3 |         38 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/create-control-form.tsx         | TypeScript JSX     |         96 |          0 |          8 |        104 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/create-role-form.tsx            | TypeScript JSX     |        171 |          0 |         12 |        183 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/create-system-form.tsx          | TypeScript JSX     |         86 |          0 |          7 |         93 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/create-user-form.tsx            | TypeScript JSX     |        175 |          0 |         11 |        186 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/edit-role-form.tsx              | TypeScript JSX     |        165 |          0 |         12 |        177 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/edit-user-form.tsx              | TypeScript JSX     |        143 |          0 |         10 |        153 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/invite-form.tsx                 | TypeScript JSX     |         75 |          0 |          7 |         82 |
+| /home/bp/Source/fortivector-next/src/lib/components/forms/sign-in-form.tsx                | TypeScript JSX     |         79 |          0 |          7 |         86 |
+| /home/bp/Source/fortivector-next/src/lib/components/header-auth.tsx                       | TypeScript JSX     |         44 |          0 |          4 |         48 |
+| /home/bp/Source/fortivector-next/src/lib/components/mode-toggle.tsx                       | TypeScript JSX     |         39 |          0 |          3 |         42 |
+| /home/bp/Source/fortivector-next/src/lib/components/protected/drop-down-item.tsx          | TypeScript JSX     |         19 |          0 |          5 |         24 |
+| /home/bp/Source/fortivector-next/src/lib/components/protected/route-button.tsx            | TypeScript JSX     |         22 |          0 |          4 |         26 |
+| /home/bp/Source/fortivector-next/src/lib/components/submit-button.tsx                     | TypeScript JSX     |         21 |          0 |          5 |         26 |
+| /home/bp/Source/fortivector-next/src/lib/components/systems-table.tsx                     | TypeScript JSX     |         76 |          0 |          6 |         82 |
+| /home/bp/Source/fortivector-next/src/lib/components/tabs/controls-tab.tsx                 | TypeScript JSX     |        111 |          0 |          9 |        120 |
+| /home/bp/Source/fortivector-next/src/lib/components/tabs/invites-tab.tsx                  | TypeScript JSX     |        157 |          3 |         10 |        170 |
+| /home/bp/Source/fortivector-next/src/lib/components/tabs/roles-tab.tsx                    | TypeScript JSX     |        102 |          0 |          8 |        110 |
+| /home/bp/Source/fortivector-next/src/lib/components/tabs/users-tab.tsx                    | TypeScript JSX     |        127 |          0 |          8 |        135 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/accordion.tsx                      | TypeScript JSX     |         59 |          0 |          8 |         67 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/alert.tsx                          | TypeScript JSX     |         60 |          0 |          7 |         67 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/avatar.tsx                         | TypeScript JSX     |         47 |          0 |          7 |         54 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/badge.tsx                          | TypeScript JSX     |         41 |          0 |          6 |         47 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/breadcrumb.tsx                     | TypeScript JSX     |         99 |          0 |         11 |        110 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/button.tsx                         | TypeScript JSX     |         54 |          0 |          6 |         60 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/card.tsx                           | TypeScript JSX     |         83 |          0 |         10 |         93 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/checkbox.tsx                       | TypeScript JSX     |         28 |          0 |          5 |         33 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/command.tsx                        | TypeScript JSX     |        165 |          0 |         13 |        178 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/dialog.tsx                         | TypeScript JSX     |        122 |          0 |         14 |        136 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/dropdown-menu.tsx                  | TypeScript JSX     |        239 |          0 |         19 |        258 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/form.tsx                           | TypeScript JSX     |        143 |          0 |         25 |        168 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/input.tsx                          | TypeScript JSX     |         18 |          0 |          4 |         22 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/label.tsx                          | TypeScript JSX     |         20 |          0 |          5 |         25 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/navigation-menu.tsx                | TypeScript JSX     |        157 |          0 |         12 |        169 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/popover.tsx                        | TypeScript JSX     |         41 |          0 |          8 |         49 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/radio-group.tsx                    | TypeScript JSX     |         40 |          0 |          6 |         46 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/scroll-area.tsx                    | TypeScript JSX     |         53 |          0 |          6 |         59 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/select.tsx                         | TypeScript JSX     |        172 |          0 |         14 |        186 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/separator.tsx                      | TypeScript JSX     |         24 |          0 |          5 |         29 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/sheet.tsx                          | TypeScript JSX     |        126 |          0 |         14 |        140 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/sidebar.tsx                        | TypeScript JSX     |        660 |         12 |         55 |        727 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/skeleton.tsx                       | TypeScript JSX     |         11 |          0 |          3 |         14 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/sonner.tsx                         | TypeScript JSX     |         21 |          0 |          5 |         26 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/table.tsx                          | TypeScript JSX     |        105 |          0 |         12 |        117 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/tabs.tsx                           | TypeScript JSX     |         60 |          0 |          8 |         68 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/textarea.tsx                       | TypeScript JSX     |         15 |          0 |          4 |         19 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/toggle-group.tsx                   | TypeScript JSX     |         66 |          0 |          8 |         74 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/toggle.tsx                         | TypeScript JSX     |         42 |          0 |          6 |         48 |
+| /home/bp/Source/fortivector-next/src/lib/components/ui/tooltip.tsx                        | TypeScript JSX     |         54 |          0 |          8 |         62 |
+| /home/bp/Source/fortivector-next/src/lib/context/user-context.tsx                         | TypeScript JSX     |         18 |          1 |          7 |         26 |
+| /home/bp/Source/fortivector-next/src/lib/defines.tsx                                      | TypeScript JSX     |         33 |          5 |          2 |         40 |
+| /home/bp/Source/fortivector-next/src/lib/providers/user-provider.tsx                      | TypeScript JSX     |         33 |          1 |          5 |         39 |
+| /home/bp/Source/fortivector-next/src/lib/schema/database.ts                               | TypeScript         |         84 |          2 |         12 |         98 |
+| /home/bp/Source/fortivector-next/src/lib/schema/forms.ts                                  | TypeScript         |         70 |          0 |         17 |         87 |
+| /home/bp/Source/fortivector-next/src/lib/schema/views.ts                                  | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/bp/Source/fortivector-next/src/lib/server/db.ts                                     | TypeScript         |         16 |          0 |          5 |         21 |
+| /home/bp/Source/fortivector-next/src/lib/types.ts                                         | TypeScript         |          9 |          2 |          1 |         12 |
+| /home/bp/Source/fortivector-next/src/lib/utils.ts                                         | TypeScript         |          5 |          0 |          2 |          7 |
+| /home/bp/Source/fortivector-next/src/utils/supabase/client.ts                             | TypeScript         |          6 |          0 |          2 |          8 |
+| /home/bp/Source/fortivector-next/src/utils/supabase/middleware.ts                         | TypeScript         |         47 |          9 |          7 |         63 |
+| /home/bp/Source/fortivector-next/src/utils/supabase/server.ts                             | TypeScript         |         32 |          3 |          4 |         39 |
+| /home/bp/Source/fortivector-next/src/utils/utils.ts                                       | TypeScript         |          9 |          7 |          2 |         18 |
+| /home/bp/Source/fortivector-next/tsconfig.json                                            | JSON with Comments |         41 |          0 |          0 |         41 |
+| Total                                                                                     |                    |     12,537 |         60 |      1,184 |     13,781 |
++-------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

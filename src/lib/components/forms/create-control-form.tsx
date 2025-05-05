@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,6 +17,7 @@ import RouteButton from "@/lib/components/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { Systems } from "@/lib/schema/database";
+import { Separator } from "@/lib/components/ui/separator";
 
 type Props = {
   system: Systems;
@@ -34,9 +34,17 @@ export default function CreateControlForm({ system, action }: Props) {
   const form = useForm<CreateControlFormValues>({
     resolver: zodResolver(createControlFormSchema),
     defaultValues: {
-      name: "",
+      title: "",
       description: "",
       system_id: system.id,
+      tenant_id: system.tenant_id,
+      control_code: "",
+      status: "draft",
+      revision: "",
+      enforcement_method: "manual",
+      enforcement_location: "",
+      playbook_id: "",
+      evidence_requirements: []
     }
   });
 
@@ -45,9 +53,17 @@ export default function CreateControlForm({ system, action }: Props) {
       <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
         setPending(true);
         const formData = new FormData();
-        formData.append('name', data.name);
+        formData.append('title', data.title);
         formData.append('description', data.description);
         formData.append('system_id', data.system_id);
+        formData.append('tenant_id', data.tenant_id);
+        formData.append('control_code', data.control_code);
+        formData.append('status', data.status);
+        formData.append('revision', data.revision);
+        formData.append('enforcement_method', data.enforcement_method);
+        formData.append('enforcement_location', data.enforcement_location || "");
+        formData.append('playbook_id', data.playbook_id || "");
+        formData.append('evidence_requirements', JSON.stringify(data.evidence_requirements));
 
         startTransition(() => {
           formAction(formData);
@@ -56,7 +72,7 @@ export default function CreateControlForm({ system, action }: Props) {
 
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -80,6 +96,16 @@ export default function CreateControlForm({ system, action }: Props) {
             </FormItem>
           )}
         />
+        <Separator />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <div className="flex flex-col gap-2 w-full h-full">
+            </div>
+          )}
+        />
+
         <div className="flex justify-end gap-3">
           <RouteButton variant="outline" route={`/systems/${system.id}?tab=controls`}>
             Cancel

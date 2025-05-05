@@ -1,6 +1,6 @@
 // Auto-generated interfaces from Supabase Schema
 
-import { AccessLevel } from "../types";
+import { AccessLevel, ControlStatus, EnforcementMethod } from "@/lib/types";
 
 export interface Roles {
   id: string;
@@ -49,6 +49,22 @@ export interface UserInvites {
   expires_at: Date;
   invite_token: string;
   created_at?: Date;
+}
+
+export interface Control {
+  id: string;
+  control_code: string;
+  title: string;
+  status: ControlStatus;
+  revision: string;
+  description: string;
+  system_id: string;
+  tenant_id: string;
+  enforcement_method: EnforcementMethod;
+  enforced_location?: string;
+  playbook_id?: string;
+  evidence_requirements?: any;
+  ai_parse_rules?: any;
 }
 
 // NST

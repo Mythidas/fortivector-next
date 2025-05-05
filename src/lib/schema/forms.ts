@@ -64,10 +64,24 @@ export const createSystemFormSchema = z.object({
 
 export type CreateSystemFormValues = z.infer<typeof createSystemFormSchema>;
 
+export const controlEvidenceSchema = z.object({
+  type: z.string(),
+  description: z.string(),
+  location_hint: z.string().optional()
+})
+
 export const createControlFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  title: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  system_id: z.string()
+  system_id: z.string(),
+  tenant_id: z.string(),
+  control_code: z.string().min(1, { message: "Control Code is required" }),
+  status: z.enum(["draft", "approved"] as const),
+  revision: z.string().min(1, { message: "Revision is required" }),
+  enforcement_method: z.enum(["manual", "scripted", "auto-scanned", "vendor-managed"] as const),
+  enforcement_location: z.string().optional(),
+  playbook_id: z.string().optional(),
+  evidence_requirements: z.array(controlEvidenceSchema)
 });
 
 export type CreateControlFormValues = z.infer<typeof createControlFormSchema>;
