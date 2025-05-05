@@ -18,7 +18,7 @@ import { usePathname } from 'next/navigation';
 const items = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/",
     icon: ChartArea,
   },
   {
@@ -50,7 +50,7 @@ export default function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname.includes(item.url)}
+                    isActive={item.url === '/' ? pathname === '/' : pathname.includes(item.url)}
                   >
                     <a href={item.url}>
                       <item.icon />

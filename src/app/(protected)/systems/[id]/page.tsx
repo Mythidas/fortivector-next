@@ -1,4 +1,4 @@
-import { getSystem } from "@/lib/client/db";
+import { getControls, getSystem } from "@/lib/client/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
@@ -17,6 +17,7 @@ export default async function UsersPage(props: Props) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
   const system = await getSystem(supabase, params.id);
+  const controls = await getControls(supabase);
   if (!system) {
     return (
       <Card>
@@ -48,7 +49,7 @@ export default async function UsersPage(props: Props) {
           <TabsTrigger value="controls">Controls</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        <ControlsTab system={system} controls={[]} />
+        <ControlsTab system={system} controls={controls} />
       </Tabs>
     </div>
   );

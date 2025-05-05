@@ -9,7 +9,6 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { createRoleFormSchema, CreateRoleFormValues } from "@/lib/schema/forms";
@@ -27,13 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/lib/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/lib/components/ui/accordion";
-import { InfoIcon, ShieldIcon, LayoutDashboardIcon, UsersIcon, HelpCircle } from "lucide-react";
+import { InfoIcon, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip";
 import { accessLevels, permissionCategories } from "@/lib/defines";
 

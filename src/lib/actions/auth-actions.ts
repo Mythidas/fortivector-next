@@ -74,7 +74,7 @@ export const signInAction = async (_prevState: any, params: FormData) => {
     last_sign_in: new Date().toISOString()
   }).eq("id", user?.id);
 
-  return redirect("/dashboard");
+  return redirect("/");
 };
 
 export const signOutAction = async () => {

@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
 import RouteButton from "@/lib/components/protected/route-button";
-import { Roles, Systems, Users } from "@/lib/schema/database";
+import { Controls, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteUser } from "@/lib/server/db";
@@ -32,16 +32,16 @@ import DropDownItem from "@/lib/components/protected/drop-down-item";
 
 type Props = {
   system: Systems;
-  controls: any[];
+  controls: Controls[];
 }
 
 export default function ControlsTab({ system, controls }: Props) {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
-  function filterControls(control: any) {
+  function filterControls(control: Controls) {
     const lowerSearch = search.toLowerCase();
-    const lowerName = control.name.toLowerCase();
+    const lowerName = control.title.toLowerCase();
     const lowerDescription = control.description.toLowerCase();
     return lowerName.includes(lowerSearch) || lowerDescription.includes(lowerSearch);
   }
@@ -58,6 +58,10 @@ export default function ControlsTab({ system, controls }: Props) {
       router.push(`/systems/${system.id}?tab=controls`);
     }
   };
+
+  function pascalCase(str: string) {
+    return str[0].toUpperCase() + str.substring(1);
+  }
 
   return (
     <TabsContent value="controls">
@@ -82,16 +86,24 @@ export default function ControlsTab({ system, controls }: Props) {
             <TableCaption>Total Controls: {controls.length}</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
+                <TableHead>Code</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Revision</TableHead>
+                <TableHead>Enforcement Method</TableHead>
+                <TableHead>Evidence Required</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {controls.filter(filterControls).map((control) => (
                 <TableRow key={control.id}>
-                  <TableCell>{control.name}</TableCell>
-                  <TableCell>{control.description}</TableCell>
+                  <TableCell>{control.control_code}</TableCell>
+                  <TableCell>{control.title}</TableCell>
+                  <TableCell>{pascalCase(control.status)}</TableCell>
+                  <TableCell>{control.revision}</TableCell>
+                  <TableCell>{pascalCase(control.enforcement_method)}</TableCell>
+                  <TableCell>{control.evidence_requirements?.length || 0}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

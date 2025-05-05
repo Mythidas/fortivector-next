@@ -27,7 +27,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const route = protectedRoutes.find((route) => pathname!.includes(route.route));
         if (route) {
           if (!hasAccess(context, route.module, "read")) {
-            redirect("/dashboard");
+            redirect("/");
           }
         }
       }

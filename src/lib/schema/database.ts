@@ -51,7 +51,7 @@ export interface UserInvites {
   created_at?: Date;
 }
 
-export interface Control {
+export interface Controls {
   id: string;
   control_code: string;
   title: string;
@@ -63,7 +63,11 @@ export interface Control {
   enforcement_method: EnforcementMethod;
   enforced_location?: string;
   playbook_id?: string;
-  evidence_requirements?: any;
+  evidence_requirements?: {
+    type: "screenshot" | "log";
+    description: string;
+    location_hint?: string;
+  }[];
   ai_parse_rules?: any;
 }
 

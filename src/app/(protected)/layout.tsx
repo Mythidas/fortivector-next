@@ -4,16 +4,8 @@ import AppNavbar from "@/lib/components/app-navbar";
 import AppSidebar from "@/lib/components/app-sidebar";
 import { SidebarProvider } from "@/lib/components/ui/sidebar";
 import { UserProvider } from "@/lib/providers/user-provider";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    redirect("/auth/sign-in");
-  }
-
   return (
     <SidebarProvider>
       <div className="flex size-full">

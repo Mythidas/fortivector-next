@@ -21,19 +21,30 @@ export default async function AuthButton() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <Link href="/dashboard">
+            <Link href="/">
               <DropdownMenuItem>
                 Dashboard
               </DropdownMenuItem>
             </Link>
-            <form action={signOutAction}>
-              <button type="submit" className="w-full">
-                <DropdownMenuItem>
-                  Sign out
-                </DropdownMenuItem>
-              </button>
-            </form>
+            <Link href="/systems">
+              <DropdownMenuItem>
+                Systems
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/users">
+              <DropdownMenuItem>
+                Users
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <form action={signOutAction}>
+            <button type="submit" className="w-full">
+              <DropdownMenuItem>
+                Sign out
+              </DropdownMenuItem>
+            </button>
+          </form>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

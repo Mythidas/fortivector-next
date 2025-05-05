@@ -1,6 +1,6 @@
 'use server'
 
-import type { Roles, Systems, Tenants, UserInvites, Users } from "@/lib/schema/database";
+import type { Controls, Roles, Systems, Tenants, UserInvites, Users } from "@/lib/schema/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getTenant(supabase: SupabaseClient) {
@@ -142,4 +142,17 @@ export async function getSystem(supabase: SupabaseClient, id: string) {
   }
 
   return systems as Systems;
+}
+
+export async function getControls(supabase: SupabaseClient) {
+  const { data: controls, error } = await supabase
+    .from("controls")
+    .select("*");
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return controls as Controls[];
 }
