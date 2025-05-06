@@ -16,11 +16,11 @@ import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, Plus, Trash2, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
-import { CreateControlFormValues } from "@/lib/schema/forms";
+import { ControlFormValues } from "@/lib/schema/forms";
 import { Input } from "@/lib/components/ui/input";
 
 type Props = {
-  form: UseFormReturn<CreateControlFormValues>
+  form: UseFormReturn<ControlFormValues>
 }
 
 export default function ControlEvidenceTab({ form }: Props) {

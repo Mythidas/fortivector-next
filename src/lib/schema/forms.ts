@@ -71,7 +71,8 @@ export const controlEvidenceSchema = z.object({
   location_hint: z.string().optional()
 })
 
-export const createControlFormSchema = z.object({
+export const controlFormSchema = z.object({
+  id: z.string().optional(),
   title: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   system_id: z.string(),
@@ -86,4 +87,4 @@ export const createControlFormSchema = z.object({
   nst_subcategories: z.array(z.string()).min(1, { message: "NIST subcategory is required" })
 });
 
-export type CreateControlFormValues = z.infer<typeof createControlFormSchema>;
+export type ControlFormValues = z.infer<typeof controlFormSchema>;

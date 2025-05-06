@@ -185,6 +185,20 @@ export async function getControlsToNSTSubcategories(supabase: SupabaseClient) {
   return maps as ControlsToNSTSubcategories[];
 }
 
+export async function getControlToNSTSubcategories(supabase: SupabaseClient, id: string) {
+  const { data: maps, error } = await supabase
+    .from("controls_to_nst_subcategories")
+    .select("*")
+    .eq("control_id", id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return maps as ControlsToNSTSubcategories[];
+}
+
 // NIST
 export async function getNISTFunctions(supabase: SupabaseClient) {
   const { data: functions, error } = await supabase

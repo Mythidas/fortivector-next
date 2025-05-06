@@ -61,7 +61,7 @@ export interface Controls {
   system_id: string;
   tenant_id: string;
   enforcement_method: EnforcementMethod;
-  enforced_location?: string;
+  enforcement_location?: string;
   playbook_id?: string;
   evidence_requirements?: {
     type: "screenshot" | "log";
@@ -74,6 +74,7 @@ export interface Controls {
 export interface ControlsToNSTSubcategories {
   id: string;
   control_id: string;
+  system_id: string;
   subcategory_id: string;
 }
 

@@ -15,7 +15,7 @@ import { controlFormSchema, ControlFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { NSTFunctions, NSTSubcategories, Systems } from "@/lib/schema/database";
+import { Controls, ControlsToNSTSubcategories, NSTFunctions, NSTSubcategories, Systems } from "@/lib/schema/database";
 import { Separator } from "@/lib/components/ui/separator";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { Textarea } from "@/lib/components/ui/textarea";
@@ -26,15 +26,16 @@ import ControlNistTab from "../tabs/control-nist-tab";
 import FormAlert from "../ui/form-alert";
 
 type Props = {
-  system: Systems;
+  control: Controls;
   nst_subcategories: NSTSubcategories[];
+  mapped_subcategories: ControlsToNSTSubcategories[];
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlFormValues>>;
 };
 
-export default function CreateControlForm({ system, nst_subcategories, action }: Props) {
+export default function EditControlForm({ control, nst_subcategories, mapped_subcategories, action }: Props) {
   const [state, formAction] = useActionState<FormState<ControlFormValues>, FormData>(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -46,22 +47,39 @@ export default function CreateControlForm({ system, nst_subcategories, action }:
     }
   }, [state]);
 
+  const getEvidenceRequirements = () => {
+    if (state.values.evidence_requirements) {
+      return JSON.parse(String(state.values.evidence_requirements));
+    }
+
+    return control.evidence_requirements;
+  }
+
+  const getNSTSubcategories = () => {
+    if (state.values.nst_subcategories) {
+      return JSON.parse(String(state.values.nst_subcategories));
+    }
+
+    return mapped_subcategories.map((subcat) => { return subcat.subcategory_id; });
+  }
+
 
   const form = useForm<ControlFormValues>({
     resolver: zodResolver(controlFormSchema),
     defaultValues: {
-      title: state.values.title || "",
-      description: state.values.description || "",
-      system_id: system.id,
-      tenant_id: system.tenant_id,
-      control_code: state.values.control_code || "",
-      status: state.values.status || "draft",
-      revision: state.values.revision || "",
-      enforcement_method: state.values.enforcement_method || "manual",
-      enforcement_location: state.values.enforcement_location || "",
+      id: control.id,
+      title: state.values.title || control.title,
+      description: state.values.description || control.description,
+      system_id: control.system_id,
+      tenant_id: control.tenant_id,
+      control_code: state.values.control_code || control.control_code,
+      status: state.values.status || control.status,
+      revision: state.values.revision || control.revision,
+      enforcement_method: state.values.enforcement_method || control.enforcement_method,
+      enforcement_location: state.values.enforcement_location || control.enforcement_location,
       playbook_id: undefined,
-      evidence_requirements: JSON.parse(String(state.values.evidence_requirements || "[]")) || [],
-      nst_subcategories: JSON.parse(String(state.values.nst_subcategories || "[]")) || [],
+      evidence_requirements: getEvidenceRequirements(),
+      nst_subcategories: getNSTSubcategories(),
     }
   });
 
@@ -70,10 +88,11 @@ export default function CreateControlForm({ system, nst_subcategories, action }:
       <form className="flex flex-col size-full gap-4" onSubmit={form.handleSubmit((data) => {
         setPending(true);
         const formData = new FormData();
+        formData.append('id', control.id);
         formData.append('title', data.title);
         formData.append('description', data.description);
-        formData.append('system_id', data.system_id);
-        formData.append('tenant_id', data.tenant_id);
+        formData.append('system_id', control.system_id);
+        formData.append('tenant_id', control.tenant_id);
         formData.append('control_code', data.control_code);
         formData.append('status', data.status);
         formData.append('revision', data.revision);
@@ -207,11 +226,8 @@ export default function CreateControlForm({ system, nst_subcategories, action }:
         </div>
         <Separator />
         <div className="flex justify-end gap-3">
-          <RouteButton variant="outline" route={`/systems/${system.id}?tab=controls`}>
-            Cancel
-          </RouteButton>
-          <SubmitButton variant="default" pendingText="Creating Control..." pending={pending}>
-            Create Control
+          <SubmitButton variant="default" pendingText="Updating Control..." pending={pending}>
+            Update Control
           </SubmitButton>
         </div>
       </form>

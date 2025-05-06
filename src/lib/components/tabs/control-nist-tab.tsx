@@ -17,12 +17,12 @@ import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
 import { TabsContent } from "@/lib/components/ui/tabs";
-import { CreateControlFormValues } from "@/lib/schema/forms";
+import { ControlFormValues } from "@/lib/schema/forms";
 import { useState } from "react";
 import { NSTSubcategories } from "@/lib/schema/database";
 
 type Props = {
-  form: UseFormReturn<CreateControlFormValues>;
+  form: UseFormReturn<ControlFormValues>;
   nst_subcategories: NSTSubcategories[];
 };
 
