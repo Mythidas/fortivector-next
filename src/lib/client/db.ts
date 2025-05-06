@@ -157,6 +157,21 @@ export async function getControls(supabase: SupabaseClient) {
   return controls as Controls[];
 }
 
+export async function getControl(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("controls")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return data as Controls;
+}
+
 export async function getControlsToNSTSubcategories(supabase: SupabaseClient) {
   const { data: maps, error } = await supabase
     .from("controls_to_nst_subcategories")

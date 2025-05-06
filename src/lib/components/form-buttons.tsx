@@ -1,4 +1,4 @@
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "./submit-button";
 
 export default function FormButtons({ cancelRoute, submitText, pendingText, formAction }: {

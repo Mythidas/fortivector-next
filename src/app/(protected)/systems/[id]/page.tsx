@@ -12,7 +12,7 @@ type Props = {
   searchParams: SearchParams;
 }
 
-export default async function UsersPage(props: Props) {
+export default async function SystemPage(props: Props) {
   const params = await props.params;
   const searchParams = await props.searchParams;
   const supabase = await createClient();

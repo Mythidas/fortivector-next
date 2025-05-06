@@ -23,7 +23,7 @@ import {
 } from "@/lib/components/ui/alert-dialog";
 import { Input } from "@/lib/components/ui/input";
 import { createControlFormSchema, CreateControlFormValues } from "@/lib/schema/forms";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { NSTFunctions, NSTSubcategories, Systems } from "@/lib/schema/database";

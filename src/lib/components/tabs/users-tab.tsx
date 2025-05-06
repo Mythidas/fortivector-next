@@ -23,12 +23,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteUser } from "@/lib/server/db";
-import DropDownItem from "@/lib/components/protected/drop-down-item";
+import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
 
 export default function UsersTab({ users, roles, currentUser }: { users: Users[]; roles: Roles[]; currentUser: string }) {
   const [search, setSearch] = useState("");

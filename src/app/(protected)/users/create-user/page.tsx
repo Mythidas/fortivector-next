@@ -9,7 +9,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { FormMessage, Message } from "@/lib/components/form-message";
 import { createInviteAction } from "@/lib/actions/user-actions";
 import CreateUserForm from "@/lib/components/forms/create-user-form";

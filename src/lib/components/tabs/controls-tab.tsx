@@ -16,19 +16,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/components/ui/table";
-import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar";
 import { Joystick, MoreHorizontal, UserPlus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { Controls, ControlsToNSTSubcategories, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteControl } from "@/lib/server/db";
-import DropDownItem from "@/lib/components/protected/drop-down-item";
+import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
 
 type Props = {
   system: Systems;
@@ -115,8 +114,8 @@ export default function ControlsTab({ system, controls, controls_to_subcategorie
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropDownItem onClick={() => router.push(`/systems/control/${control.id}`)} module="controls" level="edit">
-                          Edit
+                        <DropDownItem route={`/systems/control/${control.id}`} module="controls" level="read">
+                          View
                         </DropDownItem>
                         <DropDownItem className="text-red-600" onClick={() => handleDelete(control.id)} module="controls" level="edit">
                           Delete

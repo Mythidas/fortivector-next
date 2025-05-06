@@ -14,7 +14,7 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { createSystemFormSchema, CreateSystemFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
 

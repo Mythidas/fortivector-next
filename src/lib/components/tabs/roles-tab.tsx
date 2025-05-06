@@ -16,13 +16,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import RouteButton from "@/lib/components/protected/route-button";
+import RouteButton from "@/lib/components/ui/protected/route-button";
 import { Badge } from "@/lib/components/ui/badge";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import DropDownItem from "@/lib/components/protected/drop-down-item";
+import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
 
 export default function RolesTab({ users, roles }: { users: Users[], roles: Roles[] }) {
   const [search, setSearch] = useState("");
