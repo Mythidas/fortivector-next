@@ -35,7 +35,7 @@ export default async function SystemControlPage(props: Props) {
         <BreadcrumbList>
           <BreadcrumbLink href="/systems">Systems</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/systems/${system.name}?tab=controls`}>{system.name}</BreadcrumbLink>
+          <BreadcrumbLink href={`/systems/${system.id}?tab=controls`}>{system.name}</BreadcrumbLink>
           <BreadcrumbSeparator />
           <BreadcrumbPage>{control.control_code}</BreadcrumbPage>
         </BreadcrumbList>

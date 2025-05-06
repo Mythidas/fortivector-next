@@ -12,11 +12,11 @@ import {
 import { Badge } from "@/lib/components/ui/badge";
 import { Checkbox } from "@/lib/components/ui/checkbox";
 import { Input } from "@/lib/components/ui/input";
-import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "../ui/button";
+import { ScrollArea } from "@/lib/components/ui/scroll-area";
+import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, X } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
-import { TabsContent } from "../ui/tabs";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
+import { TabsContent } from "@/lib/components/ui/tabs";
 import { CreateControlFormValues } from "@/lib/schema/forms";
 import { useState } from "react";
 import { NSTSubcategories } from "@/lib/schema/database";

@@ -10,17 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/lib/components/ui/form";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/lib/components/ui/alert-dialog";
 import { Input } from "@/lib/components/ui/input";
 import { createControlFormSchema, CreateControlFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ui/protected/route-button";
@@ -28,12 +17,13 @@ import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { NSTFunctions, NSTSubcategories, Systems } from "@/lib/schema/database";
 import { Separator } from "@/lib/components/ui/separator";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
-import { Textarea } from "../ui/textarea";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
+import { Textarea } from "@/lib/components/ui/textarea";
 import { FormState } from "@/lib/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import ControlEvidenceTab from "../tabs/control-evidence-tab";
 import ControlNistTab from "../tabs/control-nist-tab";
+import FormAlert from "../ui/form-alert";
 
 type Props = {
   system: Systems;
@@ -45,7 +35,7 @@ type Props = {
 };
 
 export default function CreateControlForm({ system, nst_subcategories, action }: Props) {
-  const [state, formAction] = useActionState<FormState<CreateControlFormValues>, FormData>(action, { success: true, errors: {}, values: {} });
+  const [state, formAction] = useActionState<FormState<CreateControlFormValues>, FormData>(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
   const [alert, setAlert] = useState(false);
 
@@ -98,21 +88,7 @@ export default function CreateControlForm({ system, nst_subcategories, action }:
         })
       })}>
 
-        <AlertDialog open={alert}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Errors</AlertDialogTitle>
-              <AlertDialogDescription>
-                {Object.entries(state.errors).map(([field, error]) => (
-                  <div key={field}>{`${field}: ${error}`}</div>
-                ))}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogAction onClick={() => setAlert(false)}>Acknowledge</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <FormAlert errors={state.errors} />
         <div className="flex gap-4 size-full">
           <div className="flex flex-col gap-4 w-1/3 h-fit">
             <FormField

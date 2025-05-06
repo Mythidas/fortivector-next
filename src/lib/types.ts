@@ -1,7 +1,7 @@
 // FORMS
 export type FormState<Schema> = {
   success: boolean;
-  errors: Record<string, string[]>;
+  errors?: Record<string, string[]>;
   values: Partial<Schema>;
 }
 

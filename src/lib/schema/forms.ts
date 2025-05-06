@@ -56,13 +56,14 @@ export const editRoleFormSchema = z.object({
 
 export type EditRoleFormValues = z.infer<typeof editRoleFormSchema>;
 
-export const createSystemFormSchema = z.object({
+export const systemFormSchema = z.object({
+  id: z.string().optional(),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  tenant_id: z.string()
+  tenant_id: z.string(),
 });
 
-export type CreateSystemFormValues = z.infer<typeof createSystemFormSchema>;
+export type SystemFormValues = z.infer<typeof systemFormSchema>;
 
 export const controlEvidenceSchema = z.object({
   type: z.string(),

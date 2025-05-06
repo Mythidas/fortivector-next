@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/ta
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import ControlsTab from "@/lib/components/tabs/controls-tab";
+import SystemSettingsTab from "@/lib/components/tabs/system-settings-tab";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -51,6 +52,7 @@ export default async function SystemPage(props: Props) {
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <ControlsTab system={system} controls={controls} controls_to_subcategories={controls_to_subcategories} />
+        <SystemSettingsTab system={system} />
       </Tabs>
     </div>
   );

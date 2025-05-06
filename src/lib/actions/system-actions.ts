@@ -3,12 +3,12 @@
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { createControlFormSchema, CreateControlFormValues, createRoleFormSchema, createSystemFormSchema, editRoleFormSchema, editUserFormSchema, userFormSchema } from "@/lib/schema/forms";
+import { createControlFormSchema, CreateControlFormValues, systemFormSchema } from "@/lib/schema/forms";
 import { FormState } from "../types";
 
 export const createSystemAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
-  const validation = createSystemFormSchema.safeParse({
+  const validation = systemFormSchema.safeParse({
     name: params.get("name"),
     description: params.get("description"),
     tenant_id: params.get("tenant_id")
@@ -29,6 +29,31 @@ export const createSystemAction = async (_prevState: any, params: FormData) => {
   }
 
   return redirect(`/systems/${data.id}`);
+};
+
+export const editSystemAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = systemFormSchema.safeParse({
+    id: params.get("id"),
+    name: params.get("name"),
+    description: params.get("description"),
+    tenant_id: params.get("tenant_id")
+  });
+
+  if (validation.error) {
+    return encodedRedirect("error", `/systems/${params.get("id")}?tab=settings`, validation.error.message);
+  }
+
+  const { data, error } = await supabase.from("systems").update({
+    name: validation.data.name,
+    description: validation.data.description,
+  }).eq("id", validation.data.id);
+
+  if (error) {
+    return encodedRedirect("error", `/systems/${validation.data.id}?tab=settings`, error.message);
+  }
+
+  return redirect(`/systems/${validation.data.id}?tab=settings`);
 };
 
 export const createControlAction = async (_prevState: any, params: FormData): Promise<FormState<CreateControlFormValues>> => {

@@ -1,26 +1,17 @@
 'use client';
 
 import { Input } from "@/lib/components/ui/input";
-import { Button } from "@/lib/components/ui/button";
 import {
-  Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/lib/components/ui/card";
-import { FolderCog, MoreHorizontal, ShieldCheck, UserPlus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/lib/components/ui/dropdown-menu";
+import { FolderCog } from "lucide-react";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { useState } from "react";
 import { Systems } from "@/lib/schema/database";
 import { useRouter } from "next/navigation";
-import DropDownItem from "./ui/protected/drop-down-item";
+import ProtectedCard from "@/lib/components/ui/protected/protected-card";
 
 interface Props {
   systems: Systems[]
@@ -56,26 +47,14 @@ export default function SystemsTable({ systems }: Props) {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {systems.filter(filter).map((system) => (
-          <Card key={system.id} className="justify-between">
+          <ProtectedCard key={system.id} route={`/systems/${system.id}`} module="systems" level="read">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl">{system.name}</CardTitle>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropDownItem disabled={!system.tenant_id} route={`/systems/${system.id}`} module="systems" level="read">
-                      View System
-                    </DropDownItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </div>
               <CardDescription>{system.description}</CardDescription>
             </CardHeader>
-          </Card>
+          </ProtectedCard>
         ))}
       </div>
     </div>

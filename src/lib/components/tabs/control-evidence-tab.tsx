@@ -10,14 +10,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/lib/components/ui/form";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
-import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "../ui/button";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
+import { ScrollArea } from "@/lib/components/ui/scroll-area";
+import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, Plus, Trash2, X } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { CreateControlFormValues } from "@/lib/schema/forms";
-import { Input } from "../ui/input";
+import { Input } from "@/lib/components/ui/input";
 
 type Props = {
   form: UseFormReturn<CreateControlFormValues>
