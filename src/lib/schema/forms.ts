@@ -81,7 +81,8 @@ export const createControlFormSchema = z.object({
   enforcement_method: z.enum(["manual", "scripted", "auto-scanned", "vendor-managed"] as const),
   enforcement_location: z.string().optional(),
   playbook_id: z.string().optional(),
-  evidence_requirements: z.array(controlEvidenceSchema)
+  evidence_requirements: z.array(controlEvidenceSchema).min(1, { message: "Evidence is required" }),
+  nst_subcategories: z.array(z.string()).min(1, { message: "NIST subcategory is required" })
 });
 
 export type CreateControlFormValues = z.infer<typeof createControlFormSchema>;

@@ -71,6 +71,12 @@ export interface Controls {
   ai_parse_rules?: any;
 }
 
+export interface ControlsToNSTSubcategories {
+  id: string;
+  control_id: string;
+  subcategory_id: string;
+}
+
 // NST
 
 export interface NSTCategories {

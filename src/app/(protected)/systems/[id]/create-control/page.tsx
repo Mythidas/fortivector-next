@@ -16,10 +16,9 @@ import {
 import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
 import { FormMessage, Message } from "@/lib/components/form-message";
-import { createInviteAction } from "@/lib/actions/user-actions";
-import CreateUserForm from "@/lib/components/forms/create-user-form";
 import { createControlAction } from "@/lib/actions/system-actions";
 import CreateControlForm from "@/lib/components/forms/create-control-form";
+import { Separator } from "@/lib/components/ui/separator";
 
 type Params = Promise<{ id: string }>;
 type SearchParams = Promise<Message>;
@@ -33,6 +32,7 @@ export default async function CreateControl(props: Props) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
   const system = await db.getSystem(supabase, params.id);
+  const nst_subcategories = await db.getNISTSubcategories(supabase);
   if (!system) {
     return (
       <Card>
@@ -44,7 +44,7 @@ export default async function CreateControl(props: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col size-full space-y-6">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -61,7 +61,7 @@ export default async function CreateControl(props: Props) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <Card>
+      <Card className="size-full">
         <CardHeader>
           <CardTitle>Control Information</CardTitle>
           <CardDescription>
@@ -69,8 +69,9 @@ export default async function CreateControl(props: Props) {
           </CardDescription>
           <FormMessage message={searchParams} />
         </CardHeader>
-        <CardContent>
-          <CreateControlForm system={system} action={createControlAction} />
+        <Separator />
+        <CardContent className="size-full">
+          <CreateControlForm system={system} nst_subcategories={nst_subcategories} action={createControlAction} />
         </CardContent>
       </Card>
     </div>

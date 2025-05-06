@@ -24,18 +24,19 @@ import {
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
 import RouteButton from "@/lib/components/protected/route-button";
-import { Controls, Systems } from "@/lib/schema/database";
+import { Controls, ControlsToNSTSubcategories, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteUser } from "@/lib/server/db";
+import { deleteControl } from "@/lib/server/db";
 import DropDownItem from "@/lib/components/protected/drop-down-item";
 
 type Props = {
   system: Systems;
   controls: Controls[];
+  controls_to_subcategories: ControlsToNSTSubcategories[]
 }
 
-export default function ControlsTab({ system, controls }: Props) {
+export default function ControlsTab({ system, controls, controls_to_subcategories }: Props) {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -50,7 +51,7 @@ export default function ControlsTab({ system, controls }: Props) {
     const confirm = window.confirm("Are you sure you want to delete this control?");
     if (!confirm) return;
 
-    const result = await deleteUser(id); // Change to delete control
+    const result = await deleteControl(id); // Change to delete control
 
     if (!result) {
       alert("Failed to delete control.");
@@ -92,6 +93,7 @@ export default function ControlsTab({ system, controls }: Props) {
                 <TableHead>Revision</TableHead>
                 <TableHead>Enforcement Method</TableHead>
                 <TableHead>Evidence Required</TableHead>
+                <TableHead>NIST Subcategories</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -104,6 +106,7 @@ export default function ControlsTab({ system, controls }: Props) {
                   <TableCell>{control.revision}</TableCell>
                   <TableCell>{pascalCase(control.enforcement_method)}</TableCell>
                   <TableCell>{control.evidence_requirements?.length || 0}</TableCell>
+                  <TableCell>{controls_to_subcategories.filter((cat) => cat.control_id === control.id).length}</TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

@@ -44,7 +44,8 @@ export const createControlAction = async (_prevState: any, params: FormData): Pr
     enforcement_method: params.get("enforcement_method"),
     enforcement_location: params.get("enforcement_location"),
     playbook_id: params.get("playbook_id") || undefined,
-    evidence_requirements: JSON.parse(params.get("evidence_requirements")?.toString() || "")
+    evidence_requirements: JSON.parse(params.get("evidence_requirements")?.toString() || ""),
+    nst_subcategories: JSON.parse(params.get("nst_subcategories")?.toString() || "")
   });
 
   if (validation.error) {
@@ -55,7 +56,6 @@ export const createControlAction = async (_prevState: any, params: FormData): Pr
     };
   }
 
-  console.log(validation.data.tenant_id)
   const { data, error } = await supabase.from("controls").insert({
     title: validation.data.title,
     description: validation.data.description,
@@ -75,6 +75,17 @@ export const createControlAction = async (_prevState: any, params: FormData): Pr
       success: false,
       errors: { "db": [error.message] },
       values: Object.fromEntries(params.entries()), // preserve filled data
+    }
+  }
+
+  for await (const subcategory_id of validation.data.nst_subcategories) {
+    const { error } = await supabase.from("controls_to_nst_subcategories").insert({
+      control_id: data.id,
+      subcategory_id
+    })
+
+    if (error) {
+      console.log(error);
     }
   }
 

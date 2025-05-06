@@ -19,3 +19,18 @@ export async function deleteUser(userId: string) {
 
   return true;
 };
+
+export async function deleteControl(id: string) {
+  const supabase = await createClient();
+  const { data: controls, error } = await supabase
+    .from("controls")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.log(error);
+    return false;
+  }
+
+  return true;
+}
