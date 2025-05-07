@@ -2,6 +2,7 @@
 
 import type { Clients, Controls, ControlsToNSTSubcategories, NSTFunctions, NSTSubcategories, Roles, Sites, Systems, Tenants, UserInvites, Users } from "@/lib/schema/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { SiteSystemView } from "../schema/views";
 
 export async function getTenant(supabase: SupabaseClient) {
   const { data: tenant, error } = await supabase
@@ -254,6 +255,35 @@ export async function getSite(supabase: SupabaseClient, id: string) {
   }
 
   return data as Sites;
+}
+
+export async function getSiteSytemViews(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("site_system_view")
+    .select("*")
+    .eq("site_id", id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return data as SiteSystemView[];
+}
+
+export async function getSiteSytemView(supabase: SupabaseClient, link_id: string) {
+  const { data, error } = await supabase
+    .from("site_system_view")
+    .select("*")
+    .eq("link_id", link_id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return data as SiteSystemView;
 }
 
 // NIST

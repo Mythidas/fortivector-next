@@ -1,9 +1,8 @@
 import { TabsContent } from "@/lib/components/ui/tabs";
 import { Controls } from "@/lib/schema/database";
-import EditControlForm from "../forms/edit-control-form";
 import { editControlAction } from "@/lib/actions/system-actions";
 import { createClient } from "@/utils/supabase/server";
-import { getControlsToNSTSubcategories, getControlToNSTSubcategories, getNISTSubcategories } from "@/lib/client/db";
+import ControlForm from "../forms/control-form";
 
 type Props = {
   control: Controls;
@@ -11,16 +10,16 @@ type Props = {
 
 export default async function ControlSettingsTab({ control }: Props) {
   const supabase = await createClient();
-  const nst_subcategories = await getNISTSubcategories(supabase);
-  const control_to_subcategories = await getControlToNSTSubcategories(supabase, control.id);
 
   return (
     <TabsContent value="settings" className="pt-4">
-      <EditControlForm
+      <ControlForm
         control={control}
-        nst_subcategories={nst_subcategories}
-        mapped_subcategories={control_to_subcategories}
-        action={editControlAction} />
+        cancel_route=""
+        pending_text="Updating Control..."
+        submit_text="Update Control"
+        action={editControlAction}
+      />
     </TabsContent>
   );
 }

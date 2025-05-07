@@ -15,53 +15,34 @@ import { controlFormSchema, ControlFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { Controls, ControlsToNSTSubcategories, NSTFunctions, NSTSubcategories, Systems } from "@/lib/schema/database";
+import { Controls } from "@/lib/schema/database";
 import { Separator } from "@/lib/components/ui/separator";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { Textarea } from "@/lib/components/ui/textarea";
 import { FormState } from "@/lib/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
-import ControlEvidenceTab from "../tabs/control-evidence-tab";
-import ControlNistTab from "../tabs/control-nist-tab";
 import FormAlert from "../ui/form-alert";
 
 type Props = {
   control: Controls;
-  nst_subcategories: NSTSubcategories[];
-  mapped_subcategories: ControlsToNSTSubcategories[];
+  cancel_route: string;
+  submit_text: string;
+  pending_text: string;
+
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlFormValues>>;
 };
 
-export default function EditControlForm({ control, nst_subcategories, mapped_subcategories, action }: Props) {
+export default function ControlForm({ control, cancel_route, submit_text, pending_text, action }: Props) {
   const [state, formAction] = useActionState<FormState<ControlFormValues>, FormData>(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
-  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     if (pending) {
       setPending(false);
-      setAlert(true);
     }
   }, [state]);
-
-  const getEvidenceRequirements = () => {
-    if (state.values.evidence_requirements) {
-      return JSON.parse(String(state.values.evidence_requirements));
-    }
-
-    return control.evidence_requirements;
-  }
-
-  const getNSTSubcategories = () => {
-    if (state.values.nst_subcategories) {
-      return JSON.parse(String(state.values.nst_subcategories));
-    }
-
-    return mapped_subcategories.map((subcat) => { return subcat.subcategory_id; });
-  }
 
 
   const form = useForm<ControlFormValues>({
@@ -70,16 +51,13 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
       id: control.id,
       title: state.values.title || control.title,
       description: state.values.description || control.description,
-      system_id: control.system_id,
-      tenant_id: control.tenant_id,
+      system_id: state.values.system_id || control.system_id,
+      tenant_id: state.values.tenant_id || control.tenant_id,
       control_code: state.values.control_code || control.control_code,
       status: state.values.status || control.status,
       revision: state.values.revision || control.revision,
       enforcement_method: state.values.enforcement_method || control.enforcement_method,
       enforcement_location: state.values.enforcement_location || control.enforcement_location,
-      playbook_id: undefined,
-      evidence_requirements: getEvidenceRequirements(),
-      nst_subcategories: getNSTSubcategories(),
     }
   });
 
@@ -91,16 +69,13 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
         formData.append('id', control.id);
         formData.append('title', data.title);
         formData.append('description', data.description);
-        formData.append('system_id', control.system_id);
-        formData.append('tenant_id', control.tenant_id);
+        formData.append('system_id', data.system_id);
+        formData.append('tenant_id', data.tenant_id);
         formData.append('control_code', data.control_code);
         formData.append('status', data.status);
         formData.append('revision', data.revision);
         formData.append('enforcement_method', data.enforcement_method);
         formData.append('enforcement_location', data.enforcement_location || "");
-        formData.append('playbook_id', data.playbook_id || "");
-        formData.append('evidence_requirements', JSON.stringify(data.evidence_requirements));
-        formData.append('nst_subcategories', JSON.stringify(data.nst_subcategories));
 
         startTransition(() => {
           formAction(formData);
@@ -109,7 +84,7 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
 
         <FormAlert errors={state.errors} />
         <div className="flex gap-4 size-full">
-          <div className="flex flex-col gap-4 w-1/3 h-fit">
+          <div className="flex flex-col gap-4 w-full h-fit">
             <FormField
               control={form.control}
               name="title"
@@ -150,8 +125,6 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="enforcement_method"
@@ -178,6 +151,8 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
                   </FormItem>
                 )}
               />
+            </div>
+            <div className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="enforcement_location"
@@ -214,20 +189,16 @@ export default function EditControlForm({ control, nst_subcategories, mapped_sub
               />
             </div>
           </div>
-          <Separator orientation="vertical" />
-          <Tabs defaultValue="evidence" className="flex size-full">
-            <TabsList>
-              <TabsTrigger value="evidence">Evidence Required</TabsTrigger>
-              <TabsTrigger value="nist">NIST Categories</TabsTrigger>
-            </TabsList>
-            <ControlEvidenceTab form={form} />
-            <ControlNistTab form={form} nst_subcategories={nst_subcategories} />
-          </Tabs>
         </div>
         <Separator />
         <div className="flex justify-end gap-3">
-          <SubmitButton variant="default" pendingText="Updating Control..." pending={pending}>
-            Update Control
+          {cancel_route &&
+            <RouteButton variant="outline" type="button" route={cancel_route}>
+              Cancel
+            </RouteButton>
+          }
+          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
+            {submit_text}
           </SubmitButton>
         </div>
       </form>

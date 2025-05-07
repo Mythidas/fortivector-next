@@ -98,31 +98,14 @@ export default function ControlsTab({ system, controls, controls_to_subcategorie
             </TableHeader>
             <TableBody>
               {controls.filter(filterControls).map((control) => (
-                <TableRow key={control.id}>
+                <TableRow key={control.id} className="hover:cursor-pointer" onClick={() => router.push(`/systems/control/${control.id}`)}>
                   <TableCell>{control.control_code}</TableCell>
                   <TableCell>{control.title}</TableCell>
                   <TableCell>{pascalCase(control.status)}</TableCell>
                   <TableCell>{control.revision}</TableCell>
                   <TableCell>{pascalCase(control.enforcement_method)}</TableCell>
-                  <TableCell>{control.evidence_requirements?.length || 0}</TableCell>
+                  <TableCell>0</TableCell>
                   <TableCell>{controls_to_subcategories.filter((cat) => cat.control_id === control.id).length}</TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropDownItem route={`/systems/control/${control.id}`} module="controls" level="read">
-                          View
-                        </DropDownItem>
-                        <DropDownItem className="text-red-600" onClick={() => handleDelete(control.id)} module="controls" level="edit">
-                          Delete
-                        </DropDownItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

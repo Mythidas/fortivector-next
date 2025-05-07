@@ -17,8 +17,8 @@ import { createClient } from "@/utils/supabase/server";
 import * as db from "@/lib/client/db";
 import { FormMessage, Message } from "@/lib/components/form-message";
 import { createControlAction } from "@/lib/actions/system-actions";
-import CreateControlForm from "@/lib/components/forms/create-control-form";
 import { Separator } from "@/lib/components/ui/separator";
+import ControlForm from "@/lib/components/forms/control-form";
 
 type Params = Promise<{ id: string }>;
 type SearchParams = Promise<Message>;
@@ -32,7 +32,6 @@ export default async function CreateControl(props: Props) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
   const system = await db.getSystem(supabase, params.id);
-  const nst_subcategories = await db.getNISTSubcategories(supabase);
   if (!system) {
     return (
       <Card>
@@ -71,7 +70,24 @@ export default async function CreateControl(props: Props) {
         </CardHeader>
         <Separator />
         <CardContent className="size-full">
-          <CreateControlForm system={system} nst_subcategories={nst_subcategories} action={createControlAction} />
+          <ControlForm
+            control={{
+              id: "",
+              control_code: "",
+              title: "",
+              status: "draft",
+              revision: "",
+              description: "",
+              system_id: system.id,
+              tenant_id: system.tenant_id,
+              enforcement_method: "manual",
+              enforcement_location: ""
+            }}
+            cancel_route={`/systems/${system.id}?tab=controls`}
+            submit_text="Create Control"
+            pending_text="Creating Control..."
+            action={createControlAction}
+          />
         </CardContent>
       </Card>
     </div>

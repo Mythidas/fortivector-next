@@ -1,5 +1,5 @@
 import { getSystems } from "@/lib/client/db";
-import SystemsTable from "@/lib/components/systems-table";
+import SystemsTable from "@/lib/components/tables/systems-table";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Systems() {

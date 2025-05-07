@@ -82,9 +82,6 @@ export const controlFormSchema = z.object({
   revision: z.string().min(1, { message: "Revision is required" }),
   enforcement_method: z.enum(["manual", "scripted", "auto-scanned", "vendor-managed"] as const),
   enforcement_location: z.string().optional(),
-  playbook_id: z.string().optional(),
-  evidence_requirements: z.array(controlEvidenceSchema).min(1, { message: "Evidence is required" }),
-  nst_subcategories: z.array(z.string()).min(1, { message: "NIST subcategory is required" })
 });
 
 export type ControlFormValues = z.infer<typeof controlFormSchema>;
@@ -105,3 +102,11 @@ export const siteFormSchema = z.object({
 });
 
 export type SiteFormValues = z.infer<typeof siteFormSchema>;
+
+export const siteSystemLinkFormSchema = z.object({
+  id: z.string().optional(),
+  site_id: z.string(),
+  system_id: z.array(z.string())
+});
+
+export type SiteSystemLinkFormValues = z.infer<typeof siteSystemLinkFormSchema>;

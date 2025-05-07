@@ -1,6 +1,6 @@
 // Auto-generated interfaces from Supabase Schema
 
-import { AccessLevel, ControlStatus, EnforcementMethod } from "@/lib/types";
+import { AccessLevel, ControlStatus, EnforcementMethod, EvidenceType } from "@/lib/types";
 
 export interface Roles {
   id: string;
@@ -16,7 +16,7 @@ export interface Roles {
 
 export interface Systems {
   id: string;
-  tenant_id?: string;
+  tenant_id: string;
   name: string;
   description?: string;
   created_at?: Date;
@@ -63,11 +63,6 @@ export interface Controls {
   enforcement_method: EnforcementMethod;
   enforcement_location?: string;
   playbook_id?: string;
-  evidence_requirements?: {
-    type: "screenshot" | "log";
-    description: string;
-    location_hint?: string;
-  }[];
   ai_parse_rules?: any;
 };
 
@@ -90,6 +85,56 @@ export interface Sites {
   client_id: string;
   name: string;
 };
+
+export interface ControlEvidenceRequirement {
+  id: string;
+  tenant_id: string;
+  control_id: string;
+  requirement_type: EvidenceType;
+  description: string;
+  location_hint?: string;
+}
+
+export interface ControlEvidence {
+  id: string;
+  tenant_id: string;
+  site_id: string;
+  control_id: string;
+  evidence_requirement_id?: string;
+  name: string;
+  description?: string;
+  evidence_url: string;
+}
+
+export interface ControlWaiver {
+  id: string;
+  tenant_id: string;
+  site_id: string;
+  control_id: string;
+  waiver_url: string;
+  waiver_status: 'enforced' | 'expired';
+  waiver_expiration: string; // ISO 8601 timestamp
+  waiver_approver: string;   // user ID
+}
+
+export interface SiteSystem {
+  id: string;
+  tenant_id: string;
+  site_id: string;
+  system_id: string;
+}
+
+export interface SiteControl {
+  id: string;
+  tenant_id: string;
+  site_id: string;
+  system_id: string;
+  control_id: string;
+  status: 'onboarding' | 'implemented' | 'waived';
+  last_validated?: string;     // ISO 8601 timestamp
+  last_validated_by?: string;  // user ID
+  waiver_id?: string;
+}
 
 // NST
 

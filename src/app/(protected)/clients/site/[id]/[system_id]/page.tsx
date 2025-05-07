@@ -1,4 +1,4 @@
-import { getClient, getSite, getSites } from "@/lib/client/db";
+import { getClient, getSite, getSites, getSiteSytemView } from "@/lib/client/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
@@ -7,7 +7,7 @@ import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
 import SiteSystemsTab from "@/lib/components/tabs/site-systems-tab";
 
 type SearchParams = Promise<{ tab: string }>;
-type Params = Promise<{ id: string }>;
+type Params = Promise<{ id: string, system_id: string }>;
 type Props = {
   params: Params;
   searchParams: SearchParams;
@@ -19,8 +19,9 @@ export default async function SitePage(props: Props) {
   const supabase = await createClient();
   const site = await getSite(supabase, params.id);
   const client = await getClient(supabase, site?.client_id || "");
+  const system_view = await getSiteSytemView(supabase, params.system_id);
 
-  if (!site || !client) {
+  if (!site || !client || !system_view) {
     return (
       <Card>
         <CardHeader>
@@ -38,20 +39,20 @@ export default async function SitePage(props: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbLink href={`/clients/${client.id}?tab=sites`}>{client.name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbPage>{site.name}</BreadcrumbPage>
+          <BreadcrumbLink href={`/clients/site/${site.id}?tab=systems`}>{site.name}</BreadcrumbLink>
+          <BreadcrumbSeparator />
+          <BreadcrumbPage>{system_view.system_name}</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
 
       <Tabs defaultValue={searchParams.tab || "overview"} className="w-full">
         <div className="flex gap-4 justify-start items-end">
-          <h1 className="text-3xl font-bold tracking-tight">{site.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{system_view.system_name}</h1>
         </div>
-        <TabsList className="grid w-full max-w-md grid-cols-3">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="systems">Systems</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="systems">Controls</TabsTrigger>
         </TabsList>
-        <SiteSystemsTab site={site} />
       </Tabs>
     </div>
   );
