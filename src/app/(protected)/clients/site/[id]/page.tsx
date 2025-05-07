@@ -1,11 +1,9 @@
-import { getControls, getControlsToNSTSubcategories, getSystem } from "@/lib/client/db";
+import { getClient, getSite, getSites } from "@/lib/client/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
-import ControlsTab from "@/lib/components/tabs/controls-tab";
-import SystemSettingsTab from "@/lib/components/tabs/system-settings-tab";
-import SystemOverviewTab from "@/lib/components/tabs/system-overview-tab";
+import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -14,18 +12,17 @@ type Props = {
   searchParams: SearchParams;
 }
 
-export default async function SystemPage(props: Props) {
+export default async function SitePage(props: Props) {
   const params = await props.params;
   const searchParams = await props.searchParams;
   const supabase = await createClient();
-  const system = await getSystem(supabase, params.id);
-  const controls = await getControls(supabase);
-  const controls_to_subcategories = await getControlsToNSTSubcategories(supabase);
-  if (!system) {
+  const site = await getSite(supabase, params.id);
+  const client = await getClient(supabase, site?.client_id || "");
+  if (!site || !client) {
     return (
       <Card>
         <CardHeader>
-          Failed to fetch system. Contact support.
+          Failed to fetch data. Contact support.
         </CardHeader>
       </Card>
     )
@@ -35,25 +32,23 @@ export default async function SystemPage(props: Props) {
     <div className="space-y-6">
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbLink href="/systems">Systems</BreadcrumbLink>
+          <BreadcrumbLink href="/clients">Clients</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbPage>{system.name}</BreadcrumbPage>
+          <BreadcrumbLink href={`/clients/${client.id}?tab=sites`}>{client.name}</BreadcrumbLink>
+          <BreadcrumbSeparator />
+          <BreadcrumbPage>{site.name}</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
 
       <Tabs defaultValue={searchParams.tab || "overview"} className="w-full">
         <div className="flex gap-4 justify-start items-end">
-          <h1 className="text-3xl font-bold tracking-tight">{system.name}</h1>
-          <span className="text-accent-foreground">{system.description}</span>
+          <h1 className="text-3xl font-bold tracking-tight">{site.name}</h1>
         </div>
         <TabsList className="grid w-full max-w-md grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="controls">Controls</TabsTrigger>
+          <TabsTrigger value="systems">Systems</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        <SystemOverviewTab />
-        <ControlsTab system={system} controls={controls} controls_to_subcategories={controls_to_subcategories} />
-        <SystemSettingsTab system={system} />
       </Tabs>
     </div>
   );

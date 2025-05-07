@@ -75,7 +75,7 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
         </div>
       </div>
 
-      <Card>
+      <Card className="py-2">
         <CardContent className="p-0">
           <Table>
             <TableCaption>Total Invites: {invites.length}</TableCaption>

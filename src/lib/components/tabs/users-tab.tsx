@@ -72,7 +72,7 @@ export default function UsersTab({ users, roles, currentUser }: { users: Users[]
         </RouteButton>
       </div>
 
-      <Card>
+      <Card className="py-2">
         <CardContent className="p-0">
           <Table>
             <TableCaption>Total Users: {users.length}</TableCaption>

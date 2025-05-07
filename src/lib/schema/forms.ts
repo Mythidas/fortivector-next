@@ -88,3 +88,20 @@ export const controlFormSchema = z.object({
 });
 
 export type ControlFormValues = z.infer<typeof controlFormSchema>;
+
+export const clientFormSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, { message: "Name is required" }),
+  tenant_id: z.string(),
+});
+
+export type ClientFormValues = z.infer<typeof clientFormSchema>;
+
+export const siteFormSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, { message: "Name is required" }),
+  tenant_id: z.string(),
+  client_id: z.string()
+});
+
+export type SiteFormValues = z.infer<typeof siteFormSchema>;

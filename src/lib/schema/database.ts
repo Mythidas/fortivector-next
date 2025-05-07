@@ -12,7 +12,7 @@ export interface Roles {
     roles: AccessLevel;
     dashboard: AccessLevel;
   };
-}
+};
 
 export interface Systems {
   id: string;
@@ -21,13 +21,13 @@ export interface Systems {
   description?: string;
   created_at?: Date;
   is_system_defined: boolean;
-}
+};
 
 export interface Tenants {
   id: string;
   name: string;
   created_at?: Date;
-}
+};
 
 export interface Users {
   id: string;
@@ -37,7 +37,7 @@ export interface Users {
   first_name: string;
   last_name: string;
   last_sign_in?: Date;
-}
+};
 
 export interface UserInvites {
   id: string;
@@ -49,7 +49,7 @@ export interface UserInvites {
   expires_at: Date;
   invite_token: string;
   created_at?: Date;
-}
+};
 
 export interface Controls {
   id: string;
@@ -69,14 +69,27 @@ export interface Controls {
     location_hint?: string;
   }[];
   ai_parse_rules?: any;
-}
+};
 
 export interface ControlsToNSTSubcategories {
   id: string;
   control_id: string;
   system_id: string;
   subcategory_id: string;
-}
+};
+
+export interface Clients {
+  id: string;
+  tenant_id: string;
+  name: string;
+};
+
+export interface Sites {
+  id: string;
+  tenant_id: string;
+  client_id: string;
+  name: string;
+};
 
 // NST
 
@@ -86,24 +99,24 @@ export interface NSTCategories {
   code: string;
   name: string;
   description?: string;
-}
+};
 
 export interface NSTControlExamples {
   id: string;
   subcategory_id?: string;
   example: string;
-}
+};
 
 export interface NSTFunctions {
   id: string;
   code: string;
   name: string;
   description?: string;
-}
+};
 
 export interface NSTSubcategories {
   id: string;
   category_id?: string;
   code: string;
   description: string;
-}
+};

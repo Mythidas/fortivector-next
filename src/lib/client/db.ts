@@ -1,6 +1,6 @@
 'use server'
 
-import type { Controls, ControlsToNSTSubcategories, NSTFunctions, NSTSubcategories, Roles, Systems, Tenants, UserInvites, Users } from "@/lib/schema/database";
+import type { Clients, Controls, ControlsToNSTSubcategories, NSTFunctions, NSTSubcategories, Roles, Sites, Systems, Tenants, UserInvites, Users } from "@/lib/schema/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function getTenant(supabase: SupabaseClient) {
@@ -197,6 +197,63 @@ export async function getControlToNSTSubcategories(supabase: SupabaseClient, id:
   }
 
   return maps as ControlsToNSTSubcategories[];
+}
+
+export async function getClients(supabase: SupabaseClient) {
+  const { data, error } = await supabase
+    .from("clients")
+    .select("*");
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return data as Clients[];
+}
+
+export async function getClient(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("clients")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return data as Clients;
+}
+
+export async function getSites(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("sites")
+    .select("*")
+    .eq("client_id", id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return data as Sites[];
+}
+
+export async function getSite(supabase: SupabaseClient, id: string) {
+  const { data, error } = await supabase
+    .from("sites")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return data as Sites;
 }
 
 // NIST

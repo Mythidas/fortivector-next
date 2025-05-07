@@ -6,7 +6,7 @@ export type FormState<Schema> = {
 }
 
 // ROLES
-export type AccessModule = "users" | "roles" | "dashboard" | "systems" | "controls";
+export type AccessModule = "users" | "roles" | "dashboard" | "systems" | "controls" | "clients" | "sites";
 export type AccessLevel = "none" | "read" | "edit" | "full";
 
 // CONTROLS

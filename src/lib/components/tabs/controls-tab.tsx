@@ -80,7 +80,7 @@ export default function ControlsTab({ system, controls, controls_to_subcategorie
         </RouteButton>
       </div>
 
-      <Card>
+      <Card className="py-2">
         <CardContent className="p-0">
           <Table>
             <TableCaption>Total Controls: {controls.length}</TableCaption>

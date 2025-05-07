@@ -1,6 +1,6 @@
 'use client';
 
-import { ChartArea, FolderCog, ShieldUser } from "lucide-react"
+import { Building2, ChartArea, FolderCog, ShieldUser } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -14,12 +14,19 @@ import {
 } from "@/lib/components/ui/sidebar"
 import { usePathname } from 'next/navigation';
 
-// Menu items.
-const items = [
+const applicationItems = [
   {
     title: "Dashboard",
     url: "/",
     icon: ChartArea,
+  },
+]
+
+const adminItems = [
+  {
+    title: "Clients",
+    url: "/clients",
+    icon: Building2
   },
   {
     title: "Systems",
@@ -46,7 +53,27 @@ export default function AppSidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {applicationItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={item.url === '/' ? pathname === '/' : pathname.includes(item.url)}
+                  >
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Admin</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {adminItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild

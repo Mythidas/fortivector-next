@@ -1,5 +1,8 @@
+import { TabsContent } from "../ui/tabs";
+
 export default async function SystemOverviewTab() {
   return (
-    <div></div>
+    <TabsContent value="overview">
+    </TabsContent>
   );
 }
