@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { controlFormSchema, ControlFormValues, systemFormSchema } from "@/lib/schema/forms";
+import { controlEvidenceFormSchema, ControlEvidenceFormValues, controlFormSchema, ControlFormValues, systemFormSchema } from "@/lib/schema/forms";
 import { FormState } from "../types";
 
 export const createSystemAction = async (_prevState: any, params: FormData) => {
@@ -160,3 +160,69 @@ export const editControlAction = async (_prevState: any, params: FormData): Prom
 
   redirect(`/systems/control/${validation.data.id}?tab=settings`);
 };
+
+export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData): Promise<FormState<ControlEvidenceFormValues>> => {
+  const supabase = await createClient();
+  const validation = controlEvidenceFormSchema.safeParse({
+    tenant_id: params.get('tenant_id'),
+    control_id: params.get('control_id'),
+    evidence: JSON.parse(params.get('evidence')?.toString() || "[]")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors, // easier to display on UI
+      values: Object.fromEntries(params.entries()), // preserve filled data
+    };
+  }
+
+  const { data: existing, error: existing_error } = await supabase
+    .from('control_evidence_requirements')
+    .select()
+    .eq("control_id", validation.data.control_id);
+
+  if (existing_error) {
+    return {
+      success: false,
+      errors: { "db": [existing_error.message] }, // easier to display on UI
+      values: Object.fromEntries(params.entries()), // preserve filled data
+    };
+  }
+
+  const delete_ids: string[] = [];
+  for await (const evidence of existing) {
+    const compare = validation.data.evidence.find((row) => row.id && row.id === evidence.id);
+    if (!compare) {
+      delete_ids.push(evidence.id);
+    }
+  }
+
+  if (delete_ids) {
+    await supabase.from('control_evidence_requirements').delete().in('id', delete_ids);
+  }
+
+  for await (const evidence of validation.data.evidence) {
+    if (evidence.id) {
+      const { data, error } = await supabase.from('control_evidence_requirements').update({
+        requirement_type: evidence.requirement_type,
+        description: evidence.description,
+        location_hint: evidence.location_hint
+      }).eq('id', evidence.id);
+    } else {
+      const { data, error } = await supabase.from('control_evidence_requirements').insert({
+        tenant_id: validation.data.tenant_id,
+        control_id: validation.data.control_id,
+        requirement_type: evidence.requirement_type,
+        description: evidence.description,
+        location_hint: evidence.location_hint
+      })
+
+      if (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  redirect(`/systems/control/${validation.data.control_id}?tab=evidence`);
+}

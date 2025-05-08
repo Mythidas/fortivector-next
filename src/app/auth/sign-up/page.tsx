@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getUserInvite } from "@/lib/client/db";
+import { getUserInvite } from "@/lib/server/db";
 import InviteForm from "@/lib/components/forms/invite-form";
 
 

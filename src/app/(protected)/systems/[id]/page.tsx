@@ -1,11 +1,12 @@
-import { getControls, getControlsToNSTSubcategories, getSystem } from "@/lib/client/db";
+import { getControls, getControlsToNSTSubcategories, getSystem } from "@/lib/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import ControlsTab from "@/lib/components/tabs/controls-tab";
-import SystemSettingsTab from "@/lib/components/tabs/system-settings-tab";
 import SystemOverviewTab from "@/lib/components/tabs/system-overview-tab";
+import SystemForm from "@/lib/components/forms/system-form";
+import { editSystemAction } from "@/lib/actions/system-actions";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -53,7 +54,14 @@ export default async function SystemPage(props: Props) {
         </TabsList>
         <SystemOverviewTab />
         <ControlsTab system={system} controls={controls} controls_to_subcategories={controls_to_subcategories} />
-        <SystemSettingsTab system={system} />
+        <TabsContent value="settings" className="pt-4">
+          <SystemForm
+            system={system}
+            submit_text="Update System"
+            pending_text="Updating System..."
+            action={editSystemAction}
+          />
+        </TabsContent>
       </Tabs>
     </div>
   );

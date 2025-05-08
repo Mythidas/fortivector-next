@@ -4,6 +4,11 @@ export type FormState<Schema> = {
   errors?: Record<string, string[]>;
   values: Partial<Schema>;
 }
+export type FormFooterProps = {
+  cancel_route?: string;
+  submit_text: string;
+  pending_text: string;
+}
 
 // ROLES
 export type AccessModule = "users" | "roles" | "dashboard" | "systems" | "controls" | "clients" | "sites";

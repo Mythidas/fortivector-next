@@ -19,20 +19,16 @@ import { Controls } from "@/lib/schema/database";
 import { Separator } from "@/lib/components/ui/separator";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { Textarea } from "@/lib/components/ui/textarea";
-import { FormState } from "@/lib/types";
+import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ui/form-alert";
 
 type Props = {
   control: Controls;
-  cancel_route: string;
-  submit_text: string;
-  pending_text: string;
-
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlFormValues>>;
-};
+} & FormFooterProps;
 
 export default function ControlForm({ control, cancel_route, submit_text, pending_text, action }: Props) {
   const [state, formAction] = useActionState<FormState<ControlFormValues>, FormData>(action, { success: true, values: {} });
@@ -143,6 +139,30 @@ export default function ControlForm({ control, cancel_route, submit_text, pendin
                             <SelectItem value="scripted" disabled>Scripted</SelectItem>
                             <SelectItem value="auto-scanned" disabled>Auto Scanned</SelectItem>
                             <SelectItem value="vendor-managed" disabled>Vendor Managed</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="w-fit text-nowrap">
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <Select {...field} onValueChange={field.onChange}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Status..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Statuses</SelectLabel>
+                            <SelectItem value="draft">Draft</SelectItem>
+                            <SelectItem value="approved">Approved</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>

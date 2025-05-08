@@ -7,9 +7,8 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/client/db";
+import * as db from "@/lib/server/db";
 import { FormMessage, Message } from "@/lib/components/form-message";
-import { createInviteAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import CreateSystemLinkForm from "@/lib/components/forms/create-system-link-form";
 import { createSiteSystemLinksAction } from "@/lib/actions/client-actions";
@@ -59,7 +58,7 @@ export default async function LinkSystem(props: Props) {
           <FormMessage message={searchParams} />
         </CardHeader>
         <CardContent>
-          <CreateSystemLinkForm site_id={site.id} systems={systems} action={createSiteSystemLinksAction} />
+          <CreateSystemLinkForm site={site} systems={systems} action={createSiteSystemLinksAction} />
         </CardContent>
       </Card>
     </div>

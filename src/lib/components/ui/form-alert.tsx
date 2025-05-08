@@ -32,7 +32,7 @@ export default function FormAlert({ errors }: Props) {
           <AlertDialogTitle>Errors</AlertDialogTitle>
           <AlertDialogDescription>
             {errors && Object.entries(errors).map(([field, error]) => (
-              <div key={field}>{`${field}: ${error}`}</div>
+              <span key={field}>{`${field}: ${error}`}</span>
             ))}
           </AlertDialogDescription>
         </AlertDialogHeader>

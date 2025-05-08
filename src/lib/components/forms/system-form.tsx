@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,12 +13,13 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
+import { ZodIssue } from "zod";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { Systems } from "@/lib/schema/database";
+import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ui/form-alert";
-import { FormState } from "@/lib/types";
 
 type Props = {
   system: Systems;
@@ -25,19 +27,19 @@ type Props = {
     _prevState: any,
     params: FormData
   ) => Promise<FormState<SystemFormValues>>;
-};
+} & FormFooterProps;
 
-export default function EditSystemForm({ system, action }: Props) {
-  const [state, formAction] = useActionState<FormState<SystemFormValues>, FormData>(action, { success: true, values: {} });
+export default function SystemForm({ system, cancel_route, submit_text, pending_text, action }: Props) {
+  const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
   const form = useForm<SystemFormValues>({
     resolver: zodResolver(systemFormSchema),
     defaultValues: {
       id: system.id,
-      name: system.name,
-      description: system.description,
-      tenant_id: system.id,
+      name: state.values.name || system.name,
+      description: state.values.description || system.description,
+      tenant_id: system.tenant_id,
     }
   });
 
@@ -46,10 +48,10 @@ export default function EditSystemForm({ system, action }: Props) {
       <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
         setPending(true);
         const formData = new FormData();
-        formData.append('id', system.id);
+        formData.append('id', system.id)
         formData.append('name', data.name);
         formData.append('description', data.description);
-        formData.append('tenant_id', data.tenant_id);
+        formData.append('tenant_id', system.tenant_id);
 
         startTransition(() => {
           formAction(formData);
@@ -83,8 +85,13 @@ export default function EditSystemForm({ system, action }: Props) {
           )}
         />
         <div className="flex justify-end gap-3">
-          <SubmitButton variant="default" pendingText="Updating System..." pending={pending}>
-            Update System
+          {cancel_route &&
+            <RouteButton variant="outline" route={cancel_route}>
+              Cancel
+            </RouteButton>
+          }
+          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
+            {submit_text}
           </SubmitButton>
         </div>
       </form>

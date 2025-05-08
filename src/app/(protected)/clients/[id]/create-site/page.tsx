@@ -8,7 +8,7 @@ import {
 } from "@/lib/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/client/db";
+import * as db from "@/lib/server/db";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { FormMessage, Message } from "@/lib/components/form-message";
 import { createInviteAction } from "@/lib/actions/user-actions";

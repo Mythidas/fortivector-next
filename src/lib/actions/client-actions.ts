@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { clientFormSchema, siteFormSchema, siteSystemLinkFormSchema } from "../schema/forms";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 export const createClientAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
@@ -71,6 +72,7 @@ export const createSiteAction = async (_prevState: any, params: FormData) => {
 export const createSiteSystemLinksAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = siteSystemLinkFormSchema.safeParse({
+    tenant_id: params.get("tenant_id"),
     site_id: params.get("site_id"),
     system_id: JSON.parse(params.get("system_id")?.toString() || "")
   });
@@ -84,9 +86,10 @@ export const createSiteSystemLinksAction = async (_prevState: any, params: FormD
   }
 
   for await (const system of validation.data.system_id) {
-    const { data, error } = await supabase.from("site_system").insert({
+    const { data, error } = await supabase.from("site_systems").insert({
       site_id: validation.data.site_id,
-      system_id: system
+      system_id: system,
+      tenant_id: validation.data.tenant_id
     }).select().single();
 
     if (error) {
@@ -104,9 +107,10 @@ export const createSiteSystemLinksAction = async (_prevState: any, params: FormD
     if (!controls) continue;
 
     for await (const control of controls) {
-      await supabase.from("site_control").insert({
+      await supabase.from("site_controls").insert({
+        tenant_id: validation.data.tenant_id,
         site_id: validation.data.site_id,
-        system_id: system,
+        site_system_id: data.id,
         control_id: control.id
       });
     }

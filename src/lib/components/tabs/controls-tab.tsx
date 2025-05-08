@@ -2,7 +2,6 @@
 
 import { TabsContent } from "@/lib/components/ui/tabs";
 import { Input } from "@/lib/components/ui/input";
-import { Button } from "@/lib/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,17 +16,11 @@ import {
   TableRow,
 } from "@/lib/components/ui/table";
 import { Joystick, MoreHorizontal, UserPlus } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/lib/components/ui/dropdown-menu";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { Controls, ControlsToNSTSubcategories, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteControl } from "@/lib/server/db";
-import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
+import { deleteControl } from "@/lib/client/db";
 
 type Props = {
   system: Systems;
@@ -93,7 +86,6 @@ export default function ControlsTab({ system, controls, controls_to_subcategorie
                 <TableHead>Enforcement Method</TableHead>
                 <TableHead>Evidence Required</TableHead>
                 <TableHead>NIST Subcategories</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

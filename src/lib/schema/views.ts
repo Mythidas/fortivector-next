@@ -1,4 +1,4 @@
-import { AccessLevel, AccessModule } from "@/lib/types";
+import { AccessLevel, AccessModule, ControlStatus, EnforcementMethod } from "@/lib/types";
 
 export interface UserContextView {
   id: string;
@@ -11,11 +11,30 @@ export interface UserContextView {
   access_rights: Record<AccessModule, AccessLevel>
 };
 
-export interface SiteSystemView {
+export interface SiteSystemsView {
   link_id: string;
   site_id: string;
   site_name: string;
+  tenant_id: string;
   system_id: string;
   system_name: string;
   system_description: string;
+};
+
+export interface SiteControlsView {
+  site_control_id: string;
+  site_id: string;
+  control_id: string;
+  status: string;
+  waiver_id: string | null;
+  last_validated: Date;
+  last_validated_by: string;
+  title: string;
+  description: string;
+  control_code: string;
+  system_id: string;
+  control_status: ControlStatus;
+  revision: string;
+  enforcement_method: EnforcementMethod;
+  enforcement_location: string | null;
 };

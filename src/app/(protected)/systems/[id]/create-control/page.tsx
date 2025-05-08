@@ -14,7 +14,7 @@ import {
   BreadcrumbSeparator,
 } from "@/lib/components/ui/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/client/db";
+import * as db from "@/lib/server/db";
 import { FormMessage, Message } from "@/lib/components/form-message";
 import { createControlAction } from "@/lib/actions/system-actions";
 import { Separator } from "@/lib/components/ui/separator";

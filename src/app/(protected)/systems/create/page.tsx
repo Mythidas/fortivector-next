@@ -7,16 +7,26 @@ import {
 } from "@/lib/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/client/db";
+import * as db from "@/lib/server/db";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { FormMessage, Message } from "@/lib/components/form-message";
-import { createInviteAction } from "@/lib/actions/user-actions";
-import CreateSystemForm from "@/lib/components/forms/create-system-form";
+import SystemForm from "@/lib/components/forms/system-form";
+import { createSystemAction } from "@/lib/actions/system-actions";
 
 export default async function CreateSystem(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
   const tenant = await db.getTenant(supabase);
+
+  if (!tenant) {
+    return (
+      <Card>
+        <CardHeader>
+          Failed to fetch tenant. Contact support.
+        </CardHeader>
+      </Card>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -42,7 +52,18 @@ export default async function CreateSystem(props: { searchParams: Promise<Messag
           <FormMessage message={searchParams} />
         </CardHeader>
         <CardContent>
-          <CreateSystemForm tenantId={tenant?.id || ""} action={createInviteAction} />
+          <SystemForm
+            system={{
+              id: "",
+              tenant_id: tenant.id,
+              name: "",
+              is_system_defined: false
+            }}
+            cancel_route="/systems"
+            submit_text="Create System"
+            pending_text="Creating System..."
+            action={createSystemAction}
+          />
         </CardContent>
       </Card>
     </div>

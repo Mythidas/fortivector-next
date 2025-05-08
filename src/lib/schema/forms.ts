@@ -86,6 +86,21 @@ export const controlFormSchema = z.object({
 
 export type ControlFormValues = z.infer<typeof controlFormSchema>;
 
+export const evidencRequirementSchema = z.object({
+  id: z.string().optional(),
+  requirement_type: z.string(),
+  description: z.string(),
+  location_hint: z.string().optional()
+});
+
+export const controlEvidenceFormSchema = z.object({
+  tenant_id: z.string(),
+  control_id: z.string(),
+  evidence: z.array(evidencRequirementSchema)
+});
+
+export type ControlEvidenceFormValues = z.infer<typeof controlEvidenceFormSchema>;
+
 export const clientFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, { message: "Name is required" }),
@@ -105,8 +120,9 @@ export type SiteFormValues = z.infer<typeof siteFormSchema>;
 
 export const siteSystemLinkFormSchema = z.object({
   id: z.string().optional(),
+  tenant_id: z.string(),
   site_id: z.string(),
-  system_id: z.array(z.string())
+  system_id: z.array(z.string()),
 });
 
 export type SiteSystemLinkFormValues = z.infer<typeof siteSystemLinkFormSchema>;

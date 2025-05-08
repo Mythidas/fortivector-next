@@ -11,11 +11,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/lib/components/ui/form";
-import { siteSystemLinkFormSchema, SiteSystemLinkFormValues, systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
+import { siteSystemLinkFormSchema, SiteSystemLinkFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ui/protected/route-button";
 import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { Systems } from "@/lib/schema/database";
+import { Sites, Systems } from "@/lib/schema/database";
 import { FormState } from "@/lib/types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/lib/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/lib/components/ui/command";
@@ -27,7 +27,7 @@ import { Button } from "../ui/button";
 import FormAlert from "../ui/form-alert";
 
 type Props = {
-  site_id: string;
+  site: Sites;
   systems: Systems[];
   action: (
     _prevState: any,
@@ -35,7 +35,7 @@ type Props = {
   ) => Promise<FormState<SiteSystemLinkFormValues>>;
 };
 
-export default function CreateSystemLinkForm({ site_id, systems, action }: Props) {
+export default function CreateSystemLinkForm({ site, systems, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -46,7 +46,8 @@ export default function CreateSystemLinkForm({ site_id, systems, action }: Props
   const form = useForm<SiteSystemLinkFormValues>({
     resolver: zodResolver(siteSystemLinkFormSchema),
     defaultValues: {
-      site_id: site_id,
+      tenant_id: site.tenant_id,
+      site_id: site.id,
       system_id: [],
     }
   });
@@ -56,7 +57,8 @@ export default function CreateSystemLinkForm({ site_id, systems, action }: Props
       <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
         setPending(true);
         const formData = new FormData();
-        formData.append('site_id', data.site_id);
+        formData.append('tenant_id', site.tenant_id)
+        formData.append('site_id', site.id);
         formData.append('system_id', JSON.stringify(data.system_id));
 
         startTransition(() => {
@@ -169,7 +171,7 @@ export default function CreateSystemLinkForm({ site_id, systems, action }: Props
           )}
         />
         <div className="flex justify-end gap-3">
-          <RouteButton variant="outline" type="button" route={`/clients/site/${site_id}?tab=systems`}>
+          <RouteButton variant="outline" type="button" route={`/clients/site/${site.id}?tab=systems`}>
             Cancel
           </RouteButton>
           <SubmitButton variant="default" pendingText="Linking systems..." pending={pending}>

@@ -1,10 +1,12 @@
-import { getClient, getSite, getSites, getSiteSytemView } from "@/lib/client/db";
+import { getClient, getSite, getSites, getSiteSytemView } from "@/lib/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
 import SiteSystemsTab from "@/lib/components/tabs/site-systems-tab";
+import { SubmitButton } from "@/lib/components/submit-button";
+import SiteSystemControlsTab from "@/lib/components/tabs/site-systems-controls-tab";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string, system_id: string }>;
@@ -49,10 +51,12 @@ export default async function SitePage(props: Props) {
         <div className="flex gap-4 justify-start items-end">
           <h1 className="text-3xl font-bold tracking-tight">{system_view.system_name}</h1>
         </div>
-        <TabsList className="grid w-full max-w-md grid-cols-2">
+        <TabsList className="grid w-full max-w-md grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="systems">Controls</TabsTrigger>
+          <TabsTrigger value="controls">Controls</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
+        <SiteSystemControlsTab site_view={system_view} />
       </Tabs>
     </div>
   );

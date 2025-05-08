@@ -86,7 +86,7 @@ export interface Sites {
   name: string;
 };
 
-export interface ControlEvidenceRequirement {
+export interface ControlEvidenceRequirements {
   id: string;
   tenant_id: string;
   control_id: string;
@@ -117,18 +117,18 @@ export interface ControlWaiver {
   waiver_approver: string;   // user ID
 }
 
-export interface SiteSystem {
+export interface SiteSystems {
   id: string;
   tenant_id: string;
   site_id: string;
   system_id: string;
 }
 
-export interface SiteControl {
+export interface SiteControls {
   id: string;
   tenant_id: string;
   site_id: string;
-  system_id: string;
+  site_system_id: string;
   control_id: string;
   status: 'onboarding' | 'implemented' | 'waived';
   last_validated?: string;     // ISO 8601 timestamp
