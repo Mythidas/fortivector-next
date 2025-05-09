@@ -44,7 +44,7 @@ export default async function SystemControlPage(props: Props) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <Tabs defaultValue={searchParams.tab || "overview"} className="w-full">
+      <Tabs defaultValue={searchParams.tab || "overview"} className="flex flex-col w-full gap-4">
         <div className="flex gap-4 justify-start items-end">
           <h1 className="text-3xl font-bold tracking-tight">{control.control_code}</h1>
           <span className="text-accent-foreground">{control.title}</span>
@@ -55,8 +55,9 @@ export default async function SystemControlPage(props: Props) {
           <TabsTrigger value="nist">NIST</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        <ControlSettingsTab control={control} />
         <ControlEvidenceTab control={control} />
+        <ControlNistTab control={control} />
+        <ControlSettingsTab control={control} />
       </Tabs>
     </div>
   );

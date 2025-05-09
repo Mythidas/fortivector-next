@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const deleteFormSchema = z.object({
+  id: z.string()
+});
+
+export type DeleteFormValues = z.infer<typeof deleteFormSchema>;
+
 export const userFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   first_name: z.string().min(1, { message: "First name is required" }),
@@ -100,6 +106,15 @@ export const controlEvidenceFormSchema = z.object({
 });
 
 export type ControlEvidenceFormValues = z.infer<typeof controlEvidenceFormSchema>;
+
+export const controlNstFormSchema = z.object({
+  tenant_id: z.string(),
+  control_id: z.string(),
+  system_id: z.string(),
+  nst_subcategories: z.array(z.string())
+});
+
+export type ControlNstFormValues = z.infer<typeof controlNstFormSchema>;
 
 export const clientFormSchema = z.object({
   id: z.string().optional(),

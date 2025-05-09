@@ -13,7 +13,7 @@ export default async function ControlSettingsTab({ control }: Props) {
   const supabase = await createClient();
 
   return (
-    <TabsContent value="settings" className="pt-4">
+    <TabsContent value="settings">
       <Card>
         <CardContent>
           <ControlForm

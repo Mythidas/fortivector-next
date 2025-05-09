@@ -2,11 +2,12 @@ import { getControls, getControlsToNSTSubcategories, getSystem } from "@/lib/ser
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
-import { Card, CardHeader } from "@/lib/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/lib/components/ui/card";
 import ControlsTab from "@/lib/components/tabs/controls-tab";
 import SystemOverviewTab from "@/lib/components/tabs/system-overview-tab";
 import SystemForm from "@/lib/components/forms/system-form";
-import { editSystemAction } from "@/lib/actions/system-actions";
+import { deleteSystemAction, editSystemAction } from "@/lib/actions/system-actions";
+import DeleteForm from "@/lib/components/forms/delete-form";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -54,13 +55,33 @@ export default async function SystemPage(props: Props) {
         </TabsList>
         <SystemOverviewTab />
         <ControlsTab system={system} controls={controls} controls_to_subcategories={controls_to_subcategories} />
-        <TabsContent value="settings" className="pt-4">
-          <SystemForm
-            system={system}
-            submit_text="Update System"
-            pending_text="Updating System..."
-            action={editSystemAction}
-          />
+        <TabsContent value="settings" className="flex flex-col gap-2 pt-4">
+          <Card>
+            <CardHeader>
+              System Information
+            </CardHeader>
+            <CardContent>
+              <SystemForm
+                system={system}
+                submit_text="Update System"
+                pending_text="Updating System..."
+                action={editSystemAction}
+              />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              Actions
+            </CardHeader>
+            <CardContent>
+              <DeleteForm
+                id={system.id}
+                action={deleteSystemAction}
+                pending_text="Deleting System..."
+                submit_text="Delete System"
+              />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

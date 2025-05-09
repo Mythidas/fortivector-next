@@ -71,6 +71,7 @@ export interface ControlsToNSTSubcategories {
   control_id: string;
   system_id: string;
   subcategory_id: string;
+  tenant_id: string;
 };
 
 export interface Clients {

@@ -13,13 +13,12 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
-import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { Systems } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ui/form-alert";
+import FormFooter from "../ui/form-footer";
+import { Separator } from "../ui/separator";
 
 type Props = {
   system: Systems;
@@ -37,8 +36,8 @@ export default function SystemForm({ system, cancel_route, submit_text, pending_
     resolver: zodResolver(systemFormSchema),
     defaultValues: {
       id: system.id,
-      name: state.values.name || system.name,
-      description: state.values.description || system.description,
+      name: state.values.name || system.name || "",
+      description: state.values.description || system.description || "",
       tenant_id: system.tenant_id,
     }
   });
@@ -84,16 +83,13 @@ export default function SystemForm({ system, cancel_route, submit_text, pending_
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          {cancel_route &&
-            <RouteButton variant="outline" route={cancel_route}>
-              Cancel
-            </RouteButton>
-          }
-          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
-            {submit_text}
-          </SubmitButton>
-        </div>
+        <Separator />
+        <FormFooter
+          cancel_route={cancel_route}
+          submit_text={submit_text}
+          pending_text={pending_text}
+          pending={pending}
+        />
       </form>
     </Form>
   );
