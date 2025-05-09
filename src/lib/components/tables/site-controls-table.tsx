@@ -37,16 +37,12 @@ export default function SiteControlsTable({ controls_view }: Props) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center w-full max-w-sm space-x-2">
           <Input
-            placeholder="Search systems..."
+            placeholder="Search controls..."
             className="h-9"
             type="search"
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <RouteButton route="/systems/create" module="systems" level="edit">
-          <FolderCog className="h-4 w-4 mr-2" />
-          Add System
-        </RouteButton>
       </div>
 
       <Card className="py-2">
@@ -66,7 +62,7 @@ export default function SiteControlsTable({ controls_view }: Props) {
             </TableHeader>
             <TableBody>
               {controls_view.filter(filter).map((control) => (
-                <TableRow key={control.control_id} className="hover:cursor-pointer" onClick={() => router.push(`/clients/site/${control.site_id}/${control.system_id}/${control.site_control_id}`)}>
+                <TableRow key={control.control_id} className="hover:cursor-pointer" onClick={() => router.push(`/clients/control/${control.site_control_id}`)}>
                   <TableCell>{control.control_code}</TableCell>
                   <TableCell>{control.title}</TableCell>
                   <TableCell>{pascalCase(control.status)}</TableCell>

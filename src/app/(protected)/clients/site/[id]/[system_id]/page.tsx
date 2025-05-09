@@ -1,11 +1,8 @@
 import { getClient, getSite, getSites, getSiteSytemView } from "@/lib/server/db";
 import { createClient } from "@/utils/supabase/server";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
-import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
-import SiteSystemsTab from "@/lib/components/tabs/site-systems-tab";
-import { SubmitButton } from "@/lib/components/submit-button";
 import SiteSystemControlsTab from "@/lib/components/tabs/site-systems-controls-tab";
 
 type SearchParams = Promise<{ tab: string }>;
