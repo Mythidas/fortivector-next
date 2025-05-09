@@ -158,6 +158,20 @@ export async function getControls(supabase: SupabaseClient) {
   return controls as Controls[];
 }
 
+export async function getControlsBySystem(supabase: SupabaseClient, system_id: string) {
+  const { data: controls, error } = await supabase
+    .from("controls")
+    .select("*")
+    .eq("system_id", system_id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return controls as Controls[];
+}
+
 export async function getControl(supabase: SupabaseClient, id: string) {
   const { data, error } = await supabase
     .from("controls")
@@ -178,6 +192,20 @@ export async function getControlEvidenceRequirements(supabase: SupabaseClient, c
     .from("control_evidence_requirements")
     .select("*")
     .eq('control_id', control_id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return controls as ControlEvidenceRequirements[];
+}
+
+export async function getControlsEvidenceRequirements(supabase: SupabaseClient, control_id: string[]) {
+  const { data: controls, error } = await supabase
+    .from("control_evidence_requirements")
+    .select("*")
+    .in('control_id', control_id);
 
   if (error) {
     console.log(error);

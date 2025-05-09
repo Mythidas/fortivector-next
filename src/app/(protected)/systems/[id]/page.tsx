@@ -8,6 +8,7 @@ import SystemOverviewTab from "@/lib/components/tabs/system-overview-tab";
 import SystemForm from "@/lib/components/forms/system-form";
 import { deleteSystemAction, editSystemAction } from "@/lib/actions/system-actions";
 import DeleteForm from "@/lib/components/forms/delete-form";
+import { Separator } from "@/lib/components/ui/separator";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -21,8 +22,6 @@ export default async function SystemPage(props: Props) {
   const searchParams = await props.searchParams;
   const supabase = await createClient();
   const system = await getSystem(supabase, params.id);
-  const controls = await getControls(supabase);
-  const controls_to_subcategories = await getControlsToNSTSubcategories(supabase);
   if (!system) {
     return (
       <Card>
@@ -54,7 +53,7 @@ export default async function SystemPage(props: Props) {
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         <SystemOverviewTab />
-        <ControlsTab system={system} controls={controls} controls_to_subcategories={controls_to_subcategories} />
+        <ControlsTab system={system} />
         <TabsContent value="settings" className="flex flex-col gap-2 pt-4">
           <Card>
             <CardHeader>
@@ -70,15 +69,16 @@ export default async function SystemPage(props: Props) {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader>
+            <CardHeader className="!py-0">
               Actions
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-2">
+              <Separator />
               <DeleteForm
                 id={system.id}
                 action={deleteSystemAction}
-                pending_text="Deleting System..."
-                submit_text="Delete System"
+                pending_text={`Deleting: ${system.name}`}
+                submit_text={`Delete: ${system.name}`}
               />
             </CardContent>
           </Card>

@@ -120,6 +120,15 @@ export const createControlAction = async (_prevState: any, params: FormData): Pr
     };
   }
 
+  const { error: existsError } = await supabase.from("controls").select().eq("control_code", validation.data.control_code);
+  if (!existsError) {
+    return {
+      success: false,
+      errors: { "db": ["Control Code must be unique."] },
+      values: Object.fromEntries(params.entries()), // preserve filled data
+    }
+  }
+
   const { data, error } = await supabase.from("controls").insert({
     title: validation.data.title,
     description: validation.data.description,
@@ -185,6 +194,34 @@ export const editControlAction = async (_prevState: any, params: FormData): Prom
   }
 
   redirect(`/systems/control/${validation.data.id}?tab=settings`);
+};
+
+export const deleteControlAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = deleteFormSchema.safeParse({
+    id: params.get("id"),
+    url: params.get("url")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors, // easier to display on UI
+      values: Object.fromEntries(params.entries()), // preserve filled data
+    };
+  }
+
+  const { data, error } = await supabase.from("controls").delete().eq('id', validation.data.id);
+
+  if (error) {
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries()), // preserve filled data
+    }
+  }
+
+  return redirect(validation.data.url || `/systems`);
 };
 
 export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData): Promise<FormState<ControlEvidenceFormValues>> => {
