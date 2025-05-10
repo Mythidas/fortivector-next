@@ -14,8 +14,8 @@ import {
   BreadcrumbSeparator,
 } from "@/lib/components/ui/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/server/db";
-import { FormMessage, Message } from "@/lib/components/form-message";
+import * as db from "@/utils/server/db";
+
 import { createControlAction } from "@/lib/actions/system-actions";
 import { Separator } from "@/lib/components/ui/separator";
 import ControlForm from "@/lib/components/forms/control-form";
@@ -66,7 +66,7 @@ export default async function CreateControl(props: Props) {
           <CardDescription>
             Enter the details for the new control.
           </CardDescription>
-          <FormMessage message={searchParams} />
+
         </CardHeader>
         <Separator />
         <CardContent className="size-full">

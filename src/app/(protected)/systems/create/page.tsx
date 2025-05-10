@@ -7,9 +7,9 @@ import {
 } from "@/lib/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/server/db";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { FormMessage, Message } from "@/lib/components/form-message";
+import * as db from "@/utils/server/db";
+import RouteButton from "@/lib/components/ux/route-button";
+
 import SystemForm from "@/lib/components/forms/system-form";
 import { createSystemAction } from "@/lib/actions/system-actions";
 
@@ -49,7 +49,7 @@ export default async function CreateSystem(props: { searchParams: Promise<Messag
           <CardDescription>
             Enter the details for the new system.
           </CardDescription>
-          <FormMessage message={searchParams} />
+
         </CardHeader>
         <CardContent>
           <SystemForm

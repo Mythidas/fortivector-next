@@ -1,4 +1,4 @@
-import { InfoIcon, ShieldIcon, LayoutDashboardIcon, UsersIcon, HelpCircle } from "lucide-react";
+import { ShieldIcon, LayoutDashboardIcon, UsersIcon } from "lucide-react";
 
 // ROLES
 export const permissionCategories = [

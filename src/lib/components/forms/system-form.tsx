@@ -16,8 +16,8 @@ import { systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useState } from "react";
 import { Systems } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
-import FormAlert from "../ui/form-alert";
-import FormFooter from "../ui/form-footer";
+import FormAlert from "../ux/form-alert";
+import FormFooter from "../ux/form-footer";
 import { Separator } from "../ui/separator";
 
 type Props = {

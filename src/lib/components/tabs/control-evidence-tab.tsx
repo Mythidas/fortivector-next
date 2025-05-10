@@ -4,7 +4,7 @@ import ControlEvidenceForm from "../forms/control-evidence-form";
 import { updateEvidenceRequirementsAction } from "@/lib/actions/system-actions";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getControl, getControlEvidenceRequirements } from "@/lib/server/db";
+import { getControl, getControlEvidenceRequirements } from "@/utils/server/db";
 
 type Props = {
   control: Controls

@@ -16,13 +16,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import RouteButton from "@/lib/components/ui/protected/route-button";
+import RouteButton from "@/lib/components/ux/route-button";
 import { Badge } from "@/lib/components/ui/badge";
 import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
+import DropDownItem from "@/lib/components/ux/drop-down-item";
 
 export default function RolesTab({ users, roles }: { users: Users[], roles: Roles[] }) {
   const [search, setSearch] = useState("");
@@ -64,7 +64,7 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <RouteButton route="/users/create-role" module="roles" level="edit">
+        <RouteButton route="/users/role/create" module="roles" level="edit">
           <ShieldCheck className="h-4 w-4 mr-2" />
           Add Role
         </RouteButton>
@@ -83,7 +83,7 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropDownItem disabled={!role.tenant_id} onClick={() => router.push(`/users/edit-role/${role.id}`)} module="roles" level="edit">
+                    <DropDownItem disabled={!role.tenant_id} onClick={() => router.push(`/users/role/${role.id}`)} module="roles" level="edit">
                       Edit Role
                     </DropDownItem>
                     <DropDownItem disabled={!role.tenant_id} className="text-red-600" onClick={() => handleDelete(role.id)} module="roles" level="edit">

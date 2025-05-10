@@ -3,9 +3,10 @@
 import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { createRoleFormSchema, editRoleFormSchema, editUserFormSchema, userFormSchema } from "@/lib/schema/forms";
+import { createRoleFormSchema, editRoleFormSchema, userFormSchema, UserFormValues } from "@/lib/schema/forms";
+import { FormState } from "@/lib/types";
 
-export const createInviteAction = async (_prevState: any, params: FormData) => {
+export const createInviteAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
   const supabase = await createClient();
   const validation = userFormSchema.safeParse({
     first_name: params.get("first_name"),
@@ -17,10 +18,14 @@ export const createInviteAction = async (_prevState: any, params: FormData) => {
   });
 
   if (validation.error) {
-    return encodedRedirect("error", "/users/create-user", validation.error.message);
+    return {
+      success: false,
+      errors: validation.error?.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
   }
 
-  const { data, error } = await supabase.from("user_invites").insert({
+  const { error } = await supabase.from("user_invites").insert({
     first_name: validation.data.first_name,
     last_name: validation.data.last_name,
     email: validation.data.email,
@@ -29,44 +34,58 @@ export const createInviteAction = async (_prevState: any, params: FormData) => {
   });
 
   if (error) {
-    return encodedRedirect("error", "/users/create-user", error.message);
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   if (validation.data.send_email) {
-    // send email with link
+    // TODO: send email with link
   }
 
   return redirect("/users?tab=invites");
 };
 
-export const editUserAction = async (_prevState: any, params: FormData) => {
+export const editUserAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
   const supabase = await createClient();
-  const validation = editUserFormSchema.safeParse({
+  const validation = userFormSchema.safeParse({
+    id: params.get("id"),
     first_name: params.get("first_name"),
     last_name: params.get("last_name"),
     role_id: params.get("role_id"),
     user_id: params.get("user_id"),
+    email: params.get("email")
   });
 
   if (validation.error) {
-    return encodedRedirect("error", "/users/edit-user", validation.error.message);
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
   }
 
-  const { data, error } = await supabase.from("users").update({
+  const { error } = await supabase.from("users").update({
     first_name: validation.data.first_name,
     last_name: validation.data.last_name,
     role_id: validation.data.role_id,
-  }).eq("id", validation.data.user_id);
+  }).eq("id", validation.data.id);
 
   const supabaseAdmin = await createAdminClient();
-  await supabaseAdmin.auth.admin.updateUserById(validation.data.user_id, {
+  await supabaseAdmin.auth.admin.updateUserById(validation.data.id || "", {
     app_metadata: {
       "role_id": validation.data.role_id
     }
   })
 
   if (error) {
-    return encodedRedirect("error", "/users/edit-user", error.message);
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   return redirect("/users");
@@ -84,24 +103,30 @@ export const createRoleAction = async (_prevState: any, params: FormData) => {
   });
 
   if (validation.error) {
-    return encodedRedirect("error", "/users/create-role", validation.error.message);
-  }
-
-  const access_rights = {
-    users: validation.data.user_access,
-    roles: validation.data.role_access,
-    dashboard: validation.data.dashboard_access
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   const { data, error } = await supabase.from("roles").insert({
     name: validation.data.name,
     description: validation.data.description,
     tenant_id: validation.data.tenant_id,
-    access_rights: access_rights
+    access_rights: {
+      users: validation.data.user_access,
+      roles: validation.data.role_access,
+      dashboard: validation.data.dashboard_access
+    }
   })
 
   if (error) {
-    return encodedRedirect("error", "/users/create-role", error.message);
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   return redirect("/users?tab=roles");
@@ -119,7 +144,11 @@ export const editRoleAction = async (_prevState: any, params: FormData) => {
   });
 
   if (validation.error) {
-    return encodedRedirect("error", "/users/edit-role", validation.error.message);
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   const access_rights = {
@@ -128,14 +157,18 @@ export const editRoleAction = async (_prevState: any, params: FormData) => {
     dashboard: validation.data.dashboard_access
   }
 
-  const { data, error } = await supabase.from("roles").update({
+  const { error } = await supabase.from("roles").update({
     name: validation.data.name,
     description: validation.data.description,
     access_rights: access_rights
-  }).eq("id", validation.data.role_id)
+  }).eq("id", validation.data.role_id);
 
   if (error) {
-    return encodedRedirect("error", "/users/edit-role", error.message);
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
   }
 
   return redirect("/users?tab=roles");

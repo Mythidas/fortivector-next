@@ -3,7 +3,7 @@
 import { encodedRedirect } from "@/utils/utils";
 import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { getUserInvite } from "@/lib/server/db";
+import { getUserInvite } from "@/utils/server/db";
 import { inviteFormShema, signInFormSchema } from "../schema/forms";
 
 export const registerAction = async (_prevState: any, params: FormData) => {

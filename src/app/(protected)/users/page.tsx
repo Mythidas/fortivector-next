@@ -1,4 +1,4 @@
-import { getRoles, getUserInvites, getUsers } from "@/lib/server/db";
+import { getRoles, getUserInvites, getUsers } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import UsersTab from "@/lib/components/tabs/users-tab";

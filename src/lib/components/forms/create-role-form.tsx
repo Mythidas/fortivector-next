@@ -13,7 +13,7 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { createRoleFormSchema, CreateRoleFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import { SubmitButton } from "@/lib/components/submit-button";
+import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { useActionState, useState } from "react";
 import { startTransition } from 'react';
 import { Textarea } from "@/lib/components/ui/textarea";

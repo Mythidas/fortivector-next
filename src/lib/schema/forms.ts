@@ -8,6 +8,7 @@ export const deleteFormSchema = z.object({
 export type DeleteFormValues = z.infer<typeof deleteFormSchema>;
 
 export const userFormSchema = z.object({
+  id: z.string().optional(),
   email: z.string().email({ message: "Please enter a valid email address" }),
   first_name: z.string().min(1, { message: "First name is required" }),
   last_name: z.string().min(1, { message: "Last name is required" }),
@@ -17,15 +18,6 @@ export const userFormSchema = z.object({
 });
 
 export type UserFormValues = z.infer<typeof userFormSchema>;
-
-export const editUserFormSchema = z.object({
-  first_name: z.string().min(1, { message: "First name is required" }),
-  last_name: z.string().min(1, { message: "Last name is required" }),
-  role_id: z.string(),
-  user_id: z.string()
-});
-
-export type EditUserFormValues = z.infer<typeof editUserFormSchema>;
 
 export const inviteFormShema = z.object({
   password: z.string().min(12, { message: "Minimum of 12 characters" }),

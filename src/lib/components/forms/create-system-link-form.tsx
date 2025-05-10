@@ -12,8 +12,8 @@ import {
   FormMessage,
 } from "@/lib/components/ui/form";
 import { siteSystemLinkFormSchema, SiteSystemLinkFormValues } from "@/lib/schema/forms";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
+import RouteButton from "@/lib/components/ux/route-button";
+import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { Sites, Systems } from "@/lib/schema/database";
 import { FormState } from "@/lib/types";
@@ -24,7 +24,7 @@ import { Badge } from "@/lib/components/ui/badge";
 import { ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import FormAlert from "../ui/form-alert";
+import FormAlert from "../ux/form-alert";
 
 type Props = {
   site: Sites;

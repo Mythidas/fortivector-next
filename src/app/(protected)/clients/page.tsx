@@ -1,4 +1,4 @@
-import { getClients } from "@/lib/server/db";
+import { getClients } from "@/utils/server/db";
 import ClientsTable from "@/lib/components/tables/clients-table";
 import { createClient } from "@/utils/supabase/server";
 

@@ -6,20 +6,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/lib/components/ui/card";
-import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/server/db";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { FormMessage, Message } from "@/lib/components/form-message";
-import { createInviteAction } from "@/lib/actions/user-actions";
-import CreateUserForm from "@/lib/components/forms/create-user-form";
-import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
+import * as db from "@/utils/server/db";
 
-export default async function CreateUser(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+import { createInviteAction } from "@/lib/actions/user-actions";
+import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
+import UserForm from "@/lib/components/forms/user-form";
+
+export default async function CreateUser() {
   const supabase = await createClient();
   const roles = await db.getRoles(supabase);
   const tenant = await db.getTenant(supabase);
+
+  if (!roles || !tenant) {
+    return (
+      <Card>
+        <CardHeader>
+          Failed to fetch data. Contact Support.
+        </CardHeader>
+      </Card>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -37,10 +44,25 @@ export default async function CreateUser(props: { searchParams: Promise<Message>
           <CardDescription>
             Enter the details for the new user account.
           </CardDescription>
-          <FormMessage message={searchParams} />
         </CardHeader>
         <CardContent>
-          <CreateUserForm tenantId={tenant?.id || ""} roles={roles} action={createInviteAction} />
+          <UserForm
+            user={{
+              id: "",
+              role_id: "",
+              first_name: "",
+              last_name: "",
+              tenant_id: tenant.id,
+              email: ""
+            }}
+            roles={roles}
+            footer={{
+              submit_text: "Create User",
+              pending_text: "Creating User...",
+              cancel_route: `/users`
+            }}
+            action={createInviteAction}
+          />
         </CardContent>
       </Card>
     </div>

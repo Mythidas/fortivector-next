@@ -21,34 +21,37 @@ import {
 } from "@/lib/components/ui/select";
 import { Checkbox } from "@/lib/components/ui/checkbox";
 import { Separator } from "@/lib/components/ui/separator";
-import { Roles } from "@/lib/schema/database";
+import { Roles, Users } from "@/lib/schema/database";
 import { userFormSchema, UserFormValues } from "@/lib/schema/forms";
-import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
 import { startTransition, useActionState, useState } from "react";
+import { FormFooterProps, FormState } from "@/lib/types";
+import FormAlert from "@/lib/components/ux/form-alert";
+import FormFooter from "@/lib/components/ux/form-footer";
+import { useUser } from "@/lib/context/user-context";
 
 type Props = {
-  tenantId: string;
+  user: Users;
   roles: Roles[];
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
-  ) => Promise<{ errors: ZodIssue[] }>;
+  ) => Promise<FormState<UserFormValues>>;
 };
 
-export default function CreateUserForm({ tenantId, roles, action }: Props) {
-  const [state, formAction] = useActionState(action, { errors: [] });
+export default function UserForm({ user, roles, footer, action }: Props) {
+  const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
+  const context = useUser();
 
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      email: "",
-      first_name: "",
-      last_name: "",
-      role_id: "",
-      tenant_id: tenantId,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      role_id: user.role_id,
+      tenant_id: user.tenant_id,
       send_email: false
     }
   });
@@ -58,6 +61,7 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
       <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
         setPending(true);
         const formData = new FormData();
+        formData.append('id', user.id);
         formData.append('email', data.email);
         formData.append('first_name', data.first_name);
         formData.append('last_name', data.last_name);
@@ -69,14 +73,8 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
           formAction(formData);
         })
       })}>
+        <FormAlert errors={state.errors} />
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="tenant_id"
-            render={({ field }) => (
-              <input hidden id="tenant_id" name="tenant_id" defaultValue={tenantId} />
-            )}
-          />
           <FormField
             control={form.control}
             name="first_name"
@@ -113,7 +111,7 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" {...field} />
+                <Input placeholder="john@example.com" {...field} disabled={context?.id === user.id} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -128,7 +126,7 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Role</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
+              <Select onValueChange={field.onChange} defaultValue={field.value} {...field} disabled={context?.id === user.id}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a role" />
@@ -155,7 +153,7 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
           control={form.control}
           name="send_email"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4" hidden={context?.id === user.id}>
               <FormControl>
                 <Checkbox
                   checked={field.value}
@@ -172,14 +170,10 @@ export default function CreateUserForm({ tenantId, roles, action }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          <RouteButton variant="outline" route="/users">
-            Cancel
-          </RouteButton>
-          <SubmitButton variant="default" pendingText="Creating User..." pending={pending}>
-            Create User
-          </SubmitButton>
-        </div>
+        <FormFooter
+          pending={pending}
+          {...footer}
+        />
       </form>
     </Form>
   );

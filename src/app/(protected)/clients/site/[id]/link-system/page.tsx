@@ -7,15 +7,15 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/lib/server/db";
-import { FormMessage, Message } from "@/lib/components/form-message";
+import * as db from "@/utils/server/db";
+
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import CreateSystemLinkForm from "@/lib/components/forms/create-system-link-form";
 import { createSiteSystemLinksAction } from "@/lib/actions/client-actions";
 
 type Props = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<Message>;
+
 }
 
 export default async function LinkSystem(props: Props) {
@@ -55,7 +55,7 @@ export default async function LinkSystem(props: Props) {
           <CardDescription>
             Enter the details for the new system link.
           </CardDescription>
-          <FormMessage message={searchParams} />
+
         </CardHeader>
         <CardContent>
           <CreateSystemLinkForm site={site} systems={systems} action={createSiteSystemLinksAction} />

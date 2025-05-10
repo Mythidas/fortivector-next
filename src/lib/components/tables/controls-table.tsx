@@ -16,11 +16,11 @@ import {
   TableRow,
 } from "@/lib/components/ui/table";
 import { Joystick, MoreHorizontal, UserPlus } from "lucide-react";
-import RouteButton from "@/lib/components/ui/protected/route-button";
+import RouteButton from "@/lib/components/ux/route-button";
 import { ControlEvidenceRequirements, Controls, ControlsToNSTSubcategories, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteControl } from "@/lib/client/db";
+import { deleteControl } from "@/utils/client/db";
 
 type Props = {
   system: Systems;

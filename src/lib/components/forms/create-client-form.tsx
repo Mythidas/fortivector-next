@@ -14,11 +14,11 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { clientFormSchema, ClientFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
+import RouteButton from "@/lib/components/ux/route-button";
+import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { FormState } from "@/lib/types";
-import FormAlert from "../ui/form-alert";
+import FormAlert from "../ux/form-alert";
 
 type Props = {
   tenantId: string;

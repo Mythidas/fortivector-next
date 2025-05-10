@@ -6,7 +6,7 @@ import {
   CardContent,
 } from "@/lib/components/ui/card";
 import { FolderCog } from "lucide-react";
-import RouteButton from "@/lib/components/ui/protected/route-button";
+import RouteButton from "@/lib/components/ux/route-button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";

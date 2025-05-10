@@ -8,7 +8,7 @@ import {
 import { deleteFormSchema, DeleteFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
-import FormAlert from "../ui/form-alert";
+import FormAlert from "../ux/form-alert";
 import RouteButton from "../ui/protected/route-button";
 import { SubmitButton } from "../submit-button";
 

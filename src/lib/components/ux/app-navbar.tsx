@@ -1,6 +1,6 @@
-import ModeToggle from "@/lib/components/mode-toggle";
-import HeaderAuth from "@/lib/components/header-auth";
-import { SidebarTrigger } from "./ui/sidebar";
+import ModeToggle from "@/lib/components/ux/mode-toggle";
+import HeaderAuth from "@/lib/components/ux/header-auth";
+import { SidebarTrigger } from "../ui/sidebar";
 
 export default function AppNavbar() {
   return (

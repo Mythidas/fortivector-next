@@ -13,12 +13,12 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { controlEvidenceFormSchema, ControlEvidenceFormValues, systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
+import RouteButton from "@/lib/components/ux/route-button";
+import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { ControlEvidenceRequirements, Controls, Systems } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
-import FormAlert from "../ui/form-alert";
+import FormAlert from "../ux/form-alert";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { ScrollArea } from "@/lib/components/ui/scroll-area";
 import { Button } from "@/lib/components/ui/button";

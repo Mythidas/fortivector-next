@@ -30,7 +30,7 @@ import { useState } from "react";
 import { Badge } from "@/lib/components/ui/badge";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import DropDownItem from "@/lib/components/ui/protected/drop-down-item";
+import DropDownItem from "@/lib/components/ux/drop-down-item";
 
 export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites: UserInvites[] }) {
   const [search, setSearch] = useState("");

@@ -10,12 +10,12 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { controlNstFormSchema, ControlNstFormValues } from "@/lib/schema/forms";
-import RouteButton from "@/lib/components/ui/protected/route-button";
-import { SubmitButton } from "@/lib/components/submit-button";
+import RouteButton from "@/lib/components/ux/route-button";
+import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { Controls, ControlsToNSTSubcategories, NSTSubcategories } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
-import FormAlert from "../ui/form-alert";
+import FormAlert from "../ux/form-alert";
 import { ScrollArea } from "@/lib/components/ui/scroll-area";
 import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, X } from "lucide-react";

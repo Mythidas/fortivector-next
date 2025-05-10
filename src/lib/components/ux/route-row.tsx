@@ -5,22 +5,28 @@ import { Button } from "@/lib/components/ui/button";
 import { useRouter } from "next/navigation";
 import { AccessLevel, AccessModule } from "@/lib/types";
 import { hasAccess, useUser } from "@/lib/context/user-context";
+import { TableRow } from "@/lib/components/ui/table";
 
-type RouteButtonProps = {
+type Props = {
   route: string;
-  children: React.ReactNode;
   module?: AccessModule;
   level?: AccessLevel;
   disabled?: boolean;
-} & React.ComponentProps<typeof Button>; // inherit all Button props
+} & React.ComponentProps<typeof TableRow>; // inherit all props
 
-export default function RouteButton({ route, children, module, level, disabled, ...props }: RouteButtonProps) {
+export default function RouteRow({ route, children, module, level, disabled, ...props }: Props) {
   const router = useRouter();
   const context = useUser();
 
+  const handleClick = () => {
+    if (!disabled && (module && level && hasAccess(context, module, level))) {
+      router.push(route);
+    }
+  }
+
   return (
-    <Button onClick={() => router.push(route)} {...props} disabled={disabled || (module && level && !hasAccess(context, module, level))}>
+    <TableRow onClick={handleClick} {...props}>
       {children}
-    </Button>
+    </TableRow>
   );
 }

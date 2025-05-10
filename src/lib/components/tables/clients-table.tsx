@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/lib/components/ui/table";
 import { Building2 } from "lucide-react";
-import RouteButton from "@/lib/components/ui/protected/route-button";
+import RouteButton from "@/lib/components/ux/route-button";
 import { Clients } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

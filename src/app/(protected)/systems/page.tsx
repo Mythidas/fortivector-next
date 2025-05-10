@@ -1,4 +1,4 @@
-import { getSystems } from "@/lib/server/db";
+import { getSystems } from "@/utils/server/db";
 import SystemsTable from "@/lib/components/tables/systems-table";
 import { createClient } from "@/utils/supabase/server";
 

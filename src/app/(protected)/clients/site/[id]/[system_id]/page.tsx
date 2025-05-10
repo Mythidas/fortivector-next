@@ -1,4 +1,4 @@
-import { getClient, getSite, getSites, getSiteSytemView } from "@/lib/server/db";
+import { getClient, getSite, getSites, getSiteSytemView } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";

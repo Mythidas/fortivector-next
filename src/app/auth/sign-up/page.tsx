@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getUserInvite } from "@/lib/server/db";
+import { getUserInvite } from "@/utils/server/db";
 import InviteForm from "@/lib/components/forms/invite-form";
 
 
@@ -25,7 +25,7 @@ export default async function Login(props: {
     return (
       <Card>
         <CardContent>
-          <FormMessage message={searchParams} />
+
         </CardContent>
       </Card>
     );
@@ -39,7 +39,7 @@ export default async function Login(props: {
     return (
       <Card>
         <CardContent>
-          <FormMessage message={searchParams} />
+
         </CardContent>
       </Card>
     );
@@ -49,7 +49,7 @@ export default async function Login(props: {
     <Card className="w-1/3">
       <CardHeader>
         <CardTitle>Complete Invite</CardTitle>
-        <FormMessage message={searchParams} />
+
       </CardHeader>
       <CardContent className="flex flex-col gap-2 [&>input]:mb-3">
         <InviteForm inviteId={invite?.invite_token || ""} action={registerAction} />

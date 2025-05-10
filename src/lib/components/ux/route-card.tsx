@@ -9,7 +9,7 @@ type Props = {
   level: AccessLevel;
 } & React.ComponentProps<"div">
 
-export default function ProtectedCard({ route, module, level, className, ...rest }: Props) {
+export default function RouteCard({ route, module, level, className, ...rest }: Props) {
   const router = useRouter();
   const context = useUser();
 

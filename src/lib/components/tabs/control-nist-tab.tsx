@@ -3,7 +3,7 @@ import { Controls } from "@/lib/schema/database";
 import ControlNISTForm from "../forms/control-nist-form";
 import { updateControlNistAction } from "@/lib/actions/system-actions";
 import { createClient } from "@/utils/supabase/server";
-import { getControlToNSTSubcategories, getNISTSubcategories } from "@/lib/server/db";
+import { getControlToNSTSubcategories, getNISTSubcategories } from "@/utils/server/db";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
 type Props = {

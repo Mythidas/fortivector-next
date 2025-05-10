@@ -5,7 +5,7 @@ import {
   NavigationMenuList,
 } from "@/lib/components/ui/navigation-menu"
 import Link from "next/link";
-import HeaderAuth from "@/lib/components/header-auth";
+import HeaderAuth from "@/lib/components/ux/header-auth";
 
 
 export default function Layout({
