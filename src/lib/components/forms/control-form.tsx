@@ -35,25 +35,15 @@ export default function ControlForm({ control, cancel_route, submit_text, pendin
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
-    if (pending) {
-      setPending(false);
-    }
+    setPending(false);
   }, [state]);
 
 
   const form = useForm<ControlFormValues>({
     resolver: zodResolver(controlFormSchema),
     defaultValues: {
-      id: control.id,
-      title: state.values.title || control.title,
-      description: state.values.description || control.description,
-      system_id: state.values.system_id || control.system_id,
-      tenant_id: state.values.tenant_id || control.tenant_id,
-      control_code: state.values.control_code || control.control_code,
-      status: state.values.status || control.status,
-      revision: state.values.revision || control.revision,
-      enforcement_method: state.values.enforcement_method || control.enforcement_method,
-      enforcement_location: state.values.enforcement_location || control.enforcement_location,
+      ...control,
+      ...state.values
     }
   });
 

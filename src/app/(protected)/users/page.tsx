@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/ta
 import UsersTable from "@/lib/components/tables/users-table";
 import RolesTable from "@/lib/components/tables/roles-table";
 import InvitesTable from "@/lib/components/tables/invites-table";
+import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
 
 type Props = {
   searchParams: Promise<{ tab: string }>;
@@ -24,9 +25,9 @@ export default async function UsersPage({ searchParams }: Props) {
 
       <Tabs defaultValue={sParams.tab || "users"} className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="roles">Roles</TabsTrigger>
-          <TabsTrigger value="invites">Invites</TabsTrigger>
+          <RouteTabsTrigger value="users">Users</RouteTabsTrigger>
+          <RouteTabsTrigger value="roles">Roles</RouteTabsTrigger>
+          <RouteTabsTrigger value="invites">Invites</RouteTabsTrigger>
         </TabsList>
         <TabsContent value="users">
           <UsersTable users={users} roles={roles} />

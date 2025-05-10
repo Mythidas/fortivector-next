@@ -6,17 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/lib/components/ui/card";
-import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import * as db from "@/utils/server/db";
-import RouteButton from "@/lib/components/ux/route-button";
-
-import { createInviteAction, createRoleAction } from "@/lib/actions/user-actions";
-import CreateRoleForm from "@/lib/components/forms/create-role-form";
+import { createRoleAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
+import RoleForm from "@/lib/components/forms/role-form";
 
-export default async function CreateRole(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+export default async function CreateRole() {
   const supabase = await createClient();
   const tenant = await db.getTenant(supabase);
   if (!tenant) {
@@ -48,7 +44,29 @@ export default async function CreateRole(props: { searchParams: Promise<Message>
 
         </CardHeader>
         <CardContent>
-          <CreateRoleForm tenantId={tenant.id} action={createRoleAction} />
+          <RoleForm
+            role={{
+              id: "",
+              tenant_id: tenant.id,
+              description: "",
+              name: "",
+              access_rights: {
+                users: "read",
+                roles: "read",
+                dashboard: "read",
+                "clients": "read",
+                "controls": "read",
+                "sites": "read",
+                "systems": "read"
+              }
+            }}
+            footer={{
+              submit_text: "Create Role",
+              pending_text: "Creating Role",
+              cancel_route: "/users?tab=roles"
+            }}
+            action={createRoleAction}
+          />
         </CardContent>
       </Card>
     </div>

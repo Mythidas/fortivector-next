@@ -1,3 +1,4 @@
+import { accessLevels, accessModules } from "@/lib/types";
 import { z } from "zod";
 
 export const deleteFormSchema = z.object({
@@ -33,27 +34,15 @@ export const signInFormSchema = z.object({
 
 export type SignInFormValues = z.infer<typeof signInFormSchema>;
 
-export const createRoleFormSchema = z.object({
+export const roleFormSchema = z.object({
+  id: z.string().optional(),
+  tenant_id: z.string(),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  user_access: z.string(),
-  role_access: z.string(),
-  dashboard_access: z.string(),
-  tenant_id: z.string()
+  access_rights: z.record(z.enum(accessModules), z.enum(accessLevels))
 });
 
-export type CreateRoleFormValues = z.infer<typeof createRoleFormSchema>;
-
-export const editRoleFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
-  user_access: z.string(),
-  role_access: z.string(),
-  dashboard_access: z.string(),
-  role_id: z.string()
-});
-
-export type EditRoleFormValues = z.infer<typeof editRoleFormSchema>;
+export type RoleFormValues = z.infer<typeof roleFormSchema>;
 
 export const systemFormSchema = z.object({
   id: z.string().optional(),

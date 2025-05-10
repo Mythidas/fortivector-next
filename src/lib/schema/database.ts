@@ -1,17 +1,13 @@
 // Auto-generated interfaces from Supabase Schema
 
-import { AccessLevel, ControlStatus, EnforcementMethod, EvidenceType } from "@/lib/types";
+import { AccessLevel, AccessModule, ControlStatus, EnforcementMethod, EvidenceType } from "@/lib/types";
 
 export interface Roles {
   id: string;
-  tenant_id?: string;
+  tenant_id: string;
   name: string;
   description: string;
-  access_rights?: {
-    users: AccessLevel;
-    roles: AccessLevel;
-    dashboard: AccessLevel;
-  };
+  access_rights?: Record<AccessModule, AccessLevel>;
 };
 
 export interface Systems {

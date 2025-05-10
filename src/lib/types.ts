@@ -11,8 +11,12 @@ export type FormFooterProps = {
 }
 
 // ROLES
-export type AccessModule = "users" | "roles" | "dashboard" | "systems" | "controls" | "clients" | "sites";
-export type AccessLevel = "none" | "read" | "edit" | "full";
+
+export const accessModules = ["users", "roles", "dashboard", "systems", "controls", "clients", "sites"] as const;
+export const accessLevels = ["none", "read", "edit", "full"] as const;
+
+export type AccessModule = typeof accessModules[number];
+export type AccessLevel = typeof accessLevels[number];
 
 // CONTROLS
 export type EnforcementMethod = "manual" | "scripted" | "auto-scanned" | "vendor-managed";

@@ -16,7 +16,7 @@ export default function FormFooter({ cancel_route, submit_text, pending_text, pe
       <Separator />
       <div className="flex justify-end gap-3">
         {cancel_route &&
-          <RouteButton variant="outline" route={cancel_route} disabled={pending}>
+          <RouteButton variant="outline" type="button" route={cancel_route} disabled={pending}>
             Cancel
           </RouteButton>
         }

@@ -23,7 +23,7 @@ import { Checkbox } from "@/lib/components/ui/checkbox";
 import { Separator } from "@/lib/components/ui/separator";
 import { Roles, Users } from "@/lib/schema/database";
 import { userFormSchema, UserFormValues } from "@/lib/schema/forms";
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "@/lib/components/ux/form-alert";
 import FormFooter from "@/lib/components/ux/form-footer";
@@ -44,15 +44,15 @@ export default function UserForm({ user, roles, footer, action }: Props) {
   const [pending, setPending] = useState(false);
   const context = useUser();
 
+  useEffect(() => {
+    setPending(false);
+  }, [state])
+
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      email: user.email,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      role_id: user.role_id,
-      tenant_id: user.tenant_id,
-      send_email: false
+      ...user,
+      ...state.values
     }
   });
 
