@@ -1,17 +1,20 @@
 import { getRoles, getUserInvites, getUsers } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
-import UsersTab from "@/lib/components/tabs/users-tab";
-import RolesTab from "@/lib/components/tabs/roles-tab";
-import InvitesTab from "@/lib/components/tabs/invites-tab";
+import UsersTable from "@/lib/components/tables/users-table";
+import RolesTable from "@/lib/components/tables/roles-table";
+import InvitesTable from "@/lib/components/tables/invites-table";
 
-export default async function UsersPage(props: { searchParams: Promise<{ tab: string }> }) {
+type Props = {
+  searchParams: Promise<{ tab: string }>;
+}
+
+export default async function UsersPage({ searchParams }: Props) {
   const supabase = await createClient();
   const users = await getUsers(supabase);
   const roles = await getRoles(supabase);
   const invites = await getUserInvites(supabase);
-  const { data: currentUser } = await supabase.auth.getUser();
-  const searchParams = await props.searchParams;
+  const sParams = await searchParams;
 
   return (
     <div className="space-y-6">
@@ -19,15 +22,21 @@ export default async function UsersPage(props: { searchParams: Promise<{ tab: st
         <h1 className="text-3xl font-bold tracking-tight">Users & Roles</h1>
       </div>
 
-      <Tabs defaultValue={searchParams.tab || "users"} className="w-full">
+      <Tabs defaultValue={sParams.tab || "users"} className="w-full">
         <TabsList className="grid w-full max-w-md grid-cols-3">
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="roles">Roles</TabsTrigger>
           <TabsTrigger value="invites">Invites</TabsTrigger>
         </TabsList>
-        <UsersTab users={users} roles={roles} currentUser={currentUser.user?.id || ""} />
-        <RolesTab users={users} roles={roles} />
-        <InvitesTab invites={invites} roles={roles} />
+        <TabsContent value="users">
+          <UsersTable users={users} roles={roles} />
+        </TabsContent>
+        <TabsContent value="roles">
+          <RolesTable users={users} roles={roles} />
+        </TabsContent>
+        <TabsContent value="invites">
+          <InvitesTable invites={invites} roles={roles} />
+        </TabsContent>
       </Tabs>
     </div>
   );

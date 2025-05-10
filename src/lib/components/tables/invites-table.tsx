@@ -1,6 +1,5 @@
 'use client';
 
-import { TabsContent } from "@/lib/components/ui/tabs";
 import { Input } from "@/lib/components/ui/input";
 import { toast } from "sonner";
 import { Button } from "@/lib/components/ui/button";
@@ -32,7 +31,12 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
 
-export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites: UserInvites[] }) {
+type Props = {
+  roles: Roles[];
+  invites: UserInvites[];
+}
+
+export default function InvitesTable({ invites, roles }: Props) {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -63,7 +67,7 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
   };
 
   return (
-    <TabsContent value="invites">
+    <>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center w-full max-w-sm space-x-2">
           <Input
@@ -165,6 +169,6 @@ export default function InvitesTab({ invites, roles }: { roles: Roles[]; invites
           </Table>
         </CardContent>
       </Card>
-    </TabsContent>
+    </>
   );
 }

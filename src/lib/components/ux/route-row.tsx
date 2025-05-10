@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-import { Button } from "@/lib/components/ui/button";
 import { useRouter } from "next/navigation";
 import { AccessLevel, AccessModule } from "@/lib/types";
 import { hasAccess, useUser } from "@/lib/context/user-context";

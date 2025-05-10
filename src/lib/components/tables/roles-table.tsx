@@ -1,6 +1,5 @@
 'use client';
 
-import { TabsContent } from "@/lib/components/ui/tabs";
 import { Input } from "@/lib/components/ui/input";
 import { Button } from "@/lib/components/ui/button";
 import {
@@ -24,7 +23,12 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
 
-export default function RolesTab({ users, roles }: { users: Users[], roles: Roles[] }) {
+type Props = {
+  users: Users[];
+  roles: Roles[];
+}
+
+export default function RolesTable({ users, roles }: Props) {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -54,7 +58,7 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
   };
 
   return (
-    <TabsContent value="roles">
+    <>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center w-full max-w-sm space-x-2">
           <Input
@@ -105,6 +109,6 @@ export default function RolesTab({ users, roles }: { users: Users[], roles: Role
           </Card>
         ))}
       </div>
-    </TabsContent>
+    </>
   );
 }
