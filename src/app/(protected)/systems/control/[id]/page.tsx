@@ -1,12 +1,12 @@
-import { getControl, getControls, getControlsToNSTSubcategories, getSystem } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
-import ControlsTab from "@/lib/components/tabs/controls-tab";
 import ControlSettingsTab from "@/lib/components/tabs/control-settings-tab";
 import ControlEvidenceTab from "@/lib/components/tabs/control-evidence-tab";
 import ControlNistTab from "@/lib/components/tabs/control-nist-tab";
+import { getControl } from "@/lib/functions/database/controls";
+import { getSystem } from "@/lib/functions/database/systems";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;

@@ -1,10 +1,10 @@
 
 import { TabsContent } from "@/lib/components/ui/tabs";
 import { createClient } from "@/utils/supabase/server";
-import { getSiteControlsView, getSiteSytemViews } from "@/utils/server/db";
 import { SiteSystemsView } from "@/lib/schema/views";
 import { Card, CardHeader } from "../ui/card";
 import SiteControlsTable from "../tables/site-controls-table";
+import { getSiteControlsView } from "@/lib/functions/database/controls";
 
 type Props = {
   site_view: SiteSystemsView;

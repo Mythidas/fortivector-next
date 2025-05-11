@@ -6,21 +6,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/lib/components/ui/card";
-import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
-import RouteButton from "@/lib/components/ux/route-button";
-
-import { createInviteAction } from "@/lib/actions/user-actions";
-import CreateUserForm from "@/lib/components/forms/user-form";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import CreateClientForm from "@/lib/components/forms/create-client-form";
 import { createClientAction } from "@/lib/actions/client-actions";
+import { getTenant } from "@/lib/functions/database/tenant";
 
-export default async function CreateClient(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+export default async function CreateClient() {
   const supabase = await createClient();
-  const tenant = await db.getTenant(supabase);
+  const tenant = await getTenant(supabase);
 
   if (!tenant) {
     return (

@@ -6,10 +6,10 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
 import { editRoleAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import RoleForm from "@/lib/components/forms/role-form";
+import { getRole } from "@/lib/functions/database/roles";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -18,7 +18,7 @@ type Props = {
 export default async function EditRole({ params }: Props) {
   const pParams = await params;
   const supabase = await createClient();
-  const role = await db.getRole(supabase, pParams.id);
+  const role = await getRole(supabase, pParams.id);
   if (!role) {
     return (
       <Card>

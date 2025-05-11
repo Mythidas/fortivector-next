@@ -1,10 +1,11 @@
-import { getRoles, getUserInvites, getUsers } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import UsersTable from "@/lib/components/tables/users-table";
 import RolesTable from "@/lib/components/tables/roles-table";
 import InvitesTable from "@/lib/components/tables/invites-table";
 import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
+import { getUserInvites, getUsers } from "@/lib/functions/database/users";
+import { getRoles } from "@/lib/functions/database/roles";
 
 type Props = {
   searchParams: Promise<{ tab: string }>;

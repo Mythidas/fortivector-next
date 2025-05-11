@@ -17,21 +17,14 @@ import { startTransition } from 'react';
 import { Textarea } from "@/lib/components/ui/textarea";
 import { Separator } from "@/lib/components/ui/separator";
 import { Card, CardContent } from "@/lib/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/lib/components/ui/select";
 import { InfoIcon, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip";
-import { Roles } from "@/lib/schema/database";
 import { AccessModule, FormFooterProps, FormState } from "@/lib/types";
 import FormFooter from "@/lib/components/ux/form-footer";
 import FormAlert from "@/lib/components/ux/form-alert";
 import { accessLevels, accessModules, type AccessLevel } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Roles } from "@/lib/schema/database/roles";
 
 type Props = {
   role: Roles;

@@ -17,11 +17,12 @@ import {
 } from "@/lib/components/ui/dropdown-menu";
 import RouteButton from "@/lib/components/ux/route-button";
 import { Badge } from "@/lib/components/ui/badge";
-import { Roles, Users } from "@/lib/schema/database";
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
+import { Users } from "@/lib/schema/database/users";
+import { Roles } from "@/lib/schema/database/roles";
 
 type Props = {
   users: Users[];

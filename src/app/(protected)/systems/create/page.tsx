@@ -7,16 +7,15 @@ import {
 } from "@/lib/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
 import RouteButton from "@/lib/components/ux/route-button";
 
 import SystemForm from "@/lib/components/forms/system-form";
 import { createSystemAction } from "@/lib/actions/system-actions";
+import { getTenant } from "@/lib/functions/database/tenant";
 
-export default async function CreateSystem(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+export default async function CreateSystem() {
   const supabase = await createClient();
-  const tenant = await db.getTenant(supabase);
+  const tenant = await getTenant(supabase);
 
   if (!tenant) {
     return (

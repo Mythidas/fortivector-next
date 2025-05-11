@@ -12,11 +12,10 @@ import {
   FormMessage,
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
-import { controlEvidenceFormSchema, ControlEvidenceFormValues, systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
+import { controlEvidenceFormSchema, ControlEvidenceFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
-import { ControlEvidenceRequirements, Controls, Systems } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
@@ -24,6 +23,7 @@ import { ScrollArea } from "@/lib/components/ui/scroll-area";
 import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, Plus, Trash2, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
+import { ControlEvidenceRequirements, Controls } from "@/lib/schema/database/controls";
 
 type Props = {
   control: Controls;

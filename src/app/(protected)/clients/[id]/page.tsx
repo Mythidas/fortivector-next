@@ -1,9 +1,9 @@
-import { getClient, getSites } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
+import { getClient, getSites } from "@/lib/functions/database/clients";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -27,6 +27,7 @@ export default async function ClientPage(props: Props) {
     )
   }
   const sites = await getSites(supabase, client?.id);
+  // TODO move sites pull to the Client Sites tab
 
   return (
     <div className="space-y-6">

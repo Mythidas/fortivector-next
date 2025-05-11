@@ -1,5 +1,5 @@
-import { getClients } from "@/utils/server/db";
 import ClientsTable from "@/lib/components/tables/clients-table";
+import { getClients } from "@/lib/functions/database/clients";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function ClientsPage() {

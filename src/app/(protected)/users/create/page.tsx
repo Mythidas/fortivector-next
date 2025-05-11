@@ -7,16 +7,17 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
 
 import { createInviteAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import UserForm from "@/lib/components/forms/user-form";
+import { getTenant } from "@/lib/functions/database/tenant";
+import { getRoles } from "@/lib/functions/database/roles";
 
 export default async function CreateUser() {
   const supabase = await createClient();
-  const roles = await db.getRoles(supabase);
-  const tenant = await db.getTenant(supabase);
+  const roles = await getRoles(supabase);
+  const tenant = await getTenant(supabase);
 
   if (!roles || !tenant) {
     return (

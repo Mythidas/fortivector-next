@@ -15,7 +15,6 @@ import { siteSystemLinkFormSchema, SiteSystemLinkFormValues } from "@/lib/schema
 import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { Sites, Systems } from "@/lib/schema/database";
 import { FormState } from "@/lib/types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/lib/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/lib/components/ui/command";
@@ -25,6 +24,8 @@ import { ChevronsUpDown, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import FormAlert from "../ux/form-alert";
+import { Sites } from "@/lib/schema/database/clients";
+import { Systems } from "@/lib/schema/database/systems";
 
 type Props = {
   site: Sites;

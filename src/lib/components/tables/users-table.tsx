@@ -12,12 +12,13 @@ import { MoreHorizontal, UserPlus } from "lucide-react";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Roles, Users } from "@/lib/schema/database";
-import { deleteUser } from "@/utils/client/db";
 import { useUser } from "@/lib/context/user-context";
 import { Input } from "@/lib/components/ui/input";
 import RouteButton from "@/lib/components/ux/route-button";
 import { Card, CardContent } from "@/lib/components/ui/card";
+import { Users } from "@/lib/schema/database/users";
+import { Roles } from "@/lib/schema/database/roles";
+import { deleteUser } from "@/lib/functions/database/users";
 
 type Props = {
   users: Users[];

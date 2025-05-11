@@ -8,9 +8,9 @@ import {
 import { FolderCog } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
 import { useState } from "react";
-import { Systems } from "@/lib/schema/database";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
+import { Systems } from "@/lib/schema/database/systems";
 
 interface Props {
   systems: Systems[]

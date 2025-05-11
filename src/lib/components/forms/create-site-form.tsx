@@ -18,8 +18,8 @@ import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { FormState } from "@/lib/types";
-import { Clients } from "@/lib/schema/database";
 import FormAlert from "../ux/form-alert";
+import { Clients } from "@/lib/schema/database/clients";
 
 type Props = {
   client: Clients;

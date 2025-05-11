@@ -13,7 +13,6 @@ import { controlNstFormSchema, ControlNstFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
-import { Controls, ControlsToNSTSubcategories, NSTSubcategories } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { ScrollArea } from "@/lib/components/ui/scroll-area";
@@ -22,6 +21,8 @@ import { ChevronsUpDown, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
+import { Controls, ControlsToNSTSubcategories } from "@/lib/schema/database/controls";
+import { NSTSubcategories } from "@/lib/schema/database/nist";
 
 type Props = {
   control: Controls;

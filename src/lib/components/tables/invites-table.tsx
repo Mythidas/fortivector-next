@@ -24,12 +24,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/lib/components/ui/dropdown-menu";
-import { Roles, UserInvites } from "@/lib/schema/database";
 import { useState } from "react";
 import { Badge } from "@/lib/components/ui/badge";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
+import { Roles } from "@/lib/schema/database/roles";
+import { UserInvites } from "@/lib/schema/database/users";
 
 type Props = {
   roles: Roles[];

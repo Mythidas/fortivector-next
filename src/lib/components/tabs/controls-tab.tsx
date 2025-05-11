@@ -1,8 +1,8 @@
 import { TabsContent } from "@/lib/components/ui/tabs";
-import { Systems } from "@/lib/schema/database";
 import ControlsTable from "../tables/controls-table";
 import { createClient } from "@/utils/supabase/server";
-import { getControlsEvidenceRequirements, getControlsBySystem, getControlsToNSTSubcategories } from "@/utils/server/db";
+import { Systems } from "@/lib/schema/database/systems";
+import { getControlsBySystem, getControlsEvidenceRequirements, getControlsToNSTSubcategories } from "@/lib/functions/database/controls";
 
 type Props = {
   system: Systems;

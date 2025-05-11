@@ -17,21 +17,21 @@ import {
 } from "@/lib/components/ui/table";
 import { FolderCog, HousePlus } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
-import { Clients, Sites, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { SiteSystemView } from "@/lib/schema/views";
+import { Sites } from "@/lib/schema/database/clients";
+import { SiteSystemsView } from "@/lib/schema/views";
 
 type Props = {
   site: Sites;
-  systems: SiteSystemView[];
+  systems: SiteSystemsView[];
 }
 
 export default function SiteSystemsTable({ site, systems }: Props) {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
-  function filterSystems(system: SiteSystemView) {
+  function filterSystems(system: SiteSystemsView) {
     const lowerSearch = search.toLowerCase();
     const lowerName = system.system_name.toLowerCase();
     const lowerDescription = system.system_description.toLowerCase();

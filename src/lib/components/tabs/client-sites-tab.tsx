@@ -17,9 +17,9 @@ import {
 } from "@/lib/components/ui/table";
 import { HousePlus } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
-import { Clients, Sites } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Clients, Sites } from "@/lib/schema/database/clients";
 
 type Props = {
   client: Clients;

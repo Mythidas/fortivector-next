@@ -7,21 +7,20 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
-
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { createClientAction, createSiteAction } from "@/lib/actions/client-actions";
 import CreateSiteForm from "@/lib/components/forms/create-site-form";
+import { getClient } from "@/lib/functions/database/clients";
 
 type Props = {
   params: Promise<{ id: string }>;
 
 }
 
-export default async function CreateClient(props: Props) {
-  const params = await props.params;
+export default async function CreateClient({ params }: Props) {
+  const pParams = await params;
   const supabase = await createClient();
-  const client = await db.getClient(supabase, params.id);
+  const client = await getClient(supabase, pParams.id);
   if (!client) {
     return (
       <Card>

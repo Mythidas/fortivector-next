@@ -14,24 +14,20 @@ import {
   BreadcrumbSeparator,
 } from "@/lib/components/ui/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
-import * as db from "@/utils/server/db";
 
 import { createControlAction } from "@/lib/actions/system-actions";
 import { Separator } from "@/lib/components/ui/separator";
 import ControlForm from "@/lib/components/forms/control-form";
+import { getSystem } from "@/lib/functions/database/systems";
 
-type Params = Promise<{ id: string }>;
-type SearchParams = Promise<Message>;
 type Props = {
-  params: Params;
-  searchParams: SearchParams;
+  params: Promise<{ id: string }>;
 };
 
 export default async function CreateControl(props: Props) {
   const params = await props.params;
-  const searchParams = await props.searchParams;
   const supabase = await createClient();
-  const system = await db.getSystem(supabase, params.id);
+  const system = await getSystem(supabase, params.id);
   if (!system) {
     return (
       <Card>

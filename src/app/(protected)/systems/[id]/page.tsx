@@ -1,4 +1,3 @@
-import { getControls, getControlsToNSTSubcategories, getSystem } from "@/utils/server/db";
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
@@ -9,6 +8,7 @@ import SystemForm from "@/lib/components/forms/system-form";
 import { deleteSystemAction, editSystemAction } from "@/lib/actions/system-actions";
 import DeleteForm from "@/lib/components/forms/delete-form";
 import { Separator } from "@/lib/components/ui/separator";
+import { getSystem } from "@/lib/functions/database/systems";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;

@@ -14,11 +14,11 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { systemFormSchema, SystemFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useState } from "react";
-import { Systems } from "@/lib/schema/database";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import FormFooter from "../ux/form-footer";
 import { Separator } from "../ui/separator";
+import { Systems } from "@/lib/schema/database/systems";
 
 type Props = {
   system: Systems;

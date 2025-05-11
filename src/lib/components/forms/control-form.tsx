@@ -15,12 +15,12 @@ import { controlFormSchema, ControlFormValues } from "@/lib/schema/forms";
 import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useEffect, useState } from "react";
-import { Controls } from "@/lib/schema/database";
 import { Separator } from "@/lib/components/ui/separator";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
 import { Textarea } from "@/lib/components/ui/textarea";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
+import { Controls } from "@/lib/schema/database/controls";
 
 type Props = {
   control: Controls;

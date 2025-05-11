@@ -1,10 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
-import { Controls } from "@/lib/schema/database";
 import ControlEvidenceForm from "../forms/control-evidence-form";
 import { updateEvidenceRequirementsAction } from "@/lib/actions/system-actions";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getControl, getControlEvidenceRequirements } from "@/utils/server/db";
+import { Controls } from "@/lib/schema/database/controls";
+import { getControlEvidenceRequirements } from "@/lib/functions/database/controls";
 
 type Props = {
   control: Controls

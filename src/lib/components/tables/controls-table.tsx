@@ -17,10 +17,10 @@ import {
 } from "@/lib/components/ui/table";
 import { Joystick, MoreHorizontal, UserPlus } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
-import { ControlEvidenceRequirements, Controls, ControlsToNSTSubcategories, Systems } from "@/lib/schema/database";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteControl } from "@/utils/client/db";
+import { Systems } from "@/lib/schema/database/systems";
+import { ControlEvidenceRequirements, Controls, ControlsToNSTSubcategories } from "@/lib/schema/database/controls";
 
 type Props = {
   system: Systems;

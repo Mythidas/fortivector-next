@@ -1,11 +1,11 @@
 import { TabsContent } from "@/lib/components/ui/tabs";
-import { Controls } from "@/lib/schema/database";
 import { deleteControlAction, editControlAction } from "@/lib/actions/system-actions";
 import { createClient } from "@/utils/supabase/server";
 import ControlForm from "../forms/control-form";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import DeleteForm from "../forms/delete-form";
 import { Separator } from "../ui/separator";
+import { Controls } from "@/lib/schema/database/controls";
 
 type Props = {
   control: Controls;

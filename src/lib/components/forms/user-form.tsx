@@ -21,13 +21,14 @@ import {
 } from "@/lib/components/ui/select";
 import { Checkbox } from "@/lib/components/ui/checkbox";
 import { Separator } from "@/lib/components/ui/separator";
-import { Roles, Users } from "@/lib/schema/database";
 import { userFormSchema, UserFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "@/lib/components/ux/form-alert";
 import FormFooter from "@/lib/components/ux/form-footer";
 import { useUser } from "@/lib/context/user-context";
+import { Users } from "@/lib/schema/database/users";
+import { Roles } from "@/lib/schema/database/roles";
 
 type Props = {
   user: Users;

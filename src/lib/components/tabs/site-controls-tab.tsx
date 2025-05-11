@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { getSiteControlsView } from "@/utils/server/db";
 import { SiteSystemsView } from "@/lib/schema/views";
 import SiteControlsTable from "../tables/site-controls-table";
+import { getSiteControlsView } from "@/lib/functions/database/controls";
 
 type Props = {
   system_view: SiteSystemsView;
