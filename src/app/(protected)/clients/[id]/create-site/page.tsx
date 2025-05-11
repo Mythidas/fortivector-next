@@ -9,7 +9,7 @@ import {
 import { createClient } from "@/utils/supabase/server";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { createClientAction, createSiteAction } from "@/lib/actions/client-actions";
-import CreateSiteForm from "@/lib/components/forms/create-site-form";
+import SiteForm from "@/lib/components/forms/site-form";
 import { getClient } from "@/lib/functions/database/clients";
 
 type Props = {
@@ -51,7 +51,7 @@ export default async function CreateClient({ params }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <CreateSiteForm client={client} action={createSiteAction} />
+          <SiteForm client={client} action={createSiteAction} />
         </CardContent>
       </Card>
     </div>

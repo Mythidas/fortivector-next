@@ -13,23 +13,24 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { clientFormSchema, ClientFormValues, siteFormSchema, SiteFormValues } from "@/lib/schema/forms";
-import { ZodIssue } from "zod";
 import RouteButton from "@/lib/components/ux/route-button";
 import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
-import { FormState } from "@/lib/types";
+import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { Clients } from "@/lib/schema/database/clients";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   client: Clients;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<SiteFormValues>>;
 };
 
-export default function CreateSiteForm({ client, action }: Props) {
+export default function SiteForm({ client, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -69,14 +70,10 @@ export default function CreateSiteForm({ client, action }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          <RouteButton variant="outline" route={`/clients/${client.id}?tab=sites`}>
-            Cancel
-          </RouteButton>
-          <SubmitButton variant="default" pendingText="Creating site..." pending={pending}>
-            Create Site
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

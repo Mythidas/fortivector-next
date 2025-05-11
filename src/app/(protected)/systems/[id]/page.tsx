@@ -62,8 +62,10 @@ export default async function SystemPage(props: Props) {
             <CardContent>
               <SystemForm
                 system={system}
-                submit_text="Update System"
-                pending_text="Updating System..."
+                footer={{
+                  submit_text: "Update System",
+                  pending_text: "Updating System..."
+                }}
                 action={editSystemAction}
               />
             </CardContent>

@@ -9,7 +9,7 @@ import {
 import { createClient } from "@/utils/supabase/server";
 
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
-import CreateSystemLinkForm from "@/lib/components/forms/create-system-link-form";
+import SystemLinkForm from "@/lib/components/forms/system-link-form";
 import { createSiteSystemLinksAction } from "@/lib/actions/client-actions";
 import { getClient, getSite } from "@/lib/functions/database/clients";
 import { getSystems } from "@/lib/functions/database/systems";
@@ -58,7 +58,7 @@ export default async function LinkSystem(props: Props) {
 
         </CardHeader>
         <CardContent>
-          <CreateSystemLinkForm site={site} systems={systems} action={createSiteSystemLinksAction} />
+          <SystemLinkForm site={site} systems={systems} action={createSiteSystemLinksAction} />
         </CardContent>
       </Card>
     </div>

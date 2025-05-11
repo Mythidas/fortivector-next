@@ -21,16 +21,18 @@ import { Textarea } from "@/lib/components/ui/textarea";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { Controls } from "@/lib/schema/database/controls";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   control: Controls;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlFormValues>>;
-} & FormFooterProps;
+};
 
-export default function ControlForm({ control, cancel_route, submit_text, pending_text, action }: Props) {
+export default function ControlForm({ control, footer, action }: Props) {
   const [state, formAction] = useActionState<FormState<ControlFormValues>, FormData>(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -200,17 +202,10 @@ export default function ControlForm({ control, cancel_route, submit_text, pendin
             </div>
           </div>
         </div>
-        <Separator />
-        <div className="flex justify-end gap-3">
-          {cancel_route &&
-            <RouteButton variant="outline" type="button" route={cancel_route}>
-              Cancel
-            </RouteButton>
-          }
-          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
-            {submit_text}
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

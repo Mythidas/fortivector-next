@@ -36,7 +36,7 @@ type Props = {
   ) => Promise<FormState<SiteSystemLinkFormValues>>;
 };
 
-export default function CreateSystemLinkForm({ site, systems, action }: Props) {
+export default function SystemLinkForm({ site, systems, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 

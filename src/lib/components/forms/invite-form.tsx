@@ -13,19 +13,21 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { inviteFormShema, InviteFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import { SubmitButton } from "../submit-button";
 import { useActionState, useState } from "react";
 import { startTransition } from 'react';
+import FormFooter from "@/lib/components/ux/form-footer";
+import { FormFooterProps } from "@/lib/types";
 
 type Props = {
   inviteId: string;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<{ errors: ZodIssue[] }>;
 };
 
-export default function InviteForm({ inviteId, action }: Props) {
+export default function InviteForm({ inviteId, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { errors: [] });
   const [pending, setPending] = useState(false);
 
@@ -71,11 +73,10 @@ export default function InviteForm({ inviteId, action }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          <SubmitButton variant="default" pendingText="Registering..." pending={pending}>
-            Register
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

@@ -58,9 +58,11 @@ export default async function CreateSystem() {
               name: "",
               is_system_defined: false
             }}
-            cancel_route="/systems"
-            submit_text="Create System"
-            pending_text="Creating System..."
+            footer={{
+              cancel_route: "/systems",
+              submit_text: "Create System",
+              pending_text: "Creating System..."
+            }}
             action={createSystemAction}
           />
         </CardContent>

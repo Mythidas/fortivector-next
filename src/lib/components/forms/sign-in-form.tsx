@@ -13,18 +13,20 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { signInFormSchema, SignInFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import { SubmitButton } from "../submit-button";
 import { useActionState, useState } from "react";
 import { startTransition } from 'react';
+import FormFooter from "@/lib/components/ux/form-footer";
+import { FormFooterProps } from "@/lib/types";
 
 type Props = {
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<{ errors: ZodIssue[] }>;
 };
 
-export default function SignInForm({ action }: Props) {
+export default function SignInForm({ footer, action }: Props) {
   const [state, formAction] = useActionState(action, { errors: [] });
   const [pending, setPending] = useState(false);
 
@@ -75,11 +77,10 @@ export default function SignInForm({ action }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          <SubmitButton variant="default" pendingText="Signing In..." pending={pending}>
-            Sign In
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

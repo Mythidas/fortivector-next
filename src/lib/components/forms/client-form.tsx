@@ -13,22 +13,21 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { clientFormSchema, ClientFormValues } from "@/lib/schema/forms";
-import { ZodIssue } from "zod";
-import RouteButton from "@/lib/components/ux/route-button";
-import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
-import { FormState } from "@/lib/types";
+import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   tenantId: string;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ClientFormValues>>;
 };
 
-export default function CreateClientForm({ tenantId, action }: Props) {
+export default function ClientForm({ tenantId, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -66,14 +65,10 @@ export default function CreateClientForm({ tenantId, action }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex justify-end gap-3">
-          <RouteButton variant="outline" route="/clients">
-            Cancel
-          </RouteButton>
-          <SubmitButton variant="default" pendingText="Creating client..." pending={pending}>
-            Create Client
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

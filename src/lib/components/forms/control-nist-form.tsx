@@ -23,18 +23,20 @@ import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import { Controls, ControlsToNSTSubcategories } from "@/lib/schema/database/controls";
 import { NSTSubcategories } from "@/lib/schema/database/nist";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   control: Controls;
   control_subcats: ControlsToNSTSubcategories[];
   nst_subcategories: NSTSubcategories[];
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlNstFormValues>>;
-} & FormFooterProps;
+};
 
-export default function ControlNISTForm({ control, nst_subcategories, control_subcats, cancel_route, submit_text, pending_text, action }: Props) {
+export default function ControlNISTForm({ control, nst_subcategories, control_subcats, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
   const [search, setSearch] = useState("");
@@ -189,16 +191,10 @@ export default function ControlNISTForm({ control, nst_subcategories, control_su
             </div>
           )}
         />
-        <div className="flex justify-end gap-3">
-          {cancel_route &&
-            <RouteButton variant="outline" route={cancel_route}>
-              Cancel
-            </RouteButton>
-          }
-          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
-            {submit_text}
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form >
   );

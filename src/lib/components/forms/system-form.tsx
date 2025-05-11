@@ -22,13 +22,14 @@ import { Systems } from "@/lib/schema/database/systems";
 
 type Props = {
   system: Systems;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<SystemFormValues>>;
-} & FormFooterProps;
+};
 
-export default function SystemForm({ system, cancel_route, submit_text, pending_text, action }: Props) {
+export default function SystemForm({ system, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -85,9 +86,7 @@ export default function SystemForm({ system, cancel_route, submit_text, pending_
         />
         <Separator />
         <FormFooter
-          cancel_route={cancel_route}
-          submit_text={submit_text}
-          pending_text={pending_text}
+          {...footer}
           pending={pending}
         />
       </form>

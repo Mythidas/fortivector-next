@@ -8,7 +8,7 @@ import {
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
-import CreateClientForm from "@/lib/components/forms/create-client-form";
+import ClientForm from "@/lib/components/forms/client-form";
 import { createClientAction } from "@/lib/actions/client-actions";
 import { getTenant } from "@/lib/functions/database/tenant";
 
@@ -45,7 +45,7 @@ export default async function CreateClient() {
 
         </CardHeader>
         <CardContent>
-          <CreateClientForm tenantId={tenant.id} action={createClientAction} />
+          <ClientForm tenantId={tenant.id} action={createClientAction} />
         </CardContent>
       </Card>
     </div>

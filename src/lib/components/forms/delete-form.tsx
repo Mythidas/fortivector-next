@@ -9,19 +9,19 @@ import { deleteFormSchema, DeleteFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
-import RouteButton from "../ui/protected/route-button";
-import { SubmitButton } from "../submit-button";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   id: string;
   url?: string;
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<DeleteFormValues>>;
-} & FormFooterProps;
+};
 
-export default function DeleteForm({ id, url, cancel_route, submit_text, pending_text, action }: Props) {
+export default function DeleteForm({ id, url, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -54,16 +54,10 @@ export default function DeleteForm({ id, url, cancel_route, submit_text, pending
         })
       })}>
         <FormAlert errors={state.errors} />
-        <div className="flex gap-3">
-          {cancel_route &&
-            <RouteButton variant="outline" route={cancel_route}>
-              Cancel
-            </RouteButton>
-          }
-          <SubmitButton variant="destructive" pendingText={pending_text} pending={pending}>
-            {submit_text}
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );

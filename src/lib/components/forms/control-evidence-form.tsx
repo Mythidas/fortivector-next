@@ -24,17 +24,19 @@ import { Button } from "@/lib/components/ui/button";
 import { ChevronsUpDown, Plus, Trash2, X } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/lib/components/ui/collapsible";
 import { ControlEvidenceRequirements, Controls } from "@/lib/schema/database/controls";
+import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   control: Controls;
   evidence: ControlEvidenceRequirements[];
+  footer: FormFooterProps;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<ControlEvidenceFormValues>>;
-} & FormFooterProps;
+};
 
-export default function ControlEvidenceForm({ control, evidence, cancel_route, submit_text, pending_text, action }: Props) {
+export default function ControlEvidenceForm({ control, evidence, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -172,16 +174,10 @@ export default function ControlEvidenceForm({ control, evidence, cancel_route, s
             />
           </ScrollArea>
         </div>
-        <div className="flex justify-end gap-3">
-          {cancel_route &&
-            <RouteButton variant="outline" route={cancel_route}>
-              Cancel
-            </RouteButton>
-          }
-          <SubmitButton variant="default" pendingText={pending_text} pending={pending}>
-            {submit_text}
-          </SubmitButton>
-        </div>
+        <FormFooter
+          {...footer}
+          pending={pending}
+        />
       </form>
     </Form>
   );
