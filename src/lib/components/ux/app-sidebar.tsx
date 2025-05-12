@@ -20,14 +20,14 @@ const applicationItems = [
     url: "/",
     icon: ChartArea,
   },
-]
-
-const adminItems = [
   {
     title: "Clients",
     url: "/clients",
     icon: Building2
   },
+]
+
+const adminItems = [
   {
     title: "Systems",
     url: "/systems",
@@ -70,7 +70,7 @@ export default function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Admin</SidebarGroupLabel>
+          <SidebarGroupLabel>Backend</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {adminItems.map((item) => (

@@ -81,13 +81,13 @@ export const evidencRequirementSchema = z.object({
   location_hint: z.string().optional()
 });
 
-export const controlEvidenceFormSchema = z.object({
+export const controlEvidenceRequirementsFormSchema = z.object({
   tenant_id: z.string(),
   control_id: z.string(),
   evidence: z.array(evidencRequirementSchema)
 });
 
-export type ControlEvidenceFormValues = z.infer<typeof controlEvidenceFormSchema>;
+export type ControlEvidenceRequirmentsFormValues = z.infer<typeof controlEvidenceRequirementsFormSchema>;
 
 export const controlNstFormSchema = z.object({
   tenant_id: z.string(),
@@ -123,3 +123,29 @@ export const siteSystemLinkFormSchema = z.object({
 });
 
 export type SiteSystemLinkFormValues = z.infer<typeof siteSystemLinkFormSchema>;
+
+export const controlEvidenceFormSchema = z.object({
+  id: z.string().optional(),
+  tenant_id: z.string(),
+  site_id: z.string(),
+  control_id: z.string(),
+  evidence_requirement_id: z.string().optional(),
+  name: z.string(),
+  description: z.string(),
+  evidence_obj: z.custom<Blob & { name: string; type: string; size: number }>((file) => {
+    return (
+      typeof file === "object" &&
+      file !== null &&
+      typeof (file as any).arrayBuffer === "function" &&
+      typeof (file as any).name === "string" &&
+      typeof (file as any).type === "string" &&
+      typeof (file as any).size === "number"
+    );
+  }, "Invalid file")
+    .refine((file) => file.size > 0, "File is required")
+    .refine((file) => file.size < 10 * 1024 * 1024, "File too large (max 10MB)")
+    .optional(),
+  uploaded_by: z.string()
+});
+
+export type ControlEvidenceFormSchema = z.infer<typeof controlEvidenceFormSchema>;

@@ -48,7 +48,7 @@ export default async function CreateClient() {
           <ClientForm
             client={{
               id: "",
-              tenant_id: "",
+              tenant_id: tenant.id,
               name: ""
             }}
             footer={{

@@ -1,6 +1,7 @@
 'use server'
 
-import { Clients, Sites } from "@/lib/schema/database/clients";
+import { Clients } from "@/lib/schema/database/clients";
+import { Sites } from "@/lib/schema/database/sites";
 import { SiteSystemsView } from "@/lib/schema/views";
 import type { SupabaseClient } from "@supabase/supabase-js";
 

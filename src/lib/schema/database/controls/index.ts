@@ -41,6 +41,8 @@ export interface ControlEvidence {
   name: string;
   description?: string;
   evidence_url: string;
+  uploaded_at: string;
+  uploaded_by: string;
 }
 
 export interface ControlWaiver {

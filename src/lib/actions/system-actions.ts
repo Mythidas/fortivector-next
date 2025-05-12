@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { controlEvidenceFormSchema, ControlEvidenceFormValues, controlFormSchema, ControlFormValues, controlNstFormSchema, ControlNstFormValues, deleteFormSchema, systemFormSchema } from "@/lib/schema/forms";
+import { controlEvidenceRequirementsFormSchema, ControlEvidenceRequirmentsFormValues, controlFormSchema, ControlFormValues, controlNstFormSchema, ControlNstFormValues, deleteFormSchema, systemFormSchema } from "@/lib/schema/forms";
 import { FormState } from "../types";
 
 export const createSystemAction = async (_prevState: any, params: FormData) => {
@@ -224,9 +224,9 @@ export const deleteControlAction = async (_prevState: any, params: FormData) => 
   return redirect(validation.data.url || `/systems`);
 };
 
-export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData): Promise<FormState<ControlEvidenceFormValues>> => {
+export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData): Promise<FormState<ControlEvidenceRequirmentsFormValues>> => {
   const supabase = await createClient();
-  const validation = controlEvidenceFormSchema.safeParse({
+  const validation = controlEvidenceRequirementsFormSchema.safeParse({
     tenant_id: params.get('tenant_id'),
     control_id: params.get('control_id'),
     evidence: JSON.parse(params.get('evidence')?.toString() || "[]")

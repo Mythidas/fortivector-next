@@ -13,7 +13,7 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { clientFormSchema, ClientFormValues } from "@/lib/schema/forms";
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import FormFooter from "@/lib/components/ux/form-footer";
@@ -31,6 +31,10 @@ type Props = {
 export default function ClientForm({ client, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    setPending(false);
+  }, [state])
 
   const form = useForm<ClientFormValues>({
     resolver: zodResolver(clientFormSchema),

@@ -4,6 +4,7 @@ import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbS
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
 import { getClient, getSites } from "@/lib/functions/database/clients";
+import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -26,8 +27,6 @@ export default async function ClientPage(props: Props) {
       </Card>
     )
   }
-  const sites = await getSites(supabase, client?.id);
-  // TODO move sites pull to the Client Sites tab
 
   return (
     <div className="space-y-6">
@@ -44,11 +43,11 @@ export default async function ClientPage(props: Props) {
           <h1 className="text-3xl font-bold tracking-tight">{client.name}</h1>
         </div>
         <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="sites">Sites</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
+          <RouteTabsTrigger value="sites">Sites</RouteTabsTrigger>
+          <RouteTabsTrigger value="settings">Settings</RouteTabsTrigger>
         </TabsList>
-        <ClientSitesTab client={client} sites={sites} />
+        <ClientSitesTab client={client} />
       </Tabs>
     </div>
   );
