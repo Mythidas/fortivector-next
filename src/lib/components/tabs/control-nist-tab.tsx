@@ -33,8 +33,10 @@ export default async function ControlNistTab({ control }: Props) {
             control={control}
             control_subcats={control_subcats}
             nst_subcategories={nst_subcategories}
-            pending_text="Updating NIST..."
-            submit_text="Update NIST"
+            footer={{
+              pending_text: "Updating NIST...",
+              submit_text: "Update NIST"
+            }}
             action={updateControlNistAction}
           />
         </CardContent>

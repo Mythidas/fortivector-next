@@ -45,7 +45,19 @@ export default async function CreateClient() {
 
         </CardHeader>
         <CardContent>
-          <ClientForm tenantId={tenant.id} action={createClientAction} />
+          <ClientForm
+            client={{
+              id: "",
+              tenant_id: "",
+              name: ""
+            }}
+            footer={{
+              submit_text: "Create Client",
+              pending_text: "Creating Client...",
+              cancel_route: "/clients"
+            }}
+            action={createClientAction}
+          />
         </CardContent>
       </Card>
     </div>

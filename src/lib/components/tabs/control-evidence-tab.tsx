@@ -21,8 +21,10 @@ export default async function ControlEvidenceTab({ control }: Props) {
           <ControlEvidenceForm
             control={control}
             evidence={requirements}
-            submit_text="Update Evidence"
-            pending_text="Updating Evidence...."
+            footer={{
+              submit_text: "Update Evidence",
+              pending_text: "Updating Evidence...."
+            }}
             action={updateEvidenceRequirementsAction}
           />
         </CardContent>

@@ -51,7 +51,20 @@ export default async function CreateClient({ params }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SiteForm client={client} action={createSiteAction} />
+          <SiteForm
+            site={{
+              id: "",
+              client_id: client.id,
+              tenant_id: client.tenant_id,
+              name: ""
+            }}
+            footer={{
+              submit_text: "Create Site",
+              pending_text: "Creating Site...",
+              cancel_route: `/clients/${client.id}?tab=sites`
+            }}
+            action={createSiteAction}
+          />
         </CardContent>
       </Card>
     </div>

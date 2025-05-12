@@ -20,8 +20,10 @@ export default async function ControlSettingsTab({ control }: Props) {
         <CardContent>
           <ControlForm
             control={control}
-            pending_text="Updating Control..."
-            submit_text="Update Control"
+            footer={{
+              pending_text: "Updating Control...",
+              submit_text: "Update Control"
+            }}
             action={editControlAction}
           />
         </CardContent>
@@ -31,12 +33,13 @@ export default async function ControlSettingsTab({ control }: Props) {
           Actions
         </CardHeader>
         <CardContent className="flex flex-col w-full gap-2">
-          <Separator />
           <DeleteForm
             id={control.id}
             action={deleteControlAction}
-            pending_text={`Deleting: ${control.title}`}
-            submit_text={`Delete: ${control.title}`}
+            footer={{
+              pending_text: `Deleting: ${control.title}`,
+              submit_text: `Delete: ${control.title}`
+            }}
             url={`/systems/${control.system_id}?tab=controls`}
           />
         </CardContent>

@@ -18,11 +18,11 @@ import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { startTransition, useActionState, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
-import { Clients } from "@/lib/schema/database/clients";
+import { Clients, Sites } from "@/lib/schema/database/clients";
 import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
-  client: Clients;
+  site: Sites;
   footer: FormFooterProps;
   action: (
     _prevState: any,
@@ -30,16 +30,16 @@ type Props = {
   ) => Promise<FormState<SiteFormValues>>;
 };
 
-export default function SiteForm({ client, footer, action }: Props) {
+export default function SiteForm({ site, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
   const form = useForm<SiteFormValues>({
     resolver: zodResolver(siteFormSchema),
     defaultValues: {
-      name: "",
-      tenant_id: client.tenant_id,
-      client_id: client.id
+      name: state.values.name || site.name,
+      tenant_id: site.tenant_id,
+      client_id: site.client_id
     }
   });
 

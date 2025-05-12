@@ -13,10 +13,11 @@ import {
 import { Input } from "@/lib/components/ui/input";
 import { inviteFormShema, InviteFormValues } from "@/lib/schema/forms";
 import { ZodIssue } from "zod";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { startTransition } from 'react';
 import FormFooter from "@/lib/components/ux/form-footer";
-import { FormFooterProps } from "@/lib/types";
+import { FormFooterProps, FormState } from "@/lib/types";
+import FormAlert from "@/lib/components/ux/form-alert";
 
 type Props = {
   inviteId: string;
@@ -24,18 +25,22 @@ type Props = {
   action: (
     _prevState: any,
     params: FormData
-  ) => Promise<{ errors: ZodIssue[] }>;
+  ) => Promise<FormState<InviteFormValues>>;
 };
 
 export default function InviteForm({ inviteId, footer, action }: Props) {
-  const [state, formAction] = useActionState(action, { errors: [] });
+  const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
+
+  useEffect(() => {
+    setPending(false);
+  }, [state])
 
   const form = useForm<InviteFormValues>({
     resolver: zodResolver(inviteFormShema),
     defaultValues: {
       password: "",
-      invite_id: ""
+      invite_id: inviteId
     }
   });
 
@@ -51,15 +56,7 @@ export default function InviteForm({ inviteId, footer, action }: Props) {
           formAction(formData);
         })
       })}>
-        <FormField
-          control={form.control}
-          name="invite_id"
-          defaultValue={inviteId}
-          render={({ field }) => (
-            <input hidden id="invite_id" {...field} />
-          )}
-        />
-
+        <FormAlert errors={state.errors} />
         <FormField
           control={form.control}
           name="password"

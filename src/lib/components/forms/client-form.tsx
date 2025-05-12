@@ -17,9 +17,10 @@ import { startTransition, useActionState, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import FormFooter from "@/lib/components/ux/form-footer";
+import { Clients } from "@/lib/schema/database/clients";
 
 type Props = {
-  tenantId: string;
+  client: Clients;
   footer: FormFooterProps;
   action: (
     _prevState: any,
@@ -27,15 +28,15 @@ type Props = {
   ) => Promise<FormState<ClientFormValues>>;
 };
 
-export default function ClientForm({ tenantId, footer, action }: Props) {
+export default function ClientForm({ client, footer, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
   const form = useForm<ClientFormValues>({
     resolver: zodResolver(clientFormSchema),
     defaultValues: {
-      name: "",
-      tenant_id: tenantId,
+      name: state.values.name || client.name,
+      tenant_id: client.tenant_id,
     }
   });
 

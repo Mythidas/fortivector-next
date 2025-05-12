@@ -79,9 +79,11 @@ export default async function CreateControl(props: Props) {
               enforcement_method: "manual",
               enforcement_location: ""
             }}
-            cancel_route={`/systems/${system.id}?tab=controls`}
-            submit_text="Create Control"
-            pending_text="Creating Control..."
+            footer={{
+              cancel_route: `/systems/${system.id}?tab=controls`,
+              submit_text: "Create Control",
+              pending_text: "Creating Control..."
+            }}
             action={createControlAction}
           />
         </CardContent>
