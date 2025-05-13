@@ -1,6 +1,5 @@
 'use client';
 
-import { TabsContent } from "@/lib/components/ui/tabs";
 import { Input } from "@/lib/components/ui/input";
 import {
   Card,
@@ -15,12 +14,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/components/ui/table";
-import { FolderCog, HousePlus } from "lucide-react";
+import { FolderCog, HousePlus, MoreHorizontal } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Sites } from "@/lib/schema/database/clients";
 import { SiteSystemsView } from "@/lib/schema/views";
+import { Sites } from "@/lib/schema/database/sites";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/lib/components/ui/dropdown-menu";
+import { deleteSiteAction, deleteSiteSystemLinkAction } from "@/lib/actions/sites";
+import DeleteForm from "@/lib/components/forms/delete-form";
+import { Button } from "@/lib/components/ui/button";
+import DropDownItem from "@/lib/components/ux/drop-down-item";
 
 type Props = {
   site: Sites;
@@ -63,13 +67,39 @@ export default function SiteSystemsTable({ site, systems }: Props) {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Description</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {systems.filter(filterSystems).map((system) => (
-                <TableRow key={system.system_id} className="hover:cursor-pointer" onClick={() => router.push(`/clients/site/${site.id}/${system.link_id}`)}>
+                <TableRow key={system.system_id}>
                   <TableCell>{system.system_name}</TableCell>
                   <TableCell>{system.system_description}</TableCell>
+                  <TableCell className="text-right">
+                    <DeleteForm id={system.link_id} url={`/clients/site/${site.id}?tab=systems`} action={deleteSiteSystemLinkAction}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropDownItem route={`/clients/system/${system.link_id}`} module="sites" level="read">
+                            View
+                          </DropDownItem>
+                          <DropDownItem
+                            type="submit"
+                            variant="destructive"
+                            module="sites"
+                            level="full"
+                            form={system.link_id}
+                          >
+                            Delete
+                          </DropDownItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </DeleteForm>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

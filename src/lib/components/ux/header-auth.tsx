@@ -1,8 +1,8 @@
-import { signOutAction } from "@/lib/actions/auth-actions";
 import Link from "next/link";
 import { Button } from "@/lib/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/lib/components/ui/dropdown-menu";
+import { signOutAction } from "@/lib/actions/auth";
 
 export default async function AuthButton() {
   const supabase = await createClient();

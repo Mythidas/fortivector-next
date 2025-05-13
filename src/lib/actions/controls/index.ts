@@ -1,104 +1,11 @@
 'use server'
 
+import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, deleteFormSchema } from "@/lib/schema/forms";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { controlEvidenceRequirementsFormSchema, ControlEvidenceRequirmentsFormValues, controlFormSchema, ControlFormValues, controlNstFormSchema, ControlNstFormValues, deleteFormSchema, systemFormSchema } from "@/lib/schema/forms";
-import { FormState } from "../types";
+import { randomUUID } from "node:crypto";
 
-export const createSystemAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = systemFormSchema.safeParse({
-    name: params.get("name"),
-    description: params.get("description"),
-    tenant_id: params.get("tenant_id")
-  });
-
-  if (validation.error) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors, // easier to display on UI
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    };
-  }
-
-  const { data, error } = await supabase.from("systems").insert({
-    name: validation.data.name,
-    description: validation.data.description,
-    tenant_id: validation.data.tenant_id
-  }).select().single();
-
-  if (error) {
-    return {
-      success: false,
-      errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    }
-  }
-
-  return redirect(`/systems/${data.id}`);
-};
-
-export const editSystemAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = systemFormSchema.safeParse({
-    id: params.get("id"),
-    name: params.get("name"),
-    description: params.get("description"),
-    tenant_id: params.get("tenant_id")
-  });
-
-  if (validation.error) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors, // easier to display on UI
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    };
-  }
-
-  const { data, error } = await supabase.from("systems").update({
-    name: validation.data.name,
-    description: validation.data.description,
-  }).eq("id", validation.data.id);
-
-  if (error) {
-    return {
-      success: false,
-      errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    }
-  }
-
-  return redirect(`/systems/${validation.data.id}?tab=settings`);
-};
-
-export const deleteSystemAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = deleteFormSchema.safeParse({
-    id: params.get("id"),
-  });
-
-  if (validation.error) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors, // easier to display on UI
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    };
-  }
-
-  const { data, error } = await supabase.from("systems").delete().eq('id', validation.data.id);
-
-  if (error) {
-    return {
-      success: false,
-      errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    }
-  }
-
-  return redirect(`/systems`);
-};
-
-export const createControlAction = async (_prevState: any, params: FormData): Promise<FormState<ControlFormValues>> => {
+export const createControlAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = controlFormSchema.safeParse({
     title: params.get("title"),
@@ -152,7 +59,7 @@ export const createControlAction = async (_prevState: any, params: FormData): Pr
   redirect(`/systems/${validation.data.system_id}?tab=controls`);
 };
 
-export const editControlAction = async (_prevState: any, params: FormData): Promise<FormState<ControlFormValues>> => {
+export const updateControlAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = controlFormSchema.safeParse({
     id: params.get("id"),
@@ -196,7 +103,7 @@ export const editControlAction = async (_prevState: any, params: FormData): Prom
   redirect(`/systems/control/${validation.data.id}?tab=settings`);
 };
 
-export const deleteControlAction = async (_prevState: any, params: FormData) => {
+export const deleteControlAciton = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = deleteFormSchema.safeParse({
     id: params.get("id"),
@@ -206,25 +113,25 @@ export const deleteControlAction = async (_prevState: any, params: FormData) => 
   if (validation.error) {
     return {
       success: false,
-      errors: validation.error.flatten().fieldErrors, // easier to display on UI
-      values: Object.fromEntries(params.entries()), // preserve filled data
-    };
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
   }
 
-  const { data, error } = await supabase.from("controls").delete().eq('id', validation.data.id);
+  const { error } = await supabase.from("controls").delete().eq("id", validation.data.id);
 
   if (error) {
     return {
       success: false,
       errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries()), // preserve filled data
+      values: Object.fromEntries(params.entries())
     }
   }
 
-  return redirect(validation.data.url || `/systems`);
+  return redirect(validation.data.url || "/systems");
 };
 
-export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData): Promise<FormState<ControlEvidenceRequirmentsFormValues>> => {
+export const updateEvidenceRequirementsAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = controlEvidenceRequirementsFormSchema.safeParse({
     tenant_id: params.get('tenant_id'),
@@ -290,7 +197,7 @@ export const updateEvidenceRequirementsAction = async (_prevState: any, params: 
   redirect(`/systems/control/${validation.data.control_id}?tab=evidence`);
 }
 
-export const updateControlNistAction = async (_prevState: any, params: FormData): Promise<FormState<ControlNstFormValues>> => {
+export const updateControlNistAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = controlNstFormSchema.safeParse({
     tenant_id: params.get('tenant_id'),
@@ -333,3 +240,123 @@ export const updateControlNistAction = async (_prevState: any, params: FormData)
 
   redirect(`/systems/control/${validation.data.control_id}?tab=nist`);
 }
+
+export const createControlEvidenceAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = controlEvidenceFormSchema.safeParse({
+    id: params.get("id"),
+    tenant_id: params.get("tenant_id"),
+    site_id: params.get("site_id"),
+    control_id: params.get("control_id"),
+    evidence_requirement_id: params.get("evidence_requirement_id"),
+    name: params.get("name"),
+    description: params.get("description"),
+    evidence_obj: params.get("evidence_obj"),
+    uploaded_by: params.get("uploaded_by")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  if (validation.data.evidence_obj) {
+    const buffer = Buffer.from(await validation.data.evidence_obj.arrayBuffer());
+    const type = validation.data.evidence_obj.type;
+    const path = `public/${validation.data.tenant_id}/${randomUUID()}.${type.split("/").at(1)}`;
+
+    const { data, error } = await supabase.storage
+      .from('evidence')
+      .upload(path, buffer, {
+        contentType: type
+      });
+
+    if (error) {
+      return {
+        success: false,
+        errors: { db: [error.message] },
+        values: Object.fromEntries(params.entries()),
+      };
+    }
+
+    const { error: evidence_error } = await supabase.from("control_evidence").insert({
+      tenant_id: validation.data.tenant_id,
+      site_id: validation.data.site_id,
+      control_id: validation.data.control_id,
+      evidence_requirement_id: validation.data.evidence_requirement_id === "adhoc" ? null : validation.data.evidence_requirement_id,
+      name: validation.data.name,
+      description: validation.data.description,
+      evidence_url: data.fullPath,
+      uploaded_by: validation.data.uploaded_by
+    })
+
+    if (evidence_error) {
+      return {
+        success: false,
+        errors: { db: [evidence_error.message] },
+        values: Object.fromEntries(params.entries()),
+      };
+    }
+  } else {
+    return {
+      success: false,
+      errors: { "api": ["File failed to upload file."] },
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  return redirect(`/clients/control/${validation.data.id}?tab=evidence`);
+}
+
+export const deleteControlEvidenceAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = deleteFormSchema.safeParse({
+    id: params.get("id"),
+    url: params.get("url")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  const { data } = await supabase.from("control_evidence").select().eq("id", validation.data.id).single();
+
+  if (!data) {
+    return {
+      success: false,
+      errors: { "db": ["Failed to find entry."] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+
+  const { data: files, error: evidencError } = await supabase.storage.from("evidence").remove([String(data.evidence_url).substring(9)]);
+
+  if (evidencError || files.length === 0) {
+    return {
+      success: false,
+      errors: { "db": ["Failed to delete evidence file."] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+
+  const { error } = await supabase.from("control_evidence").delete().eq("id", validation.data.id);
+
+  if (error) {
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  return redirect(validation.data.url || "/clients");
+};

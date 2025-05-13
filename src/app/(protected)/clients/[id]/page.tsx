@@ -1,10 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/tabs";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
-import { Card, CardHeader } from "@/lib/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/lib/components/ui/card";
 import ClientSitesTab from "@/lib/components/tabs/client-sites-tab";
-import { getClient, getSites } from "@/lib/functions/database/clients";
 import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
+import ClientForm from "@/lib/components/forms/client-form";
+import { updateClientAction } from "@/lib/actions/clients";
+import { getClient } from "@/lib/functions/database/clients";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -48,6 +50,20 @@ export default async function ClientPage(props: Props) {
           <RouteTabsTrigger value="settings">Settings</RouteTabsTrigger>
         </TabsList>
         <ClientSitesTab client={client} />
+        <TabsContent value="settings">
+          <Card>
+            <CardContent>
+              <ClientForm
+                client={client}
+                footer={{
+                  submit_text: "Update Client",
+                  pending_text: "Updating Client..."
+                }}
+                action={updateClientAction}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );

@@ -2,8 +2,8 @@
 import { TabsContent } from "@/lib/components/ui/tabs";
 import SiteSystemsTable from "../tables/site-systems-table";
 import { createClient } from "@/utils/supabase/server";
-import { Sites } from "@/lib/schema/database/clients";
-import { getSiteSytemViews } from "@/lib/functions/database/clients";
+import { Sites } from "@/lib/schema/database/sites";
+import { getSiteSytemViews } from "@/lib/functions/database/sites";
 
 type Props = {
   site: Sites;

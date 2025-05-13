@@ -2,7 +2,6 @@
 
 import { Button } from "@/lib/components/ui/button";
 import { DropdownMenuItem } from "@/lib/components/ui/dropdown-menu";
-import { SubmitButton } from "@/lib/components/ux/submit-button";
 import { hasAccess, useUser } from "@/lib/context/user-context";
 import { AccessLevel, AccessModule, FormState } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -19,9 +18,10 @@ type Props = {
   variant?: "default" | "destructive";
   disabled?: boolean;
   type?: "button" | "submit";
+  form?: string;
 } & React.ComponentProps<typeof DropdownMenuItem>
 
-export default function DropDownItem({ children, module, level, route, onClick, className, inset, variant, disabled, type, ...props }: Props) {
+export default function DropDownItem({ children, module, level, route, onClick, className, inset, variant, disabled, type, form, ...props }: Props) {
   const router = useRouter();
   const context = useUser();
 
@@ -35,7 +35,7 @@ export default function DropDownItem({ children, module, level, route, onClick, 
         asChild
         {...props}
       >
-        <Button type="submit" variant="ghost" className="flex !items-center !justify-start">
+        <Button type="submit" variant="ghost" className="flex !items-center !justify-start !ring-0" form={form}>
           {children}
         </Button>
       </DropdownMenuItem>

@@ -11,7 +11,7 @@ import RouteButton from "@/lib/components/ux/route-button";
 
 import SystemForm from "@/lib/components/forms/system-form";
 import { createSystemAction } from "@/lib/actions/system-actions";
-import { getTenant } from "@/lib/functions/database/tenant";
+import { getTenant } from "@/lib/functions/database/tenants";
 
 export default async function CreateSystem() {
   const supabase = await createClient();

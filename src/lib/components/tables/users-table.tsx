@@ -19,8 +19,8 @@ import { Card, CardContent } from "@/lib/components/ui/card";
 import { Users } from "@/lib/schema/database/users";
 import { Roles } from "@/lib/schema/database/roles";
 import { deleteUser } from "@/lib/functions/database/users";
-import { deleteUserAction } from "@/lib/actions/user-actions";
 import DeleteForm from "@/lib/components/forms/delete-form";
+import { deleteUserAction } from "@/lib/actions/users";
 
 type Props = {
   users: Users[];
@@ -104,23 +104,23 @@ export default function UsersTable({ users, roles }: Props) {
                   {roles.find((role) => role.id === user.role_id)?.name}
                 </TableCell>
                 <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropDownItem route={`/users/${user.id}`} module="users" level="edit">
-                        Edit
-                      </DropDownItem>
-                      <DeleteForm id={user.id} action={deleteUserAction}>
-                        <DropDownItem type="submit" variant="destructive" module="users" level="edit" disabled={user.id === context?.id}>
+                  <DeleteForm id={user.id} action={deleteUserAction}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropDownItem route={`/users/${user.id}`} module="users" level="edit">
+                          Edit
+                        </DropDownItem>
+                        <DropDownItem form={user.id} type="submit" variant="destructive" module="users" level="full" disabled={user.id === context?.id}>
                           Delete
                         </DropDownItem>
-                      </DeleteForm>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </DeleteForm>
                 </TableCell>
               </TableRow>
             ))}

@@ -18,11 +18,12 @@ import {
 import RouteButton from "@/lib/components/ux/route-button";
 import { Badge } from "@/lib/components/ui/badge";
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import DropDownItem from "@/lib/components/ux/drop-down-item";
 import { Users } from "@/lib/schema/database/users";
 import { Roles } from "@/lib/schema/database/roles";
+import DeleteForm from "@/lib/components/forms/delete-form";
+import { deleteRoleAciton } from "@/lib/actions/roles";
 
 type Props = {
   users: Users[];
@@ -39,24 +40,6 @@ export default function RolesTable({ users, roles }: Props) {
     const lowerRoleDesc = role.description.toLowerCase();
     return lowerRoleName.includes(lowerSearch) || lowerRoleDesc.includes(lowerSearch);
   }
-
-  const handleDelete = async (id: string) => {
-    const confirm = window.confirm("Are you sure you want to delete this role?");
-    if (!confirm) return;
-
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("roles")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Delete failed:", error.message);
-      alert("Failed to delete role.");
-    } else {
-      router.push("/users?tab=roles");
-    }
-  };
 
   return (
     <>
@@ -81,21 +64,23 @@ export default function RolesTable({ users, roles }: Props) {
             <CardHeader className="pb-2">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl">{role.name}</CardTitle>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropDownItem disabled={!role.tenant_id} onClick={() => router.push(`/users/role/${role.id}`)} module="roles" level="edit">
-                      Edit Role
-                    </DropDownItem>
-                    <DropDownItem disabled={!role.tenant_id} className="text-red-600" onClick={() => handleDelete(role.id)} module="roles" level="edit">
-                      Delete Role
-                    </DropDownItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <DeleteForm id={role.id} action={deleteRoleAciton}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropDownItem disabled={!role.tenant_id} route={`/users/role/${role.id}`} module="roles" level="edit">
+                        Edit
+                      </DropDownItem>
+                      <DropDownItem form={role.id} disabled={!role.tenant_id || users.filter((usr) => usr.role_id === role.id).length > 0} type="submit" variant="destructive" module="roles" level="full">
+                        Delete
+                      </DropDownItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </DeleteForm>
               </div>
               <CardDescription>{role.description}</CardDescription>
             </CardHeader>

@@ -8,7 +8,7 @@ import {
 import { deleteFormSchema, DeleteFormValues } from "@/lib/schema/forms";
 import { ReactNode, startTransition, useActionState, useEffect, useState } from "react";
 import { FormState } from "@/lib/types";
-import FormAlert from "../ux/form-alert";
+import FormAlert from "@/lib/components/ux/form-alert";
 
 type Props = {
   id: string;
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function DeleteForm({ id, url, children, action }: Props) {
-  const [state, formAction] = useActionState(action, { success: true, values: {} });
+  const [state, formAction] = useActionState<FormState<DeleteFormValues>, FormData>(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function DeleteForm({ id, url, children, action }: Props) {
 
   return (
     <Form {...form}>
-      <form className="flex size-full" onSubmit={form.handleSubmit((data) => {
+      <form id={id} className="flex flex-col size-full" onSubmit={form.handleSubmit((data) => {
         if (pending || !window.confirm("Are you sure you want to delete this item?")) {
           return;
         }

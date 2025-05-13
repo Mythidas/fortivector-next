@@ -5,10 +5,9 @@ import { Card, CardContent, CardHeader } from "@/lib/components/ui/card";
 import ControlsTab from "@/lib/components/tabs/controls-tab";
 import SystemOverviewTab from "@/lib/components/tabs/system-overview-tab";
 import SystemForm from "@/lib/components/forms/system-form";
-import { deleteSystemAction, editSystemAction } from "@/lib/actions/system-actions";
-import DeleteForm from "@/lib/components/forms/delete-form";
-import { Separator } from "@/lib/components/ui/separator";
 import { getSystem } from "@/lib/functions/database/systems";
+import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
+import { updateSystemAction } from "@/lib/actions/systems";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -48,9 +47,9 @@ export default async function SystemPage(props: Props) {
           <span className="text-accent-foreground">{system.description}</span>
         </div>
         <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="controls">Controls</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
+          <RouteTabsTrigger value="controls">Controls</RouteTabsTrigger>
+          <RouteTabsTrigger value="settings">Settings</RouteTabsTrigger>
         </TabsList>
         <SystemOverviewTab />
         <ControlsTab system={system} />
@@ -66,21 +65,7 @@ export default async function SystemPage(props: Props) {
                   submit_text: "Update System",
                   pending_text: "Updating System..."
                 }}
-                action={editSystemAction}
-              />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="!py-0">
-              Actions
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              <Separator />
-              <DeleteForm
-                id={system.id}
-                action={deleteSystemAction}
-                pending_text={`Deleting: ${system.name}`}
-                submit_text={`Delete: ${system.name}`}
+                action={updateSystemAction}
               />
             </CardContent>
           </Card>

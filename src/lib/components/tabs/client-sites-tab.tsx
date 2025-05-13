@@ -4,10 +4,10 @@ import {
   CardContent,
   CardHeader,
 } from "@/lib/components/ui/card";
-import { Clients, Sites } from "@/lib/schema/database/clients";
 import SitesTable from "@/lib/components/tables/sites-table";
 import { createClient } from "@/utils/supabase/server";
-import { getSites } from "@/lib/functions/database/clients";
+import { Clients } from "@/lib/schema/database/clients";
+import { getSitesByClient } from "@/lib/functions/database/sites";
 
 type Props = {
   client: Clients;
@@ -15,7 +15,7 @@ type Props = {
 
 export default async function ClientSitesTab(props: Props) {
   const supabase = await createClient();
-  const sites = await getSites(supabase, props.client.id);
+  const sites = await getSitesByClient(supabase, props.client.id);
   if (!sites) {
     return (
       <Card>

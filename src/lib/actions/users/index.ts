@@ -1,12 +1,8 @@
-'use server'
-
+import { userFormSchema, deleteFormSchema } from "@/lib/schema/forms";
 import { createAdminClient, createClient } from "@/utils/supabase/server";
-import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { deleteFormSchema, roleFormSchema, userFormSchema, UserFormValues } from "@/lib/schema/forms";
-import { FormState } from "@/lib/types";
 
-export const createInviteAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
+export const createInviteAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = userFormSchema.safeParse({
     first_name: params.get("first_name"),
@@ -48,7 +44,7 @@ export const createInviteAction = async (_prevState: any, params: FormData): Pro
   return redirect("/users?tab=invites");
 };
 
-export const editUserAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
+export const updateUserAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = userFormSchema.safeParse({
     id: params.get("id"),
@@ -91,7 +87,7 @@ export const editUserAction = async (_prevState: any, params: FormData): Promise
   return redirect("/users");
 };
 
-export const deleteUserAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
+export const deleteUserAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
   const validation = deleteFormSchema.safeParse({
     id: params.get("id"),
@@ -120,73 +116,4 @@ export const deleteUserAction = async (_prevState: any, params: FormData): Promi
   await supabaseAdmin.auth.admin.deleteUser(validation.data.id);
 
   return redirect(validation.data.url || "/users");
-};
-
-export const createRoleAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = roleFormSchema.safeParse({
-    name: params.get("name"),
-    description: params.get("description"),
-    tenant_id: params.get("tenant_id"),
-    access_rights: JSON.parse(params.get("access_rights")?.toString() || "{}")
-  });
-
-  if (validation.error) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors,
-      values: Object.fromEntries(params.entries())
-    }
-  }
-
-  const { data, error } = await supabase.from("roles").insert({
-    name: validation.data.name,
-    description: validation.data.description,
-    tenant_id: validation.data.tenant_id,
-    access_rights: validation.data.access_rights
-  })
-
-  if (error) {
-    return {
-      success: false,
-      errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries())
-    }
-  }
-
-  return redirect("/users?tab=roles");
-};
-
-export const editRoleAction = async (_prevState: any, params: FormData) => {
-  const supabase = await createClient();
-  const validation = roleFormSchema.safeParse({
-    name: params.get("name"),
-    description: params.get("description"),
-    role_id: params.get("role_id"),
-    access_rights: JSON.parse(params.get("access_rights")?.toString() || "{}")
-  });
-
-  if (validation.error) {
-    return {
-      success: false,
-      errors: validation.error.flatten().fieldErrors,
-      values: Object.fromEntries(params.entries())
-    }
-  }
-
-  const { error } = await supabase.from("roles").update({
-    name: validation.data.name,
-    description: validation.data.description,
-    access_rights: validation.data.access_rights
-  }).eq("id", validation.data.id);
-
-  if (error) {
-    return {
-      success: false,
-      errors: { "db": [error.message] },
-      values: Object.fromEntries(params.entries())
-    }
-  }
-
-  return redirect("/users?tab=roles");
 };

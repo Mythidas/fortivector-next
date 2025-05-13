@@ -3,8 +3,9 @@ import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbS
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import { Tabs, TabsList } from "@/lib/components/ui/tabs";
 import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
-import { getClient, getSite } from "@/lib/functions/database/clients";
+import { getClient } from "@/lib/functions/database/clients";
 import { getSiteControlView } from "@/lib/functions/database/controls";
+import { getSite } from "@/lib/functions/database/sites";
 import { createClient } from "@/utils/supabase/server";
 
 type Props = {

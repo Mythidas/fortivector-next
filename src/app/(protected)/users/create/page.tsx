@@ -11,7 +11,7 @@ import { createClient } from "@/utils/supabase/server";
 import { createInviteAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import UserForm from "@/lib/components/forms/user-form";
-import { getTenant } from "@/lib/functions/database/tenant";
+import { getTenant } from "@/lib/functions/database/tenants";
 import { getRoles } from "@/lib/functions/database/roles";
 
 export default async function CreateUser() {

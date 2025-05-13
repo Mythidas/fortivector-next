@@ -7,10 +7,10 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-import { createRoleAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import RoleForm from "@/lib/components/forms/role-form";
-import { getTenant } from "@/lib/functions/database/tenant";
+import { getTenant } from "@/lib/functions/database/tenants";
+import { createRoleAction } from "@/lib/actions/roles";
 
 export default async function CreateRole() {
   const supabase = await createClient();

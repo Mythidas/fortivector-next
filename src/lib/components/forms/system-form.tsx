@@ -84,7 +84,6 @@ export default function SystemForm({ system, footer, action }: Props) {
             </FormItem>
           )}
         />
-        <Separator />
         <FormFooter
           {...footer}
           pending={pending}

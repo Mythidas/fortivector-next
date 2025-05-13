@@ -10,7 +10,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import ClientForm from "@/lib/components/forms/client-form";
 import { createClientAction } from "@/lib/actions/client-actions";
-import { getTenant } from "@/lib/functions/database/tenant";
+import { getTenant } from "@/lib/functions/database/tenants";
 
 export default async function CreateClient() {
   const supabase = await createClient();

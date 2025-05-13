@@ -3,7 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/lib/components/ui/ta
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import SiteSystemsTab from "@/lib/components/tabs/site-systems-tab";
-import { getClient, getSite } from "@/lib/functions/database/clients";
+import { getClient } from "@/lib/functions/database/clients";
+import { getSite } from "@/lib/functions/database/sites";
+import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;
@@ -46,9 +48,9 @@ export default async function SitePage(props: Props) {
           <h1 className="text-3xl font-bold tracking-tight">{site.name}</h1>
         </div>
         <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="systems">Systems</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
+          <RouteTabsTrigger value="systems">Systems</RouteTabsTrigger>
+          <RouteTabsTrigger value="settings">Settings</RouteTabsTrigger>
         </TabsList>
         <SiteSystemsTab site={site} />
       </Tabs>

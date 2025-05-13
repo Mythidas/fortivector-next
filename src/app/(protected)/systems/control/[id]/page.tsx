@@ -50,10 +50,10 @@ export default async function SystemControlPage(props: Props) {
           <span className="text-accent-foreground">{control.title}</span>
         </div>
         <TabsList className="grid w-full max-w-md grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="evidence">Evidence</TabsTrigger>
-          <TabsTrigger value="nist">NIST</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
+          <RouteTabsTrigger value="evidence">Evidence</RouteTabsTrigger>
+          <RouteTabsTrigger value="nist">NIST</RouteTabsTrigger>
+          <RouteTabsTrigger value="settings">Settings</RouteTabsTrigger>
         </TabsList>
         <ControlEvidenceTab control={control} />
         <ControlNistTab control={control} />
