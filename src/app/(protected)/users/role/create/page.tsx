@@ -54,10 +54,11 @@ export default async function CreateRole() {
                 users: "read",
                 roles: "read",
                 dashboard: "read",
-                "clients": "read",
-                "controls": "read",
-                "sites": "read",
-                "systems": "read"
+                clients: "read",
+                controls: "read",
+                sites: "read",
+                systems: "read",
+                evidence: "read"
               }
             }}
             footer={{

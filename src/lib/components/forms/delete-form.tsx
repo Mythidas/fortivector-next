@@ -6,22 +6,21 @@ import {
   Form,
 } from "@/lib/components/ui/form";
 import { deleteFormSchema, DeleteFormValues } from "@/lib/schema/forms";
-import { startTransition, useActionState, useEffect, useState } from "react";
-import { FormFooterProps, FormState } from "@/lib/types";
+import { ReactNode, startTransition, useActionState, useEffect, useState } from "react";
+import { FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
-import FormFooter from "@/lib/components/ux/form-footer";
 
 type Props = {
   id: string;
   url?: string;
-  footer: FormFooterProps;
+  children: ReactNode;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<DeleteFormValues>>;
 };
 
-export default function DeleteForm({ id, url, footer, action }: Props) {
+export default function DeleteForm({ id, url, children, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
 
@@ -39,8 +38,8 @@ export default function DeleteForm({ id, url, footer, action }: Props) {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit((data) => {
-        if (!window.confirm("Are you sure you want to delete this item?")) {
+      <form className="flex size-full" onSubmit={form.handleSubmit((data) => {
+        if (pending || !window.confirm("Are you sure you want to delete this item?")) {
           return;
         }
 
@@ -54,10 +53,7 @@ export default function DeleteForm({ id, url, footer, action }: Props) {
         })
       })}>
         <FormAlert errors={state.errors} />
-        <FormFooter
-          {...footer}
-          pending={pending}
-        />
+        {children}
       </form>
     </Form>
   );

@@ -25,6 +25,8 @@ import FormAlert from "@/lib/components/ux/form-alert";
 import { accessLevels, accessModules, type AccessLevel } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Roles } from "@/lib/schema/database/roles";
+import { ScrollArea } from "@/lib/components/ui/scroll-area";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/lib/components/ui/table";
 
 type Props = {
   role: Roles;
@@ -59,7 +61,7 @@ export default function RoleForm({ role, footer, action }: Props) {
     const descriptions: Record<AccessLevel, string> = {
       none: "No access",
       read: "View only",
-      edit: "Modify content",
+      edit: "Create & Update",
       full: "Full control"
     };
     return descriptions[level];
@@ -74,7 +76,8 @@ export default function RoleForm({ role, footer, action }: Props) {
       systems: "Manage system configurations and settings",
       controls: "Configure security controls and compliance mappings",
       clients: "Manage client organizations",
-      sites: "Manage physical and virtual locations"
+      sites: "Manage physical and virtual locations",
+      evidence: "Manage evidence state for sites"
     };
     return descriptions[module];
   }
@@ -141,69 +144,71 @@ export default function RoleForm({ role, footer, action }: Props) {
             <FormItem>
               <Card>
                 <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
-                      <thead>
-                        <tr>
-                          <th className="text-left pb-4 px-2 text-sm font-medium text-muted-foreground w-[200px]">
-                            Module
-                          </th>
-                          {accessLevels.map((level) => (
-                            <th key={level} className="pb-4 px-2 text-center">
-                              <span className="font-medium text-sm block capitalize">{level}</span>
-                              <span className="text-xs text-muted-foreground">
-                                {getAccessLevelDescription(level)}
-                              </span>
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {accessModules.map((module) => (
-                          <tr key={module} className="border-t border-border/30">
-                            <td className="py-3 px-2">
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium text-sm capitalize">{module}</span>
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <button type="button" className="text-muted-foreground hover:text-foreground">
-                                        <HelpCircle className="h-3.5 w-3.5" />
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right">
-                                      <p className="max-w-xs">{getModuleDescription(module)}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </div>
-                            </td>
+                  <ScrollArea className="h-96">
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="sticky top-0">
+                            <TableHead>
+                              Module
+                            </TableHead>
                             {accessLevels.map((level) => (
-                              <td key={`${module}-${level}`} className="py-3 px-2 text-center">
-                                <div
-                                  className="flex justify-center"
-                                  onClick={() => {
-                                    const newAccessRights = { ...field.value };
-                                    newAccessRights[module] = level;
-                                    field.onChange(newAccessRights);
-                                  }}
-                                >
-                                  <div
-                                    className={cn(
-                                      "w-5 h-5 rounded-full border border-border cursor-pointer",
-                                      field.value?.[module] === level
-                                        ? "bg-primary border-primary"
-                                        : "bg-background hover:bg-accent/50"
-                                    )}
-                                  />
-                                </div>
-                              </td>
+                              <TableHead key={level} className="pb-4 px-2 text-center">
+                                <span className="font-medium text-sm block capitalize">{level}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  {getAccessLevelDescription(level)}
+                                </span>
+                              </TableHead>
                             ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {accessModules.map((module) => (
+                            <TableRow key={module}>
+                              <TableCell>
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium text-sm capitalize">{module}</span>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <button type="button" className="text-muted-foreground hover:text-foreground">
+                                          <HelpCircle className="h-3.5 w-3.5" />
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent side="right">
+                                        <p className="max-w-xs">{getModuleDescription(module)}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                </div>
+                              </TableCell>
+                              {accessLevels.map((level) => (
+                                <TableCell key={`${module}-${level}`}>
+                                  <div
+                                    className="flex justify-center"
+                                    onClick={() => {
+                                      const newAccessRights = { ...field.value };
+                                      newAccessRights[module] = level;
+                                      field.onChange(newAccessRights);
+                                    }}
+                                  >
+                                    <div
+                                      className={cn(
+                                        "w-5 h-5 rounded-full border border-border cursor-pointer",
+                                        field.value?.[module] === level
+                                          ? "bg-primary border-primary"
+                                          : "bg-background hover:bg-accent/50"
+                                      )}
+                                    />
+                                  </div>
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </ScrollArea>
                 </CardContent>
               </Card>
               <FormMessage />

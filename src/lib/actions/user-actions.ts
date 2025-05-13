@@ -3,7 +3,7 @@
 import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { redirect } from "next/navigation";
-import { roleFormSchema, userFormSchema, UserFormValues } from "@/lib/schema/forms";
+import { deleteFormSchema, roleFormSchema, userFormSchema, UserFormValues } from "@/lib/schema/forms";
 import { FormState } from "@/lib/types";
 
 export const createInviteAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
@@ -89,6 +89,37 @@ export const editUserAction = async (_prevState: any, params: FormData): Promise
   }
 
   return redirect("/users");
+};
+
+export const deleteUserAction = async (_prevState: any, params: FormData): Promise<FormState<UserFormValues>> => {
+  const supabase = await createClient();
+  const validation = deleteFormSchema.safeParse({
+    id: params.get("id"),
+    url: params.get("url")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  const { error } = await supabase.from("users").delete().eq("id", validation.data.id);
+
+  if (error) {
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  const supabaseAdmin = await createAdminClient();
+  await supabaseAdmin.auth.admin.deleteUser(validation.data.id);
+
+  return redirect(validation.data.url || "/users");
 };
 
 export const createRoleAction = async (_prevState: any, params: FormData) => {
