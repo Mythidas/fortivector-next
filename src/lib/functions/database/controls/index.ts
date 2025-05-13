@@ -119,7 +119,22 @@ export async function getSiteControlView(supabase: SupabaseClient, site_control_
   return controls as SiteControlsView;
 }
 
-export async function getControlEvidenceView(supabase: SupabaseClient, control_id: string, site_id: string) {
+export async function getControlEvidenceView(supabase: SupabaseClient, id: string) {
+  const { data: controls, error } = await supabase
+    .from("control_evidence_view")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return controls as ControlEvidenceView;
+}
+
+export async function getControlEvidenceViewBySiteAndControl(supabase: SupabaseClient, control_id: string, site_id: string) {
   const { data: controls, error } = await supabase
     .from("control_evidence_view")
     .select("*")

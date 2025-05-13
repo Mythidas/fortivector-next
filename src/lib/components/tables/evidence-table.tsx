@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/lib/components/ui/table";
-import { Joystick, MoreHorizontal, Newspaper } from "lucide-react";
+import { MoreHorizontal, Newspaper } from "lucide-react";
 import RouteButton from "@/lib/components/ux/route-button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -77,13 +77,13 @@ export default function EvidenceTable({ controlView, evidence }: Props) {
             </TableHeader>
             <TableBody>
               {evidence.filter(filterEvidence).map((evidence) => (
-                <TableRow key={evidence.evidence_id}>
+                <TableRow key={evidence.id}>
                   <TableCell>{evidence.name}</TableCell>
                   <TableCell>{pascalCase(evidence.requirement_type)}</TableCell>
                   <TableCell>{new Date(evidence.uploaded_at).toDateString()}</TableCell>
                   <TableCell>{evidence.email}</TableCell>
                   <TableCell className="text-right">
-                    <DeleteForm id={evidence.evidence_id} url={`/clients/control/${controlView.site_control_id}?tab=evidence`} action={deleteControlEvidenceAction}>
+                    <DeleteForm id={evidence.id} url={`/clients/control/${controlView.site_control_id}?tab=evidence`} action={deleteControlEvidenceAction}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -91,10 +91,10 @@ export default function EvidenceTable({ controlView, evidence }: Props) {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropDownItem route={`/clients/evidence/${evidence.evidence_id}`} module="evidence" level="read">
+                          <DropDownItem route={`/clients/evidence/${evidence.id}`} module="evidence" level="read">
                             View
                           </DropDownItem>
-                          <DropDownItem form={evidence.evidence_id} type="submit" variant="destructive" module="evidence" level="full">
+                          <DropDownItem form={evidence.id} type="submit" variant="destructive" module="evidence" level="full">
                             Delete
                           </DropDownItem>
                         </DropdownMenuContent>

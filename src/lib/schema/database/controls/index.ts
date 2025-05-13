@@ -35,14 +35,15 @@ export interface ControlEvidenceRequirements {
 export interface ControlEvidence {
   id: string;
   tenant_id: string;
-  site_id: string;
-  control_id: string;
+  site_control_id: string;
   evidence_requirement_id?: string;
   name: string;
   description?: string;
   evidence_url: string;
   uploaded_at: string;
   uploaded_by: string;
+  approved_at: string;
+  approved_by: string;
 }
 
 export interface ControlWaiver {

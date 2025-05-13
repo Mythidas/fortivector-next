@@ -127,8 +127,7 @@ export type SiteSystemLinkFormValues = z.infer<typeof siteSystemLinkFormSchema>;
 export const controlEvidenceFormSchema = z.object({
   id: z.string().optional(),
   tenant_id: z.string(),
-  site_id: z.string(),
-  control_id: z.string(),
+  site_control_id: z.string(),
   evidence_requirement_id: z.string().optional(),
   name: z.string(),
   description: z.string(),

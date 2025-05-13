@@ -16,9 +16,10 @@ type Props = {
 export default function RouteButton({ route, children, module, level, disabled, ...props }: Props) {
   const router = useRouter();
   const context = useUser();
+  const access = (module && level && !hasAccess(context, module, level));
 
   return (
-    <Button onClick={() => router.push(route)} {...props} disabled={disabled || (module && level && !hasAccess(context, module, level))}>
+    <Button onClick={() => router.push(route)} {...props} disabled={disabled || access}>
       {children}
     </Button>
   );

@@ -246,8 +246,7 @@ export const createControlEvidenceAction = async (_prevState: any, params: FormD
   const validation = controlEvidenceFormSchema.safeParse({
     id: params.get("id"),
     tenant_id: params.get("tenant_id"),
-    site_id: params.get("site_id"),
-    control_id: params.get("control_id"),
+    site_control_id: params.get("site_control_id"),
     evidence_requirement_id: params.get("evidence_requirement_id"),
     name: params.get("name"),
     description: params.get("description"),
@@ -284,8 +283,7 @@ export const createControlEvidenceAction = async (_prevState: any, params: FormD
 
     const { error: evidence_error } = await supabase.from("control_evidence").insert({
       tenant_id: validation.data.tenant_id,
-      site_id: validation.data.site_id,
-      control_id: validation.data.control_id,
+      site_control_id: validation.data.site_control_id,
       evidence_requirement_id: validation.data.evidence_requirement_id === "adhoc" ? null : validation.data.evidence_requirement_id,
       name: validation.data.name,
       description: validation.data.description,
@@ -303,7 +301,7 @@ export const createControlEvidenceAction = async (_prevState: any, params: FormD
   } else {
     return {
       success: false,
-      errors: { "api": ["File failed to upload file."] },
+      errors: { db: ["File failed to upload file."] },
       values: Object.fromEntries(params.entries()),
     };
   }

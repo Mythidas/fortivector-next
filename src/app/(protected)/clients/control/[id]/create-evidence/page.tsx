@@ -1,9 +1,10 @@
-import { createControlEvidenceAction } from "@/lib/actions/client-actions";
+import { createControlEvidenceAction } from "@/lib/actions/controls";
 import ControlEvidenceForm from "@/lib/components/forms/control-evidence-form";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
-import { getSite, getClient } from "@/lib/functions/database/clients";
+import { getClient } from "@/lib/functions/database/clients";
 import { getControlEvidenceRequirements, getSiteControlView } from "@/lib/functions/database/controls";
+import { getSite } from "@/lib/functions/database/sites";
 import { createClient } from "@/utils/supabase/server";
 
 type Props = {
@@ -47,14 +48,15 @@ export default async function CreateEvidence(props: Props) {
         evidence={{
           id: control.site_control_id,
           tenant_id: site.tenant_id,
-          site_id: site.id,
-          control_id: control.control_id,
+          site_control_id: control.site_control_id,
           name: "",
           description: "",
           evidence_url: "",
           evidence_requirement_id: "",
           uploaded_at: "",
-          uploaded_by: ""
+          uploaded_by: "",
+          approved_at: "",
+          approved_by: ""
         }}
         requirements={evidenceRequirements}
         footer={{

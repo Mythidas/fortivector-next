@@ -7,6 +7,7 @@ import ControlEvidenceTab from "@/lib/components/tabs/control-evidence-tab";
 import ControlNistTab from "@/lib/components/tabs/control-nist-tab";
 import { getControl } from "@/lib/functions/database/controls";
 import { getSystem } from "@/lib/functions/database/systems";
+import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
 
 type SearchParams = Promise<{ tab: string }>;
 type Params = Promise<{ id: string }>;

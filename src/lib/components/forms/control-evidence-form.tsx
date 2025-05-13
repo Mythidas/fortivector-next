@@ -101,8 +101,7 @@ export default function ControlEvidenceForm({ evidence, requirements, footer, ac
 
         formData.append('id', evidence.id);
         formData.append('tenant_id', data.tenant_id);
-        formData.append('site_id', data.site_id);
-        formData.append('control_id', data.control_id);
+        formData.append('site_control_id', data.site_control_id);
         formData.append('evidence_requirement_id', data.evidence_requirement_id || "");
         formData.append('name', data.name);
         formData.append('description', data.description);

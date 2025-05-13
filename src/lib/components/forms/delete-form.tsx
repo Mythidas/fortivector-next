@@ -38,7 +38,7 @@ export default function DeleteForm({ id, url, children, action }: Props) {
 
   return (
     <Form {...form}>
-      <form id={id} className="flex flex-col size-full" onSubmit={form.handleSubmit((data) => {
+      <form id={id} onSubmit={form.handleSubmit((data) => {
         if (pending || !window.confirm("Are you sure you want to delete this item?")) {
           return;
         }

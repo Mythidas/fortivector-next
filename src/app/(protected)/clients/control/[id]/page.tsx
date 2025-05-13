@@ -6,6 +6,7 @@ import RouteTabsTrigger from "@/lib/components/ux/route-tabs-trigger";
 import { getClient } from "@/lib/functions/database/clients";
 import { getSiteControlView } from "@/lib/functions/database/controls";
 import { getSite } from "@/lib/functions/database/sites";
+import { getSystem } from "@/lib/functions/database/systems";
 import { createClient } from "@/utils/supabase/server";
 
 type Props = {
@@ -20,7 +21,8 @@ export default async function SiteControlPage(props: Props) {
   const control = await getSiteControlView(supabase, params.id);
   const site = await getSite(supabase, control?.site_id || "");
   const client = await getClient(supabase, site?.client_id || "");
-  if (!control || !site || !client) {
+  const system = await getSystem(supabase, control?.system_id || "");
+  if (!control || !site || !client || !system) {
     return (
       <Card>
         <CardHeader>
@@ -40,6 +42,8 @@ export default async function SiteControlPage(props: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbLink href={`/clients/site/${site.id}`}>{site.name}</BreadcrumbLink>
           <BreadcrumbSeparator />
+          <BreadcrumbLink href={`/clients/system/${system.id}`}>{system.name}</BreadcrumbLink>
+          <BreadcrumbSeparator />
           <BreadcrumbPage>{control.title}</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
@@ -52,7 +56,7 @@ export default async function SiteControlPage(props: Props) {
           <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
           <RouteTabsTrigger value="evidence">Evidence</RouteTabsTrigger>
         </TabsList>
-        <SiteControlEvidenceTab controlView={control} site={site} client={client} />
+        <SiteControlEvidenceTab controlView={control} />
       </Tabs>
     </div>
   );
