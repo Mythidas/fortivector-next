@@ -148,4 +148,11 @@ export const controlEvidenceFormSchema = z.object({
   uploaded_by: z.string()
 });
 
-export type ControlEvidenceFormSchema = z.infer<typeof controlEvidenceFormSchema>;
+export type ControlEvidenceFormValues = z.infer<typeof controlEvidenceFormSchema>;
+
+export const evidenceStatusFormSchema = z.object({
+  id: z.string(),
+  status: z.string()
+});
+
+export type EvidenceStatusFormValues = z.infer<typeof evidenceStatusFormSchema>;

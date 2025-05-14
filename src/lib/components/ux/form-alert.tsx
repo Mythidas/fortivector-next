@@ -7,37 +7,44 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/lib/components/ui/alert-dialog";
 import { useEffect, useState } from "react";
 
 type Props = {
   open?: boolean;
   errors?: Record<string, string[]>;
+  message?: string;
+  onClose?: () => void;
 }
 
-export default function FormAlert({ errors }: Props) {
+export default function FormAlert({ errors, message, onClose }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (errors) {
+    if (errors || message) {
       setOpen(true);
     }
-  }, [errors])
+  }, [errors, message])
+
+  const handleClose = () => {
+    setOpen(false);
+    onClose && onClose();
+  }
 
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Errors</AlertDialogTitle>
+          <AlertDialogTitle>{message ? "Message" : "Errors"}</AlertDialogTitle>
           <AlertDialogDescription>
-            {errors && Object.entries(errors).map(([field, error]) => (
+            {message && message}
+            {(errors && !message) && Object.entries(errors).map(([field, error]) => (
               <span key={field}>{`${field}: ${error}`}</span>
             ))}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={() => setOpen(false)}>Acknowledge</AlertDialogAction>
+          <AlertDialogAction onClick={handleClose}>Acknowledge</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -1,4 +1,4 @@
-import { AccessLevel, AccessModule, ControlStatus, EnforcementMethod, EvidenceType } from "@/lib/types";
+import { AccessLevel, AccessModule, ControlStatus, EnforcementMethod, EvidenceStatus, EvidenceType } from "@/lib/types";
 
 export interface UserContextView {
   id: string;
@@ -50,8 +50,8 @@ export interface ControlEvidenceView {
   evidence_url: string;
   uploaded_at: string;
   uploaded_by: string;
-  approved_at: string;
-  approved_by: string;
+  reviewed_at: string;
+  reviewed_by: string;
   email: string;
   requirement_type: EvidenceType;
   requirement_description: string;
@@ -63,4 +63,6 @@ export interface ControlEvidenceView {
   control_title: string;
   site_systems_id: string;
   system_name: string;
+  status: EvidenceStatus;
+  reviewer: string;
 }

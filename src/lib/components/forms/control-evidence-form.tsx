@@ -13,7 +13,7 @@ import {
 } from "@/lib/components/ui/form";
 import { Input } from "@/lib/components/ui/input";
 import { Textarea } from "@/lib/components/ui/textarea";
-import { controlEvidenceFormSchema, ControlEvidenceFormSchema } from "@/lib/schema/forms";
+import { controlEvidenceFormSchema, ControlEvidenceFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { FormFooterProps, FormState } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
@@ -46,7 +46,7 @@ type Props = {
   action: (
     _prevState: any,
     params: FormData
-  ) => Promise<FormState<ControlEvidenceFormSchema>>;
+  ) => Promise<FormState<ControlEvidenceFormValues>>;
 };
 
 export default function ControlEvidenceForm({ evidence, requirements, footer, action }: Props) {
@@ -59,7 +59,7 @@ export default function ControlEvidenceForm({ evidence, requirements, footer, ac
     setPending(false);
   }, [state])
 
-  const form = useForm<ControlEvidenceFormSchema>({
+  const form = useForm<ControlEvidenceFormValues>({
     resolver: zodResolver(controlEvidenceFormSchema),
     defaultValues: {
       ...evidence,

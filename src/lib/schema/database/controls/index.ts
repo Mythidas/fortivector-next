@@ -1,4 +1,4 @@
-import { ControlStatus, EnforcementMethod, EvidenceType } from "@/lib/types";
+import { ControlStatus, EnforcementMethod, EvidenceStatus, EvidenceType } from "@/lib/types";
 
 export interface Controls {
   id: string;
@@ -41,8 +41,9 @@ export interface ControlEvidence {
   evidence_url: string;
   uploaded_at: string;
   uploaded_by: string;
-  approved_at: string;
-  approved_by: string;
+  reviewed_at: string;
+  reviewed_by: string;
+  status: EvidenceStatus;
 }
 
 export interface ControlWaiver {

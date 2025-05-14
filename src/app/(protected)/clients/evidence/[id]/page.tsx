@@ -1,9 +1,8 @@
 import { Badge } from "@/lib/components/ui/badge";
-import { Button } from "@/lib/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Separator } from "@/lib/components/ui/separator";
 import { format } from "date-fns";
-import { Download, Eye, FileText, File, Clock, User, Calendar } from "lucide-react";
+import { Download, Eye, FileText, File, Clock, User, Calendar, FileCode2, LucideProps } from "lucide-react";
 import Image from "next/image";
 import { getMediaType, getFileUrl } from "@/lib/functions/storage";
 import { createClient } from "@/utils/supabase/server";
@@ -11,6 +10,9 @@ import { Breadcrumb, BreadcrumbList, BreadcrumbLink, BreadcrumbSeparator, Breadc
 import { getClient } from "@/lib/functions/database/clients";
 import { getControlEvidenceView } from "@/lib/functions/database/controls";
 import DownloadButton from "@/lib/components/ux/download-button";
+import { pascalCase } from "@/lib/utils";
+import EvidenceStatusForm from "@/lib/components/forms/evidence-status-form";
+import { updateControlEvidenceStatusAction } from "@/lib/actions/controls";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -38,19 +40,6 @@ export default async function ClientEvidencePage(props: Props) {
   // Determine media type for appropriate rendering
   const mediaType = getMediaType(evidence.evidence_url);
 
-  const handleDownload = async () => {
-    const res = await fetch(fileUrl);
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileUrl.split("/").pop() || "download";
-    a.click();
-
-    window.URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="space-y-6">
       <Breadcrumb>
@@ -75,8 +64,8 @@ export default async function ClientEvidencePage(props: Props) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>{evidence.name}</CardTitle>
-              <Badge variant={evidence.approved_by ? 'default' : 'outline'}>
-                {evidence.approved_by ? "Approved" : "Pending Review"}
+              <Badge variant={evidence.status === "approved" ? 'default' : evidence.status === "pending" ? "outline" : "destructive"} className="text-sm">
+                {pascalCase(evidence.status)}
               </Badge>
             </div>
             {evidence.description && (
@@ -133,13 +122,13 @@ export default async function ClientEvidencePage(props: Props) {
               )}
             </div>
           </CardContent>
-          <CardFooter className="flex justify-end p-4 gap-2">
-            <Button variant="secondary" asChild>
-              <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-                <Eye className="mr-2 h-4 w-4" />
-                View Full Size
-              </a>
-            </Button>
+          <Separator />
+          <CardFooter className="flex justify-between gap-2">
+            <EvidenceStatusForm
+              id={evidence.id}
+              status={evidence.status}
+              action={updateControlEvidenceStatusAction}
+            />
             <DownloadButton fileUrl={fileUrl} fileName={evidence.name} module="evidence" level="read">
               Download File
             </DownloadButton>
@@ -156,26 +145,8 @@ export default async function ClientEvidencePage(props: Props) {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">Control Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <FileText className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">{evidence.control_title}</p>
-                    <p className="text-xs text-muted-foreground">Control</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <Calendar className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">
-                      {format(new Date(evidence.uploaded_at), "MMMM d, yyyy")}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Date Added</p>
-                  </div>
-                </div>
+                <InfoFieldLocal detail={evidence.control_title} label="Control" icon={FileText} />
+                <InfoFieldLocal detail={format(new Date(evidence.uploaded_at), "MMMM d, yyyy")} label="Date Added" icon={Calendar} />
               </div>
             </div>
 
@@ -188,6 +159,7 @@ export default async function ClientEvidencePage(props: Props) {
                   <h3 className="text-sm font-medium text-muted-foreground">Requirement</h3>
                   <p className="text-sm">{evidence.requirement_description}</p>
                 </div>
+                <InfoFieldLocal detail={pascalCase(evidence.requirement_type)} label="Evidence Type" icon={FileCode2} />
                 <Separator />
               </>
             )}
@@ -196,24 +168,8 @@ export default async function ClientEvidencePage(props: Props) {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">System Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <FileText className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">{evidence.system_name}</p>
-                    <p className="text-xs text-muted-foreground">System</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <FileText className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">{evidence.site_name}</p>
-                    <p className="text-xs text-muted-foreground">Site</p>
-                  </div>
-                </div>
+                <InfoFieldLocal detail={evidence.system_name} label="System" icon={FileText} />
+                <InfoFieldLocal detail={evidence.site_name} label="Site" icon={FileText} />
               </div>
             </div>
 
@@ -223,28 +179,11 @@ export default async function ClientEvidencePage(props: Props) {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">Audit Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <User className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">{evidence.email || 'Unknown'}</p>
-                    <p className="text-xs text-muted-foreground">Created By</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
-                    <Clock className="w-full h-full" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">
-                      {evidence.approved_at
-                        ? format(new Date(evidence.approved_at), "MMMM d, yyyy")
-                        : 'Not yet reviewed'}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Last Reviewed</p>
-                  </div>
-                </div>
+                <InfoFieldLocal detail={evidence.email || "Unknown"} label="Created By" icon={User} />
+                <InfoFieldLocal detail={evidence.reviewer || "Unknown"} label="Reviewed By" icon={User} />
+                <InfoFieldLocal detail={evidence.reviewed_at
+                  ? format(new Date(evidence.reviewed_at), "MMMM d, yyyy")
+                  : 'Not yet reviewed'} label="Reviewed At" icon={Clock} />
               </div>
             </div>
           </CardContent>
@@ -252,4 +191,18 @@ export default async function ClientEvidencePage(props: Props) {
       </div>
     </div>
   );
+}
+
+function InfoFieldLocal(props: { detail: string, label: string, icon: any }) {
+  return (
+    <div className="flex items-start">
+      <div className="my-auto w-5 h-5 mr-2 flex-shrink-0 text-muted-foreground">
+        <props.icon className="w-full h-full" />
+      </div>
+      <div>
+        <p className="font-medium text-sm">{props.detail}</p>
+        <p className="text-xs text-muted-foreground">{props.label}</p>
+      </div>
+    </div>
+  )
 }

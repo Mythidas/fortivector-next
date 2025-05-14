@@ -1,6 +1,6 @@
 'use server'
 
-import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, deleteFormSchema } from "@/lib/schema/forms";
+import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, deleteFormSchema, evidenceStatusFormSchema } from "@/lib/schema/forms";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
@@ -311,6 +311,44 @@ export const createControlEvidenceAction = async (_prevState: any, params: FormD
   }
 
   return redirect(`/clients/control/${validation.data.id}?tab=evidence`);
+}
+
+export const updateControlEvidenceStatusAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = evidenceStatusFormSchema.safeParse({
+    id: params.get("id"),
+    status: params.get("status"),
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  const user = await supabase.auth.getUser();
+
+  const { error } = await supabase.from("control_evidence").update({
+    status: validation.data.status,
+    reviewed_by: user.data.user?.id,
+    reviewed_at: new Date().toISOString()
+  }).eq("id", validation.data.id)
+
+  if (error) {
+    return {
+      success: false,
+      errors: { db: [error.message] },
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  return {
+    success: true,
+    values: Object.fromEntries(params.entries()),
+    message: "Successfully updated status"
+  }
 }
 
 export const deleteControlEvidenceAction = async (_prevState: any, params: FormData) => {

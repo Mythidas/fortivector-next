@@ -70,8 +70,9 @@ export default function EvidenceTable({ controlView, evidence }: Props) {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Uploaded At</TableHead>
-                <TableHead>Uploaded By</TableHead>
+                <TableHead>Reviewed By</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -80,8 +81,9 @@ export default function EvidenceTable({ controlView, evidence }: Props) {
                 <TableRow key={evidence.id}>
                   <TableCell>{evidence.name}</TableCell>
                   <TableCell>{pascalCase(evidence.requirement_type)}</TableCell>
+                  <TableCell>{pascalCase(evidence.status)}</TableCell>
                   <TableCell>{new Date(evidence.uploaded_at).toDateString()}</TableCell>
-                  <TableCell>{evidence.email}</TableCell>
+                  <TableCell>{evidence.reviewer}</TableCell>
                   <TableCell className="text-right">
                     <DeleteForm id={evidence.id} url={`/clients/control/${controlView.site_control_id}?tab=evidence`} action={deleteControlEvidenceAction}>
                       <DropdownMenu>
