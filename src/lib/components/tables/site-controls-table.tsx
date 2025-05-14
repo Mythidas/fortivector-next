@@ -32,6 +32,21 @@ export default function SiteControlsTable({ controls_view }: Props) {
     return str[0].toUpperCase() + str.substring(1);
   }
 
+  function getReviewDate(control: SiteControlsView) {
+    if (!control.last_validated || !control.review_frequency) {
+      return "Needs Review";
+    }
+
+    const lastValidatedDate = new Date(control.last_validated);
+    const nextReviewDate = new Date(lastValidatedDate);
+    nextReviewDate.setDate(lastValidatedDate.getDate() + control.review_frequency);
+
+    const today = new Date();
+    const daysUntilReview = Math.ceil((nextReviewDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    return `${daysUntilReview} days`;
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -56,8 +71,8 @@ export default function SiteControlsTable({ controls_view }: Props) {
                 <TableHead>Status</TableHead>
                 <TableHead>Revision</TableHead>
                 <TableHead>Enforcement</TableHead>
-                <TableHead>Validated Date</TableHead>
                 <TableHead>Validated By</TableHead>
+                <TableHead>Next Review</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -68,8 +83,8 @@ export default function SiteControlsTable({ controls_view }: Props) {
                   <TableCell>{pascalCase(control.status)}</TableCell>
                   <TableCell>{control.revision}</TableCell>
                   <TableCell>{pascalCase(control.enforcement_method)}</TableCell>
-                  <TableCell>{control.last_validated ? new Date(control.last_validated).getDate() : "Never"}</TableCell>
                   <TableCell>{control.last_validated_by}</TableCell>
+                  <TableCell>{getReviewDate(control)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

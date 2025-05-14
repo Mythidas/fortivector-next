@@ -11,8 +11,7 @@ export interface Controls {
   tenant_id: string;
   enforcement_method: EnforcementMethod;
   enforcement_location?: string;
-  playbook_id?: string;
-  ai_parse_rules?: any;
+  review_frequency: number;
 };
 
 export interface ControlsToNSTSubcategories {

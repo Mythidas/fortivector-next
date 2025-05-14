@@ -1,4 +1,5 @@
 import SiteControlEvidenceTab from "@/lib/components/tabs/site-control-evidence-tab";
+import SiteControlOverviewTab from "@/lib/components/tabs/site-control-overview-tab";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import { Tabs, TabsList } from "@/lib/components/ui/tabs";
@@ -56,6 +57,7 @@ export default async function SiteControlPage(props: Props) {
           <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
           <RouteTabsTrigger value="evidence">Evidence</RouteTabsTrigger>
         </TabsList>
+        <SiteControlOverviewTab controlView={control} />
         <SiteControlEvidenceTab controlView={control} />
       </Tabs>
     </div>

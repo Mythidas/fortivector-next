@@ -13,7 +13,7 @@ export default async function SiteControlOverviewTab(props: Props) {
 
   return (
     <TabsContent value="overview">
-
+      Overview
     </TabsContent>
   );
 }

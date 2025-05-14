@@ -17,6 +17,7 @@ export const createControlAction = async (_prevState: any, params: FormData) => 
     revision: params.get("revision"),
     enforcement_method: params.get("enforcement_method"),
     enforcement_location: params.get("enforcement_location"),
+    review_frequency: Number(params.get("review_frequency"))
   });
 
   if (validation.error) {
@@ -46,6 +47,7 @@ export const createControlAction = async (_prevState: any, params: FormData) => 
     revision: validation.data.revision,
     enforcement_method: validation.data.enforcement_method,
     enforcement_location: validation.data.enforcement_location,
+    review_frequency: validation.data.review_frequency
   }).select().single();
 
   if (error) {
@@ -72,6 +74,7 @@ export const updateControlAction = async (_prevState: any, params: FormData) => 
     revision: params.get("revision"),
     enforcement_method: params.get("enforcement_method"),
     enforcement_location: params.get("enforcement_location"),
+    review_frequency: Number(params.get("review_frequency"))
   });
 
   if (validation.error) {
@@ -90,6 +93,7 @@ export const updateControlAction = async (_prevState: any, params: FormData) => 
     revision: validation.data.revision,
     enforcement_method: validation.data.enforcement_method,
     enforcement_location: validation.data.enforcement_location,
+    review_frequency: validation.data.review_frequency
   }).eq("id", validation.data.id);
 
   if (error) {

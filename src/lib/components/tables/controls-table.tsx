@@ -79,6 +79,7 @@ export default function ControlsTable({ system, controls, control_evidence, cont
                 <TableHead>Enforcement Method</TableHead>
                 <TableHead>Evidence Required</TableHead>
                 <TableHead>NIST Subcategories</TableHead>
+                <TableHead>Review Frequency</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -92,6 +93,7 @@ export default function ControlsTable({ system, controls, control_evidence, cont
                   <TableCell>{pascalCase(control.enforcement_method)}</TableCell>
                   <TableCell>{control_evidence.filter((ev) => ev.control_id === control.id).length}</TableCell>
                   <TableCell>{controls_to_subcategories.filter((cat) => cat.control_id === control.id).length}</TableCell>
+                  <TableCell>{control.review_frequency} days</TableCell>
                   <TableCell className="text-right">
                     <DeleteForm id={control.id} url={`/systems/${system.id}?tab=controls`} action={deleteControlAciton}>
                       <DropdownMenu>

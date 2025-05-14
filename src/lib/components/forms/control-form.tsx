@@ -64,6 +64,7 @@ export default function ControlForm({ control, footer, action }: Props) {
         formData.append('revision', data.revision);
         formData.append('enforcement_method', data.enforcement_method);
         formData.append('enforcement_location', data.enforcement_location || "");
+        formData.append('review_frequency', data.review_frequency.toString());
 
         startTransition(() => {
           formAction(formData);
@@ -108,6 +109,19 @@ export default function ControlForm({ control, footer, action }: Props) {
                     <FormLabel>Revision</FormLabel>
                     <FormControl>
                       <Input placeholder="2025.1" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="review_frequency"
+                render={({ field }) => (
+                  <FormItem className="w-fit">
+                    <FormLabel>Review Frequency (Days)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="30 days" type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

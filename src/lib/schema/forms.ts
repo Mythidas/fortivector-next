@@ -70,6 +70,7 @@ export const controlFormSchema = z.object({
   revision: z.string().min(1, { message: "Revision is required" }),
   enforcement_method: z.enum(["manual", "scripted", "auto-scanned", "vendor-managed"] as const),
   enforcement_location: z.string().optional(),
+  review_frequency: z.coerce.number().min(1)
 });
 
 export type ControlFormValues = z.infer<typeof controlFormSchema>;

@@ -14,11 +14,10 @@ import {
   BreadcrumbSeparator,
 } from "@/lib/components/ui/breadcrumb";
 import { createClient } from "@/utils/supabase/server";
-
-import { createControlAction } from "@/lib/actions/system-actions";
 import { Separator } from "@/lib/components/ui/separator";
 import ControlForm from "@/lib/components/forms/control-form";
 import { getSystem } from "@/lib/functions/database/systems";
+import { createControlAction } from "@/lib/actions/controls";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -77,7 +76,8 @@ export default async function CreateControl(props: Props) {
               system_id: system.id,
               tenant_id: system.tenant_id,
               enforcement_method: "manual",
-              enforcement_location: ""
+              enforcement_location: "",
+              review_frequency: 30
             }}
             footer={{
               cancel_route: `/systems/${system.id}?tab=controls`,

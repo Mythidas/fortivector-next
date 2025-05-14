@@ -37,6 +37,7 @@ export interface SiteControlsView {
   revision: string;
   enforcement_method: EnforcementMethod;
   enforcement_location: string | null;
+  review_frequency: number;
 };
 
 export interface ControlEvidenceView {
