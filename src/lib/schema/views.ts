@@ -32,12 +32,13 @@ export interface SiteControlsView {
   title: string;
   description: string;
   control_code: string;
-  system_id: string;
+  site_system_id: string;
   control_status: ControlStatus;
   revision: string;
   enforcement_method: EnforcementMethod;
   enforcement_location: string | null;
   review_frequency: number;
+  system_name: string;
 };
 
 export interface ControlEvidenceView {

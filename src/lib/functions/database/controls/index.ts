@@ -1,6 +1,6 @@
 'use server'
 
-import { ControlEvidenceRequirements, Controls, ControlsToNSTSubcategories } from "@/lib/schema/database/controls";
+import { ControlEvidenceRequirements, Controls, ControlsToNSTSubcategories, ControlWaivers, ControlWaiversView } from "@/lib/schema/database/controls";
 import { ControlEvidenceView, SiteControlsView } from "@/lib/schema/views";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -88,12 +88,12 @@ export async function getControlsEvidenceRequirements(supabase: SupabaseClient, 
   return controls as ControlEvidenceRequirements[];
 }
 
-export async function getSiteControlsView(supabase: SupabaseClient, site_id: string, system_id: string) {
+export async function getSiteControlsView(supabase: SupabaseClient, site_id: string, site_system_id: string) {
   const { data: controls, error } = await supabase
     .from("site_controls_view")
     .select("*")
     .eq("site_id", site_id)
-    .eq("system_id", system_id)
+    .eq("site_system_id", site_system_id)
     .neq("control_status", "draft");
 
   if (error) {
@@ -147,6 +147,35 @@ export async function getControlEvidenceViewBySiteAndControl(supabase: SupabaseC
   }
 
   return controls as ControlEvidenceView[];
+}
+
+export async function getControlWaiversViewByControl(supabase: SupabaseClient, site_control_id: string) {
+  const { data: controls, error } = await supabase
+    .from("control_waivers_view")
+    .select("*")
+    .eq("site_control_id", site_control_id);
+
+  if (error) {
+    console.log(error);
+    return [];
+  }
+
+  return controls as ControlWaiversView[];
+}
+
+export async function getControlWaiversView(supabase: SupabaseClient, id: string) {
+  const { data: controls, error } = await supabase
+    .from("control_waivers_view")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  return controls as ControlWaiversView;
 }
 
 export async function getControlsToNSTSubcategories(supabase: SupabaseClient) {

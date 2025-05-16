@@ -150,9 +150,34 @@ export const controlEvidenceFormSchema = z.object({
 
 export type ControlEvidenceFormValues = z.infer<typeof controlEvidenceFormSchema>;
 
-export const evidenceStatusFormSchema = z.object({
+export const controlWaiverFormSchema = z.object({
+  id: z.string().optional(),
+  tenant_id: z.string(),
+  site_id: z.string(),
+  site_control_id: z.string(),
+  status: z.string().optional(),
+  expiration: z.date(),
+  reason: z.string(),
+  waiver_obj: z.custom<Blob & { name: string; type: string; size: number }>((file) => {
+    return (
+      typeof file === "object" &&
+      file !== null &&
+      typeof (file as any).arrayBuffer === "function" &&
+      typeof (file as any).name === "string" &&
+      typeof (file as any).type === "string" &&
+      typeof (file as any).size === "number"
+    );
+  }, "Invalid file")
+    .refine((file) => file.size > 0, "File is required")
+    .refine((file) => file.size < 10 * 1024 * 1024, "File too large (max 10MB)")
+    .optional(),
+})
+
+export type ControlWaiverFormValues = z.infer<typeof controlWaiverFormSchema>;
+
+export const statusFormSchema = z.object({
   id: z.string(),
   status: z.string()
 });
 
-export type EvidenceStatusFormValues = z.infer<typeof evidenceStatusFormSchema>;
+export type StatusFormValues = z.infer<typeof statusFormSchema>;

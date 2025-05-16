@@ -1,6 +1,6 @@
 'use server'
 
-import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, deleteFormSchema, evidenceStatusFormSchema } from "@/lib/schema/forms";
+import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, controlWaiverFormSchema, deleteFormSchema, statusFormSchema } from "@/lib/schema/forms";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
@@ -315,7 +315,7 @@ export const createControlEvidenceAction = async (_prevState: any, params: FormD
 
 export const updateControlEvidenceStatusAction = async (_prevState: any, params: FormData) => {
   const supabase = await createClient();
-  const validation = evidenceStatusFormSchema.safeParse({
+  const validation = statusFormSchema.safeParse({
     id: params.get("id"),
     status: params.get("status"),
   });
@@ -389,6 +389,163 @@ export const deleteControlEvidenceAction = async (_prevState: any, params: FormD
 
 
   const { error } = await supabase.from("control_evidence").delete().eq("id", validation.data.id);
+
+  if (error) {
+    return {
+      success: false,
+      errors: { "db": [error.message] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  return redirect(validation.data.url || "/clients");
+};
+
+export const createControlWaiverAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = controlWaiverFormSchema.safeParse({
+    id: params.get("id"),
+    site_id: params.get("site_id"),
+    tenant_id: params.get("tenant_id"),
+    site_control_id: params.get("site_control_id"),
+    reason: params.get("reason"),
+    expiration: new Date(params.get("expiration")?.toString() || ""),
+    waiver_obj: params.get("waiver_obj")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  if (validation.data.waiver_obj) {
+    const buffer = Buffer.from(await validation.data.waiver_obj.arrayBuffer());
+    const type = validation.data.waiver_obj.type;
+    const path = `public/${validation.data.tenant_id}/${randomUUID()}.${type.split("/").at(1)}`;
+
+    const user = await supabase.auth.getUser();
+
+    const { data, error } = await supabase.storage
+      .from('waivers')
+      .upload(path, buffer, {
+        contentType: type
+      });
+
+    if (error) {
+      return {
+        success: false,
+        errors: { db: [error.message] },
+        values: Object.fromEntries(params.entries()),
+      };
+    }
+
+    const { error: evidence_error } = await supabase.from("control_waivers").insert({
+      tenant_id: validation.data.tenant_id,
+      site_id: validation.data.site_id,
+      site_control_id: validation.data.site_control_id,
+      url: data.fullPath,
+      expiration: validation.data.expiration,
+      created_by: user.data.user?.id,
+      reason: validation.data.reason
+    })
+
+    if (evidence_error) {
+      return {
+        success: false,
+        errors: { db: [evidence_error.message] },
+        values: Object.fromEntries(params.entries()),
+      };
+    }
+  } else {
+    return {
+      success: false,
+      errors: { db: ["File failed to upload file."] },
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  return redirect(`/clients/control/${validation.data.id}?tab=waivers`);
+}
+
+export const updateControlWaiverStatusAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = statusFormSchema.safeParse({
+    id: params.get("id"),
+    status: params.get("status"),
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  const user = await supabase.auth.getUser();
+
+  const { error } = await supabase.from("control_waivers").update({
+    status: validation.data.status,
+    updated_by: user.data.user?.id,
+    updated_at: new Date().toISOString()
+  }).eq("id", validation.data.id)
+
+  if (error) {
+    return {
+      success: false,
+      errors: { db: [error.message] },
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  return {
+    success: true,
+    values: Object.fromEntries(params.entries()),
+    message: "Successfully updated status"
+  }
+}
+
+export const deleteControlWaiverAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = deleteFormSchema.safeParse({
+    id: params.get("id"),
+    url: params.get("url")
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+  const { data } = await supabase.from("control_waivers").select().eq("id", validation.data.id).single();
+
+  if (!data) {
+    return {
+      success: false,
+      errors: { "db": ["Failed to find entry."] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+
+  const { data: files, error: evidencError } = await supabase.storage.from("waivers").remove([String(data.url).substring('waivers/'.length)]);
+
+  if (evidencError || files.length === 0) {
+    return {
+      success: false,
+      errors: { "db": ["Failed to delete waiver file."] },
+      values: Object.fromEntries(params.entries())
+    }
+  }
+
+
+  const { error } = await supabase.from("control_waivers").delete().eq("id", validation.data.id);
 
   if (error) {
     return {

@@ -10,10 +10,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/lib/components/ui/form";
-import { evidenceStatusFormSchema, EvidenceStatusFormValues } from "@/lib/schema/forms";
+import { statusFormSchema, StatusFormValues } from "@/lib/schema/forms";
 import { startTransition, useActionState, useEffect, useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
-import { FormFooterProps, FormState } from "@/lib/types";
+import { FormState, Option } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { hasAccess, useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
@@ -21,13 +21,14 @@ import { useRouter } from "next/navigation";
 type Props = {
   id: string;
   status: string;
+  options: Option[];
   action: (
     _prevState: any,
     params: FormData
-  ) => Promise<FormState<EvidenceStatusFormValues>>;
+  ) => Promise<FormState<StatusFormValues>>;
 };
 
-export default function EvidenceStatusForm({ id, status, action }: Props) {
+export default function StatusUpdateForm({ id, status, options, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
   const context = useUser();
@@ -38,8 +39,8 @@ export default function EvidenceStatusForm({ id, status, action }: Props) {
   }, [state]);
 
 
-  const form = useForm<EvidenceStatusFormValues>({
-    resolver: zodResolver(evidenceStatusFormSchema),
+  const form = useForm<StatusFormValues>({
+    resolver: zodResolver(statusFormSchema),
     defaultValues: {
       id: id,
       status: status
@@ -60,14 +61,14 @@ export default function EvidenceStatusForm({ id, status, action }: Props) {
 
   return (
     <Form {...form}>
-      <form className="flex flex-col size-full gap-4">
+      <form className="flex flex-col">
         <FormAlert errors={state.errors} />
         <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
             <FormItem className="w-fit text-nowrap">
-              <FormLabel>Status</FormLabel>
+              <FormLabel>Change Status</FormLabel>
               <FormControl>
                 <Select
                   {...field}
@@ -92,9 +93,11 @@ export default function EvidenceStatusForm({ id, status, action }: Props) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="denied">Denied</SelectItem>
+                      {options.map((opt) => {
+                        return (
+                          <SelectItem value={opt.id}>{opt.label}</SelectItem>
+                        )
+                      })}
                     </SelectGroup>
                   </SelectContent>
                 </Select>

@@ -12,7 +12,7 @@ type Props = {
 
 export default async function SiteSystemControlsTab({ site_view }: Props) {
   const supabase = await createClient();
-  const site_controls = await getSiteControlsView(supabase, site_view.site_id, site_view.system_id);
+  const site_controls = await getSiteControlsView(supabase, site_view.site_id, site_view.link_id);
   if (!site_controls) {
     return (
       <Card>

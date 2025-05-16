@@ -21,12 +21,28 @@ export function getMediaType(filePath: string): 'image' | 'pdf' | 'video' | 'oth
   return 'other';
 }
 
-export async function getFileUrl(supabase: SupabaseClient, filePath: string): Promise<string> {
+export async function getEvidenceFileUrl(supabase: SupabaseClient, filePath: string): Promise<string> {
   try {
-    const path = filePath.substring(9);
+    const path = filePath.substring('evidence/'.length);
 
     const { data, error } = await supabase.storage
       .from('evidence')
+      .createSignedUrl(path, 60 * 60); // 1 hour expiry
+
+    if (error) throw error;
+    return data.signedUrl;
+  } catch (error) {
+    console.error('Error getting file URL:', error);
+    return '';
+  }
+}
+
+export async function getWaiverFileUrl(supabase: SupabaseClient, filePath: string): Promise<string> {
+  try {
+    const path = filePath.substring('waivers/'.length);
+
+    const { data, error } = await supabase.storage
+      .from('waivers')
       .createSignedUrl(path, 60 * 60); // 1 hour expiry
 
     if (error) throw error;

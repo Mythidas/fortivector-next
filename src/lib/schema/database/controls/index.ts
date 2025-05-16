@@ -1,4 +1,4 @@
-import { ControlStatus, EnforcementMethod, EvidenceStatus, EvidenceType } from "@/lib/types";
+import { ControlStatus, EnforcementMethod, EvidenceStatus, EvidenceType, WaiverStatus } from "@/lib/types";
 
 export interface Controls {
   id: string;
@@ -46,13 +46,34 @@ export interface ControlEvidence {
   status: EvidenceStatus;
 }
 
-export interface ControlWaiver {
+export interface ControlWaivers {
   id: string;
   tenant_id: string;
   site_id: string;
-  control_id: string;
-  waiver_url: string;
-  waiver_status: 'enforced' | 'expired';
-  waiver_expiration: string; // ISO 8601 timestamp
-  waiver_approver: string;   // user ID
+  site_control_id: string;
+  url: string;
+  status: WaiverStatus;
+  expiration: string; // ISO 8601 timestamp
+  reason: string;
+  updated_by?: string;   // user ID
+  updated_at?: string;
+  created_by: string;
+  created_at: string;
+}
+
+export interface ControlWaiversView {
+  id: string;
+  tenant_id: string;
+  site_id: string;
+  site_control_id: string;
+  url: string;
+  status: WaiverStatus;
+  expiration: string; // ISO 8601 timestamp
+  reason: string;
+  updated_by?: string;   // user ID
+  updated_at?: string;
+  created_by: string;
+  created_at: string;
+  creator: string;
+  updater: string;
 }

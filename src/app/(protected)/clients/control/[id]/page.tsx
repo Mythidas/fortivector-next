@@ -1,5 +1,6 @@
 import SiteControlEvidenceTab from "@/lib/components/tabs/site-control-evidence-tab";
 import SiteControlOverviewTab from "@/lib/components/tabs/site-control-overview-tab";
+import SiteControlWaiversTab from "@/lib/components/tabs/site-control-waivers-tab";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import { Tabs, TabsList } from "@/lib/components/ui/tabs";
@@ -22,8 +23,7 @@ export default async function SiteControlPage(props: Props) {
   const control = await getSiteControlView(supabase, params.id);
   const site = await getSite(supabase, control?.site_id || "");
   const client = await getClient(supabase, site?.client_id || "");
-  const system = await getSystem(supabase, control?.system_id || "");
-  if (!control || !site || !client || !system) {
+  if (!control || !site || !client) {
     return (
       <Card>
         <CardHeader>
@@ -43,7 +43,7 @@ export default async function SiteControlPage(props: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbLink href={`/clients/site/${site.id}`}>{site.name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/clients/system/${system.id}`}>{system.name}</BreadcrumbLink>
+          <BreadcrumbLink href={`/clients/system/${control.site_system_id}?tab=controls`}>{control.system_name}</BreadcrumbLink>
           <BreadcrumbSeparator />
           <BreadcrumbPage>{control.title}</BreadcrumbPage>
         </BreadcrumbList>
@@ -53,12 +53,14 @@ export default async function SiteControlPage(props: Props) {
         <div className="flex gap-4 justify-start items-end">
           <h1 className="text-3xl font-bold tracking-tight">{control.title}</h1>
         </div>
-        <TabsList className="grid w-full max-w-md grid-cols-2">
+        <TabsList className="grid w-full max-w-md grid-cols-3">
           <RouteTabsTrigger value="overview">Overview</RouteTabsTrigger>
           <RouteTabsTrigger value="evidence">Evidence</RouteTabsTrigger>
+          <RouteTabsTrigger value="waivers">Waivers</RouteTabsTrigger>
         </TabsList>
         <SiteControlOverviewTab controlView={control} />
         <SiteControlEvidenceTab controlView={control} />
+        <SiteControlWaiversTab controlView={control} />
       </Tabs>
     </div>
   );

@@ -1,9 +1,9 @@
-import { createControlEvidenceAction } from "@/lib/actions/controls";
-import ControlEvidenceForm from "@/lib/components/forms/control-evidence-form";
+import { createControlWaiverAction } from "@/lib/actions/controls";
+import ControlWaiverForm from "@/lib/components/forms/control-waiver-form";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import { Card, CardHeader } from "@/lib/components/ui/card";
 import { getClient } from "@/lib/functions/database/clients";
-import { getControlEvidenceRequirements, getSiteControlView } from "@/lib/functions/database/controls";
+import { getSiteControlView } from "@/lib/functions/database/controls";
 import { getSite } from "@/lib/functions/database/sites";
 import { createClient } from "@/utils/supabase/server";
 
@@ -11,15 +11,14 @@ type Props = {
   params: Promise<{ id: string }>;
 }
 
-export default async function CreateEvidence(props: Props) {
+export default async function CreateWaiver(props: Props) {
   const params = await props.params;
   const supabase = await createClient();
   const control = await getSiteControlView(supabase, params.id);
   const site = await getSite(supabase, control?.site_id || "");
   const client = await getClient(supabase, site?.client_id || "");
-  const evidenceRequirements = await getControlEvidenceRequirements(supabase, control?.control_id || "")
 
-  if (!control || !site || !client || !evidenceRequirements) {
+  if (!control || !site || !client) {
     return (
       <Card>
         <CardHeader>
@@ -41,33 +40,32 @@ export default async function CreateEvidence(props: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbLink href={`/clients/system/${control.site_system_id}`}>{control.system_name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/clients/control/${control.site_control_id}?tab=evidence`}>{control.title}</BreadcrumbLink>
+          <BreadcrumbLink href={`/clients/control/${control.site_control_id}?tab=waivers`}>{control.title}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbPage>Add Evidence</BreadcrumbPage>
+          <BreadcrumbPage>Add Waiver</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
-      <ControlEvidenceForm
-        evidence={{
+      <ControlWaiverForm
+        waiver={{
           id: control.site_control_id,
           tenant_id: site.tenant_id,
+          site_id: control.site_id,
           site_control_id: control.site_control_id,
-          name: "",
-          description: "",
           status: "pending",
-          evidence_url: "",
-          evidence_requirement_id: "",
-          uploaded_at: "",
-          uploaded_by: "",
-          reviewed_at: "",
-          reviewed_by: ""
+          reason: "",
+          url: "",
+          expiration: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+          created_at: "",
+          created_by: "",
+          updated_at: "",
+          updated_by: ""
         }}
-        requirements={evidenceRequirements}
         footer={{
-          submit_text: "Add Evidence",
-          pending_text: "Adding Evidence...",
-          cancel_route: `/clients/control/${control.site_control_id}?tab=evidence`
+          submit_text: "Add Waiver",
+          pending_text: "Adding Waiver...",
+          cancel_route: `/clients/control/${control.site_control_id}?tab=waivers`
         }}
-        action={createControlEvidenceAction}
+        action={createControlWaiverAction}
       />
     </div>
   );

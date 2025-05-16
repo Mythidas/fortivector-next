@@ -1,30 +1,34 @@
 import { Badge } from "@/lib/components/ui/badge";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/lib/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/lib/components/ui/card";
 import { Separator } from "@/lib/components/ui/separator";
 import { format } from "date-fns";
-import { Download, Eye, FileText, File, Clock, User, Calendar, FileCode2, LucideProps } from "lucide-react";
+import { FileText, File, Clock, User, Calendar } from "lucide-react";
 import Image from "next/image";
-import { getMediaType, getEvidenceFileUrl } from "@/lib/functions/storage";
+import { getMediaType, getWaiverFileUrl } from "@/lib/functions/storage";
 import { createClient } from "@/utils/supabase/server";
 import { Breadcrumb, BreadcrumbList, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from "@/lib/components/ui/breadcrumb";
 import { getClient } from "@/lib/functions/database/clients";
-import { getControlEvidenceView } from "@/lib/functions/database/controls";
+import { getControlWaiversView, getSiteControlView } from "@/lib/functions/database/controls";
 import DownloadButton from "@/lib/components/ux/download-button";
 import { pascalCase } from "@/lib/utils";
 import StatusUpdateForm from "@/lib/components/forms/status-form";
-import { updateControlEvidenceStatusAction } from "@/lib/actions/controls";
+import { updateControlWaiverStatusAction } from "@/lib/actions/controls";
+import { getSite, getSiteSytemView } from "@/lib/functions/database/sites";
 
 type Props = {
   params: Promise<{ id: string }>;
 }
 
-export default async function ClientEvidencePage(props: Props) {
+export default async function ClientWaiverPage(props: Props) {
   const params = await props.params;
   const supabase = await createClient();
-  const evidence = await getControlEvidenceView(supabase, params.id);
-  const client = await getClient(supabase, evidence?.client_id || "");
+  const waiver = await getControlWaiversView(supabase, params.id);
+  const control = await getSiteControlView(supabase, waiver?.site_control_id || "");
+  const site = await getSite(supabase, control?.site_id || "");
+  const client = await getClient(supabase, site?.client_id || "");
+  const system = await getSiteSytemView(supabase, control?.site_system_id || "");
 
-  if (!evidence || !client) {
+  if (!waiver || !client || !control || !site || !system) {
     return (
       <Card>
         <CardHeader>
@@ -35,10 +39,10 @@ export default async function ClientEvidencePage(props: Props) {
   }
 
   // Get the file URL from storage
-  const fileUrl = await getEvidenceFileUrl(supabase, evidence.evidence_url);
+  const fileUrl = await getWaiverFileUrl(supabase, waiver.url);
 
   // Determine media type for appropriate rendering
-  const mediaType = getMediaType(evidence.evidence_url);
+  const mediaType = getMediaType(waiver.url);
 
   return (
     <div className="space-y-6">
@@ -48,39 +52,36 @@ export default async function ClientEvidencePage(props: Props) {
           <BreadcrumbSeparator />
           <BreadcrumbLink href={`/clients/${client.id}?tab=sites`}>{client.name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/clients/site/${evidence.site_id}?tab=systems`}>{evidence.site_name}</BreadcrumbLink>
+          <BreadcrumbLink href={`/clients/site/${waiver.site_id}?tab=systems`}>{system.site_name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/clients/system/${evidence.site_systems_id}?tab=controls`}>{evidence.system_name}</BreadcrumbLink>
+          <BreadcrumbLink href={`/clients/system/${control?.site_system_id}?tab=controls`}>{control?.system_name}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbLink href={`/clients/control/${evidence.site_control_id}?tab=evidence`}>{evidence.control_title}</BreadcrumbLink>
+          <BreadcrumbLink href={`/clients/control/${control?.site_control_id}?tab=waivers`}>{control?.title}</BreadcrumbLink>
           <BreadcrumbSeparator />
-          <BreadcrumbPage>{evidence.name}</BreadcrumbPage>
+          <BreadcrumbPage>{waiver.reason}</BreadcrumbPage>
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Evidence Viewer */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>{evidence.name}</CardTitle>
-              <Badge variant={evidence.status === "approved" ? 'default' : evidence.status === "pending" ? "outline" : "destructive"} className="text-sm">
-                {pascalCase(evidence.status)}
+              <CardTitle>{waiver.reason}</CardTitle>
+              <Badge variant={waiver.status === "approved" ? 'default' : waiver.status === "pending" ? "outline" : "destructive"} className="text-sm">
+                {pascalCase(waiver.status)}
               </Badge>
             </div>
-            {evidence.description && (
-              <CardDescription>{evidence.description}</CardDescription>
-            )}
           </CardHeader>
           <Separator />
-          <CardContent>
+          <CardContent className="p-0">
             <div className="flex items-center justify-center bg-muted/40 min-h-[400px] relative">
               {/* Media viewer based on file type */}
               {mediaType === 'image' && (
                 <div className="relative w-full h-full min-h-[400px]">
                   <Image
                     src={fileUrl}
-                    alt={evidence.name}
+                    alt={waiver.reason}
                     fill
                     className="object-contain"
                     sizes="(max-width: 768px) 100vw, 800px"
@@ -88,11 +89,11 @@ export default async function ClientEvidencePage(props: Props) {
                 </div>
               )}
 
-              {mediaType === 'pdf' && (
+              {mediaType === 'pdf' && fileUrl && (
                 <iframe
                   src={`${fileUrl}#view=FitH`}
                   className="w-full h-[600px]"
-                  title={evidence.name}
+                  title={waiver.reason}
                 />
               )}
 
@@ -114,7 +115,7 @@ export default async function ClientEvidencePage(props: Props) {
                     <p className="text-sm text-muted-foreground mt-1">
                       This file type cannot be previewed directly. Please download to view.
                     </p>
-                    <DownloadButton fileUrl={fileUrl} fileName={evidence.name} module="evidence" level="read">
+                    <DownloadButton fileUrl={fileUrl} fileName={waiver.reason} module="evidence" level="read">
                       Download File
                     </DownloadButton>
                   </div>
@@ -123,18 +124,18 @@ export default async function ClientEvidencePage(props: Props) {
             </div>
           </CardContent>
           <Separator />
-          <CardFooter className="flex justify-between items-center size-full py-0">
+          <CardFooter className="flex justify-between gap-2">
             <StatusUpdateForm
-              id={evidence.id}
-              status={evidence.status}
+              id={waiver.id}
+              status={waiver.status}
               options={[
                 { id: "pending", label: "Pending" },
                 { id: "approved", label: "Approved" },
                 { id: "denied", label: "Denied" }
               ]}
-              action={updateControlEvidenceStatusAction}
+              action={updateControlWaiverStatusAction}
             />
-            <DownloadButton fileUrl={fileUrl} fileName={evidence.name} module="evidence" level="read">
+            <DownloadButton fileUrl={fileUrl} fileName={waiver.reason} disabled={!fileUrl} module="evidence" level="read">
               Download File
             </DownloadButton>
           </CardFooter>
@@ -143,37 +144,25 @@ export default async function ClientEvidencePage(props: Props) {
         {/* Evidence Metadata */}
         <Card>
           <CardHeader>
-            <CardTitle>Evidence Details</CardTitle>
+            <CardTitle>Waiver Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Control Information */}
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">Control Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <InfoFieldLocal detail={evidence.control_title} label="Control" icon={FileText} />
+                <InfoFieldLocal detail={control.title} label="Control" icon={FileText} />
               </div>
             </div>
 
             <Separator />
 
-            {/* Requirement Information */}
-            {evidence.evidence_requirement_id && (
-              <>
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground">Requirement Information</h3>
-                  <p className="text-sm">{evidence.requirement_description}</p>
-                </div>
-                <InfoFieldLocal detail={pascalCase(evidence.requirement_type)} label="Evidence Type" icon={FileCode2} />
-                <Separator />
-              </>
-            )}
-
             {/* System Information */}
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">System Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <InfoFieldLocal detail={evidence.system_name} label="System" icon={FileText} />
-                <InfoFieldLocal detail={evidence.site_name} label="Site" icon={FileText} />
+                <InfoFieldLocal detail={system.system_name} label="System" icon={FileText} />
+                <InfoFieldLocal detail={system.site_name} label="Site" icon={FileText} />
               </div>
             </div>
 
@@ -183,11 +172,11 @@ export default async function ClientEvidencePage(props: Props) {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-muted-foreground">Audit Information</h3>
               <div className="grid grid-cols-1 gap-2">
-                <InfoFieldLocal detail={evidence.email || "Unknown"} label="Created By" icon={User} />
-                <InfoFieldLocal detail={format(new Date(evidence.uploaded_at), "MMMM d, yyyy")} label="Date Added" icon={Calendar} />
-                <InfoFieldLocal detail={evidence.reviewer || "Unknown"} label="Reviewed By" icon={User} />
-                <InfoFieldLocal detail={evidence.reviewed_at
-                  ? format(new Date(evidence.reviewed_at), "MMMM d, yyyy")
+                <InfoFieldLocal detail={waiver.creator || "Unknown"} label="Created By" icon={User} />
+                <InfoFieldLocal detail={format(new Date(waiver.created_at), "MMMM d, yyyy")} label="Date Added" icon={Calendar} />
+                <InfoFieldLocal detail={waiver.updater || "None"} label="Reviewed By" icon={User} />
+                <InfoFieldLocal detail={waiver.updated_at
+                  ? format(new Date(waiver.updated_at), "MMMM d, yyyy")
                   : 'Not yet reviewed'} label="Reviewed At" icon={Clock} />
               </div>
             </div>
