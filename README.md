@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fortivector
 
-## Getting Started
+**Fortivector** is a SaaS platform designed to streamline security onboarding and implementation for Managed Service Providers (MSPs). Built with alignment to the **NIST Cybersecurity Framework 2.0**, Fortivector provides a scalable and systematic approach to mapping security controls across client environments.
 
-First, run the development server:
+## 🚀 Purpose
+
+MSPs are under increasing pressure to provide robust security services quickly and consistently. Fortivector helps by enabling:
+
+- Faster onboarding of new clients.
+- Structured implementation of security controls.
+- Visibility into compliance and remediation efforts.
+
+## 🔑 Key Features
+
+- **System-Centric Control Mapping**  
+  Define global Systems (e.g., tools, platforms, infrastructure components) and attach security controls to them.
+
+- **Client Control Templates**  
+  Quickly map client-used Systems and auto-generate a baseline of applicable controls.
+
+- **Gap Analysis & Metrics**  
+  View control coverage and gaps at a glance, supporting client-specific security roadmaps.
+
+- **NIST 2.0 Alignment**  
+  Framework-based implementation, ensuring Fortivector outputs reflect industry-recognized standards.
+
+## 🧱 Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org/)
+- **Backend/Database**: [Supabase](https://supabase.io/)
+- **Package Manager**: `npm`
+
+## ⚙️ Getting Started
+
+Clone the repo and install dependencies:
 
 ```bash
+git clone https://github.com/your-org/fortivector.git
+cd fortivector
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
