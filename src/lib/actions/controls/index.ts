@@ -1,6 +1,7 @@
 'use server'
 
 import { controlEvidenceFormSchema, controlEvidenceRequirementsFormSchema, controlFormSchema, controlNstFormSchema, controlWaiverFormSchema, deleteFormSchema, statusFormSchema } from "@/lib/schema/forms";
+import { pascalCase } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
@@ -347,7 +348,7 @@ export const updateControlEvidenceStatusAction = async (_prevState: any, params:
   return {
     success: true,
     values: Object.fromEntries(params.entries()),
-    message: "Successfully updated status"
+    message: `Successfully updated status: ${pascalCase(validation.data.status)}`
   }
 }
 
@@ -557,3 +558,43 @@ export const deleteControlWaiverAction = async (_prevState: any, params: FormDat
 
   return redirect(validation.data.url || "/clients");
 };
+
+export const updateSiteControlStatusAction = async (_prevState: any, params: FormData) => {
+  const supabase = await createClient();
+  const validation = statusFormSchema.safeParse({
+    id: params.get("id"),
+    status: params.get("status"),
+  });
+
+  if (validation.error) {
+    return {
+      success: false,
+      errors: validation.error.flatten().fieldErrors,
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  const user = await supabase.auth.getUser();
+
+  console.log(validation.data.id)
+
+  const { data, error } = await supabase.from("site_controls").update({
+    status: validation.data.status,
+    last_validated: new Date().toISOString(),
+    last_validated_by: user.data.user?.id
+  }).eq("id", validation.data.id).select().single();
+
+  if (error) {
+    return {
+      success: false,
+      errors: { db: [error.message] },
+      values: Object.fromEntries(params.entries()),
+    };
+  }
+
+  return {
+    success: true,
+    values: Object.fromEntries(params.entries()),
+    message: `Successfully updated status: ${pascalCase(validation.data.status)}`
+  }
+}

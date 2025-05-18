@@ -1,5 +1,5 @@
 import { TabsContent } from "@/lib/components/ui/tabs";
-import { getControlEvidenceViewBySiteAndControl, getControlWaiversViewByControl } from "@/lib/functions/database/controls";
+import { getControlEvidenceRequirements, getControlEvidenceViewBySiteAndControl, getControlWaiversViewByControl } from "@/lib/functions/database/controls";
 import { SiteControlsView } from "@/lib/schema/views";
 import { createClient } from "@/utils/supabase/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/lib/components/ui/card";
@@ -7,7 +7,8 @@ import { Badge } from "@/lib/components/ui/badge";
 import { CalendarDays, CheckCircle, Clock, AlertTriangle, XCircle } from "lucide-react";
 import { format, addDays } from "date-fns";
 import { pascalCase } from "@/lib/utils";
-import { Separator } from "@/lib/components/ui/separator";
+import StatusUpdateForm from "@/lib/components/forms/status-form";
+import { updateSiteControlStatusAction } from "@/lib/actions/controls";
 
 type Props = {
   controlView: SiteControlsView;
@@ -17,13 +18,34 @@ export default async function SiteControlOverviewTab(props: Props) {
   const supabase = await createClient();
   const controlEvidence = await getControlEvidenceViewBySiteAndControl(supabase, props.controlView.control_id, props.controlView.site_id);
   const controlWaivers = await getControlWaiversViewByControl(supabase, props.controlView.site_control_id);
+  const controlRequirements = await getControlEvidenceRequirements(supabase, props.controlView.control_id);
 
-  // Calculate next review date
-  const nextReviewDate = props.controlView.last_validated
-    ? addDays(new Date(props.controlView.last_validated), props.controlView.review_frequency)
-    : new Date();
+  const waivedStatus = () => {
+    for (const waiver of controlWaivers) {
+      if (new Date(waiver.expiration).getTime() > new Date().getTime()) {
+        return false;
+      }
+    }
 
-  // Helper to get status badge color and icon
+    return true;
+  }
+
+  const approvedStatus = () => {
+    let requirementsSatiated = controlRequirements.map((req) => { return { id: req.id, passed: false } });
+
+    for (const evidence of controlEvidence) {
+      const reviewed = new Date(evidence.reviewed_at);
+      const expiration = new Date(reviewed.getTime() + props.controlView.review_frequency * 1000 * 60 * 60 * 24);
+
+      if (expiration.getTime() > new Date().getTime() && evidence.status === "approved") {
+        const requirement = requirementsSatiated.find((req) => req.id === evidence.evidence_requirement_id);
+        if (requirement) requirement.passed = true;
+      }
+    }
+
+    return requirementsSatiated.filter((req) => !req.passed).length > 0;
+  }
+
   const getStatusBadge = (status: string): { variant: "default" | "destructive" | "secondary", icon: any } => {
     switch (status?.toLowerCase()) {
       case 'implemented':
@@ -36,6 +58,9 @@ export default async function SiteControlOverviewTab(props: Props) {
   };
 
   const statusBadge = getStatusBadge(props.controlView.status);
+  const nextReviewDate = props.controlView.last_validated
+    ? addDays(new Date(props.controlView.last_validated), props.controlView.review_frequency)
+    : new Date();
 
   return (
     <TabsContent value="overview" className="space-y-4 pt-2">
@@ -99,6 +124,31 @@ export default async function SiteControlOverviewTab(props: Props) {
             </div>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle>Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-2">
+              {nextReviewDate && (
+                <div className="flex justify-between items-center">
+                  <div className="text-sm text-gray-500">Change Status</div>
+                  <StatusUpdateForm
+                    id={props.controlView.site_control_id}
+                    status={props.controlView.status}
+                    options={[
+                      { id: "onboarding", label: "Onboarding" },
+                      { id: "implemented", label: "Implemented", disabled: approvedStatus() },
+                      { id: "waived", label: "Waived", disabled: waivedStatus() }
+                    ]}
+                    action={updateSiteControlStatusAction}
+                  />
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Control Information */}
@@ -127,37 +177,6 @@ export default async function SiteControlOverviewTab(props: Props) {
           )}
         </CardContent>
       </Card>
-
-      {/* Evidence Section */}
-      {controlEvidence && controlEvidence.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Evidence</CardTitle>
-            <CardDescription>Supporting evidence for this control</CardDescription>
-          </CardHeader>
-          <Separator />
-          <CardContent>
-            <div className="divide-y">
-              {controlEvidence.map((evidence, index) => (
-                <div key={index} className="py-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-medium">{evidence.name || "Untitled Evidence"}</h4>
-                      {evidence.description && <p className="text-sm text-gray-500">{evidence.description}</p>}
-                    </div>
-                    <div className="flex gap-2 items-center text-sm text-gray-500">
-                      {evidence.uploaded_at && format(new Date(evidence.uploaded_at), 'MMM dd, yyyy')}
-                      <Badge variant={evidence.status === "approved" ? 'default' : evidence.status === "pending" ? "outline" : "destructive"} className="text-sm">
-                        {pascalCase(evidence.status)}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </TabsContent>
   );
 }
