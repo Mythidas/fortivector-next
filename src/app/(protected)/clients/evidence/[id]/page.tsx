@@ -127,6 +127,7 @@ export default async function ClientEvidencePage(props: Props) {
             <StatusUpdateForm
               id={evidence.id}
               status={evidence.status}
+              module="evidence"
               label
               options={[
                 { id: "pending", label: "Pending" },

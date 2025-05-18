@@ -103,7 +103,7 @@ export default async function SiteControlOverviewTab(props: Props) {
                 <div className="flex justify-between items-center">
                   <div className="text-sm text-gray-500">Next Review</div>
                   <Badge className="text-base font-medium flex items-center" variant={nextReviewDate.getTime() <= new Date().getTime() ? "destructive" : "default"}>
-                    <CalendarDays className="h-4 w-4 mr-1 text-blue-500" />
+                    <CalendarDays className="h-4 w-4 mr-1" />
                     {format(nextReviewDate, 'MMM dd, yyyy')}
                   </Badge>
                 </div>
@@ -125,6 +125,7 @@ export default async function SiteControlOverviewTab(props: Props) {
           </CardContent>
         </Card>
 
+        {/* Actions Card */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle>Actions</CardTitle>
@@ -137,13 +138,16 @@ export default async function SiteControlOverviewTab(props: Props) {
                   <StatusUpdateForm
                     id={props.controlView.site_control_id}
                     status={props.controlView.status}
+                    module="sites"
                     options={[
                       { id: "onboarding", label: "Onboarding" },
                       { id: "implemented", label: "Implemented", disabled: approvedStatus() },
                       { id: "waived", label: "Waived", disabled: waivedStatus() }
                     ]}
                     action={updateSiteControlStatusAction}
-                  />
+                  >
+                    {pascalCase(props.controlView.status)}
+                  </StatusUpdateForm>
                 </div>
               )}
             </div>

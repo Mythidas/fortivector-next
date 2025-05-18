@@ -11,9 +11,9 @@ import {
   FormMessage,
 } from "@/lib/components/ui/form";
 import { statusFormSchema, StatusFormValues } from "@/lib/schema/forms";
-import { startTransition, useActionState, useEffect, useState } from "react";
+import { ReactNode, startTransition, useActionState, useEffect, useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/lib/components/ui/select";
-import { FormState, Option } from "@/lib/types";
+import { AccessModule, FormState, Option } from "@/lib/types";
 import FormAlert from "../ux/form-alert";
 import { hasAccess, useUser } from "@/lib/context/user-context";
 import { useRouter } from "next/navigation";
@@ -26,14 +26,16 @@ type Props = {
   id: string;
   status: string;
   options: StatusOption[];
+  module: AccessModule;
   label?: boolean;
+  children?: ReactNode;
   action: (
     _prevState: any,
     params: FormData
   ) => Promise<FormState<StatusFormValues>>;
 };
 
-export default function StatusUpdateForm({ id, status, options, label, action }: Props) {
+export default function StatusUpdateForm({ id, status, options, module, label, children, action }: Props) {
   const [state, formAction] = useActionState(action, { success: true, values: {} });
   const [pending, setPending] = useState(false);
   const context = useUser();
@@ -52,8 +54,8 @@ export default function StatusUpdateForm({ id, status, options, label, action }:
     }
   });
 
-  if (!hasAccess(context, "evidence", "edit")) {
-    return <div></div>
+  if (!hasAccess(context, module, "edit")) {
+    return <div className="text-sm">{children}</div>
   }
 
   return (

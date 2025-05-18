@@ -576,8 +576,6 @@ export const updateSiteControlStatusAction = async (_prevState: any, params: For
 
   const user = await supabase.auth.getUser();
 
-  console.log(validation.data.id)
-
   const { data, error } = await supabase.from("site_controls").update({
     status: validation.data.status,
     last_validated: new Date().toISOString(),
