@@ -29,8 +29,9 @@ export const createControlAction = async (_prevState: any, params: FormData) => 
     };
   }
 
-  const { error: existsError } = await supabase.from("controls").select().eq("control_code", validation.data.control_code);
-  if (!existsError) {
+  const { data: exists, error: existsError } = await supabase.from("controls").select().eq("control_code", validation.data.control_code).single();
+  if (!existsError && exists) {
+    console.log(exists)
     return {
       success: false,
       errors: { "db": ["Control Code must be unique."] },

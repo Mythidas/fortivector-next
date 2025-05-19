@@ -134,7 +134,7 @@ export default function ControlForm({ control, footer, action }: Props) {
                   <FormItem className="w-fit text-nowrap">
                     <FormLabel>Enforcement Method</FormLabel>
                     <FormControl>
-                      <Select {...field}>
+                      <Select {...field} onValueChange={field.onChange}>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select Method..." />
                         </SelectTrigger>
@@ -144,7 +144,7 @@ export default function ControlForm({ control, footer, action }: Props) {
                             <SelectItem value="manual">Manual</SelectItem>
                             <SelectItem value="scripted" disabled>Scripted</SelectItem>
                             <SelectItem value="auto-scanned" disabled>Auto Scanned</SelectItem>
-                            <SelectItem value="vendor-managed" disabled>Vendor Managed</SelectItem>
+                            <SelectItem value="vendor-managed">Vendor Managed</SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
