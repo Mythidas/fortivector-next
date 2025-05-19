@@ -26,6 +26,11 @@ export default async function AuthButton() {
                 Dashboard
               </DropdownMenuItem>
             </Link>
+            <Link href="/clients">
+              <DropdownMenuItem>
+                Clients
+              </DropdownMenuItem>
+            </Link>
             <Link href="/systems">
               <DropdownMenuItem>
                 Systems

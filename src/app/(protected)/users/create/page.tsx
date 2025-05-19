@@ -7,12 +7,11 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-
-import { createInviteAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import UserForm from "@/lib/components/forms/user-form";
 import { getTenant } from "@/lib/functions/database/tenants";
 import { getRoles } from "@/lib/functions/database/roles";
+import { createInviteAction } from "@/lib/actions/users";
 
 export default async function CreateUser() {
   const supabase = await createClient();

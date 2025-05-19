@@ -6,12 +6,11 @@ import {
   CardTitle,
 } from "@/lib/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
-
-import { editUserAction } from "@/lib/actions/user-actions";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/lib/components/ui/breadcrumb";
 import UserForm from "@/lib/components/forms/user-form";
 import { getRoles } from "@/lib/functions/database/roles";
 import { getUser } from "@/lib/functions/database/users";
+import { updateUserAction } from "@/lib/actions/users";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -59,7 +58,7 @@ export default async function EditUser(props: Props) {
               pending_text: "Updating Users...",
               cancel_route: "/users"
             }}
-            action={editUserAction}
+            action={updateUserAction}
           />
         </CardContent>
       </Card>

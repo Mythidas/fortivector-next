@@ -1,3 +1,5 @@
+'use server'
+
 import { userFormSchema, deleteFormSchema } from "@/lib/schema/forms";
 import { createAdminClient, createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
